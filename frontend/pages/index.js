@@ -5,6 +5,7 @@ import WPAPI from 'wpapi';
 import Layout from '../components/Layout';
 import PageWrapper from '../components/PageWrapper';
 import Menu from '../components/Menu';
+import Navigation from '../components/Navigation';
 import Config from '../config';
 import Logo from '../static/images/starter-kit-logo.svg';
 
