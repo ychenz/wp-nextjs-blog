@@ -23,7 +23,7 @@ export const Menu = styled.div`
   right: 0;
 `;
 
-export const MenuEntry = styled.div<{isActive:boolean}>`
+export const MenuEntry = styled.div<{ isActive: boolean }>`
   font-size: 14px;
   line-height: 16px;
   color: ${({ isActive }) => (isActive ? "#000000" : "#434343")};
@@ -45,7 +45,7 @@ export const MenuButton = styled.div`
   transition: .3s ease;
   
   &:hover {
-  background-color: #000000;
+    background-color: #000000;
   }
 `;
 

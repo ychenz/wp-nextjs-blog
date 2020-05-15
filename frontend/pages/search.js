@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
-import Link from 'next/link';
-import axios from 'axios';
-import Router from 'next/router';
-import Layout from '../components/Layout';
-import PageWrapper from '../components/PageWrapper';
-import Menu from '../components/Menu';
-import WPAPI from 'wpapi';
-import Config from '../config';
+import React, { Component } from "react";
+import Link from "next/link";
+import WPAPI from "wpapi";
+
+import Layout from "../components/Layout";
+import PageWrapper from "../components/PageWrapper";
+import Menu from "../components/Menu";
+import Config from "../config";
 
 const wp = new WPAPI({ endpoint: Config.apiUrl });
 
 class Search extends Component {
   state = {
     posts: [],
-    filter: '',
+    filter: "",
   };
 
   /**
@@ -61,7 +60,7 @@ class Search extends Component {
                   <h3 className="ml1 dib pointer">{post.title.rendered}</h3>
                 </Link>
               </div>
-            )) : ''}
+            )) : ""}
           </div>
         </div>
       </Layout>

@@ -1,14 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { Component } from 'react';
-import Link from 'next/link';
-import Router from 'next/router';
-import Config from '../config';
-import Logo from '../static/images/starter-kit-logo.svg';
-import SearchIcon from '../static/images/search.svg';
+import React, { Component } from "react";
+import Link from "next/link";
+import Router from "next/router";
+import Config from "../config";
+import Logo from "../static/images/starter-kit-logo.svg";
+import SearchIcon from "../static/images/search.svg";
 
 const getSlug = url => {
-  const parts = url.split('/');
-  return parts.length > 2 ? parts[parts.length - 2] : '';
+  const parts = url.split("/");
+  return parts.length > 2 ? parts[parts.length - 2] : "";
 };
 
 class Menu extends Component {
@@ -47,13 +47,13 @@ class Menu extends Component {
           </div>
           <div className="links dn flex-l justify-between items-center">
             {menu.items.map(item => {
-              if (item.object === 'custom') {
+              if (item.object === "custom") {
                 return (
                   <a href={item.url} key={item.ID}>{item.title}</a>
                 );
               }
               const slug = getSlug(item.url);
-              const actualPage = item.object === 'category' ? 'category' : 'post';
+              const actualPage = item.object === "category" ? "category" : "post";
               return (
                 <Link
                   as={`/${item.object}/${slug}`}
@@ -76,7 +76,7 @@ class Menu extends Component {
                 className="pointer round-btn ba bw1 pv2 ph3"
                 onClick={() => {
                   localStorage.removeItem(Config.AUTH_TOKEN);
-                  Router.push('/login');
+                  Router.push("/login");
                 }}
               >
                 Log out {username}
@@ -94,7 +94,7 @@ class Menu extends Component {
           >
             <option value={false}>Menu</option>
             {menu.items.map(item => {
-              if (item.object === 'custom') {
+              if (item.object === "custom") {
                 return (
                   <option
                     value={item.url}
@@ -105,7 +105,7 @@ class Menu extends Component {
                 );
               }
               const slug = getSlug(item.url);
-              const actualPage = item.object === 'category' ? 'category' : 'post';
+              const actualPage = item.object === "category" ? "category" : "post";
               return (
                 <option
                   value={`/${actualPage}?slug=${slug}&apiRoute=${item.object}`}

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import {withRouter, NextRouter} from 'next/router';
-import React, {PureComponent, ReactElement} from "react";
+import { withRouter, NextRouter } from "next/router";
+import React, { PureComponent, ReactElement } from "react";
 import {
   Root,
   Title,
@@ -39,7 +39,7 @@ class Navigation extends PureComponent<NavigationProps> {
     const menuRec = this.menuRef.current.getBoundingClientRect();
     const activeMenuEntryRec = activeMenuEntry.getBoundingClientRect();
     const distance = activeMenuEntryRec.left - menuRec.left;
-    const {width} = activeMenuEntryRec;
+    const { width } = activeMenuEntryRec;
 
     requestAnimationFrame(() => {
       this.sliderRef.current.setAttribute(
@@ -51,7 +51,7 @@ class Navigation extends PureComponent<NavigationProps> {
   }
 
   render(): ReactElement {
-    const {router} = this.props;
+    const { router } = this.props;
 
     return (
       <Root>

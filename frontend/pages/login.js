@@ -1,24 +1,24 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Router from 'next/router';
-import Layout from '../components/Layout';
-import PageWrapper from '../components/PageWrapper';
-import Menu from '../components/Menu';
-import Config from '../config';
+import React, { Component } from "react";
+import axios from "axios";
+import Router from "next/router";
+import Layout from "../components/Layout";
+import PageWrapper from "../components/PageWrapper";
+import Menu from "../components/Menu";
+import Config from "../config";
 
 class Login extends Component {
   state = {
-    username: '',
-    password: '',
-    message: '',
+    username: "",
+    password: "",
+    message: "",
   };
 
   static async getInitialProps() {
-    return '';
+    return "";
   }
 
   login() {
-    let message = '';
+    let message = "";
     this.setState({ message });
     const { username, password } = this.state;
     axios
@@ -30,11 +30,11 @@ class Login extends Component {
         const { data } = res;
         localStorage.setItem(Config.AUTH_TOKEN, data.token);
         localStorage.setItem(Config.USERNAME, data.user_nicename);
-        Router.push('/');
+        Router.push("/");
       })
       .catch(() => {
         message =
-          'Sorry, that username and password combination is not valid.';
+          "Sorry, that username and password combination is not valid.";
         this.setState({ message });
       });
   }

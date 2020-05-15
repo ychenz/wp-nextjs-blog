@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { Component } from 'react';
-import Link from 'next/link';
-import Error from 'next/error';
-import WPAPI from 'wpapi';
-import Layout from '../components/Layout';
-import PageWrapper from '../components/PageWrapper';
-import Menu from '../components/Menu';
-import Config from '../config';
+import React, { Component } from "react";
+import Link from "next/link";
+import Error from "next/error";
+import WPAPI from "wpapi";
+import Layout from "../components/Layout";
+import PageWrapper from "../components/PageWrapper";
+import Menu from "../components/Menu";
+import Config from "../config";
 
 const wp = new WPAPI({ endpoint: Config.apiUrl });
 

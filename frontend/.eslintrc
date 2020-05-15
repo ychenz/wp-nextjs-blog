@@ -1,8 +1,26 @@
 {
   "parser": "babel-eslint",
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    // this ensures Don’t call Hooks inside loops, conditions, or nested functions. Instead, always use Hooks at the
+    //top level of your React function. Pkg:  eslint-plugin-react-hooks
+    "react-hooks"
   ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        // this allows import files without extension specified
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".d.ts", ".json", ".svg", ".scss"],
+
+        "moduleDirectory": ["node_modules"],
+        "paths": ["."]
+      }
+    },
+    // TODO: learn what this does
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    }
+  },
   "extends": [
     "airbnb",
     "prettier",
@@ -16,6 +34,52 @@
   },
   "rules": {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/prop-types": 0
-  }
+    "react/prop-types": 0,
+
+    // React hook rules required in docs: https://reactjs.org/docs/hooks-rules.html
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks effect dependencies
+
+    // allow something like this <Comp {...this.props} />
+    "react/jsx-props-no-spreading": "off",
+
+    // Should always use double quote
+    "quotes": ["error", "double"],
+
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "react/state-in-constructor": "off",
+
+    // No line break allowed around "="
+    "operator-linebreak": ["error", "after", { "overrides": {
+      "?": "before",
+      ":": "before",
+      "=": "none"
+    } }],
+
+    // blank line required between blocks
+    "padding-line-between-statements": ["error",
+      { "blankLine": "always", "prev": "block-like", "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": "block-like" }, // block-like: e.g. { }, if (a) { }, and while (a)
+      { "blankLine": "always", "prev": "*", "next": "return" }
+    ],
+
+    // This rule aims to enforce consistent spacing before function parentheses for different type of functions
+    "space-before-function-paren": ["error", {
+      "anonymous": "never",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
+
+    // This rule enforces consistent spacing inside braces of object literals, destructuring assignments, and
+    // import/export specifiers.
+    "object-curly-spacing": ["error", "always"]
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "no-undef": "off" // This prevents undefined error for native type such as "boolean" in ts files
+      }
+    }
+  ]
 }
