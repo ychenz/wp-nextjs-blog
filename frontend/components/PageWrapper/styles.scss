@@ -2,6 +2,6 @@
 
 .PageWrapper {
   &__children {
-    padding-top: $navigation-height;
+    padding-top: $navigation-height + $ui-unit-double;
   }
 }

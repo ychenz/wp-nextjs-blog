@@ -80,7 +80,10 @@
     "lines-between-class-members": "off",
 
     // next-js handles this
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+
+    // wordpress use underscore for some of its fields
+    "no-underscore-dangle": "off"
   },
   "overrides": [
     {

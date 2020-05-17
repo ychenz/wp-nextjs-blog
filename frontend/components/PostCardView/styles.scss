@@ -1,0 +1,67 @@
+@import "src/styles/colors.scss";
+@import "src/styles/variables.scss";
+@import url('https://fonts.googleapis.com/css?family=Saira:500|Sunflower:300,500&display=swap');
+
+.PostCardView {
+  max-width: 312px;
+  box-shadow: 0 2px 3px rgba(2, 14, 29, 0.08);
+  cursor: pointer;
+
+  &:hover {
+    margin-top: -1px;
+    box-shadow: 0 4px 6px rgba(2, 14, 29, 0.08);
+  }
+
+  &:active {
+    margin-top: 1px;
+    box-shadow: 0 2px 15px $color-gray-3;
+  }
+
+  &__image-container {
+    height: 188px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  &__image {
+    max-height: 100%;
+  }
+
+  &__text-container {
+    padding: $ui-unit-double 3 * $ui-unit-normal;
+  }
+
+  &__category {
+    font-size: $small-font-size;
+    line-height: $ui-unit-double;
+    font-family: "Sunflower", sans-serif;
+    font-weight: $medium-font-weight;
+    z-index: 2; // This is displayed above the card react router link
+  }
+
+  &__title {
+    font-size: $title-2-font-size;
+    font-family: "Saira", sans-serif;
+    font-weight: $medium-font-weight;
+    line-height: 3 * $ui-unit-normal;
+    margin-top: $ui-unit-normal;
+  }
+
+  &__date {
+    margin-top: $ui-unit-normal;
+    font-size: $small-font-size;
+    line-height: $ui-unit-double;
+    color: $color-gray-2;
+    font-family: "Sunflower", sans-serif;
+    font-weight: $light-font-weight;
+  }
+
+  &__link {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background: transparent;
+  }
+}

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import Error from "next/error";
 import WPAPI from "wpapi";
-import Menu from "../components/Menu";
 import Layout from "../components/Layout";
 import PageWrapper from "../components/PageWrapper";
 import Config from "../config";
-import Navigation from "../components/Navigation";
 
 const wp = new WPAPI({ endpoint: Config.apiUrl });
 
@@ -37,7 +35,8 @@ class Post extends Component {
   }
 
   render() {
-    const { post, headerMenu } = this.props;
+    const { post } = this.props;
+
     if (!post.title) {
       return <Error statusCode={404} />;
     }
