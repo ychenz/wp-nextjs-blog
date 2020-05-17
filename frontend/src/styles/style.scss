@@ -1,3 +1,5 @@
+@import "colors";
+
 body {
   margin: 0;
   padding: 0;
@@ -16,13 +18,8 @@ h2 {
 }
 
 a {
-  font-weight: bold;
-  color: black;
+  color: $color-black;
   text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 ul {

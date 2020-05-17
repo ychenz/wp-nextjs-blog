@@ -32,8 +32,23 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
     super(props);
     this.state = {
       previousScrollPosition: 0,
-      shouldHide: false
+      shouldHide: false,
     };
+  }
+
+  static getPreviousSlider(): {
+    previousSliderToMenuLeft: number;
+    previousSliderWidth: number;
+  } {
+    const previousSliderToMenuLeft = parseFloat(localStorage.getItem("previousSliderToMenuLeft"));
+    const previousSliderWidth =  parseFloat(localStorage.getItem("previousSliderWidth"));
+
+    return { previousSliderToMenuLeft, previousSliderWidth };
+  }
+
+  static setSlider(distanceToMenuLeft: number, width: number): void {
+    localStorage.setItem("previousSliderToMenuLeft", `${distanceToMenuLeft}`);
+    localStorage.setItem("previousSliderWidth", `${width}`);
   }
 
   componentDidMount(): void {
@@ -42,7 +57,6 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
   }
 
   componentDidUpdate(): void {
-    console.log("did update");
     this.moveSlider();
   }
 
@@ -63,6 +77,7 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
 
   moveSlider(): void {
     const activeMenuEntry = this.menuRef.current.querySelector(`.${CLASS_NAME}__menu-entry--active`);
+    const { previousSliderToMenuLeft, previousSliderWidth } = Navigation.getPreviousSlider();
 
     if (!activeMenuEntry) {
       return;
@@ -72,14 +87,20 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
     const activeMenuEntryRec = activeMenuEntry.getBoundingClientRect();
     const distance = activeMenuEntryRec.left - menuRec.left;
     const { width } = activeMenuEntryRec;
+    Navigation.setSlider(distance, width);
+
+    // Because SSR refreshes page on route change, we need to put slider to previous location first then animate
+    this.sliderRef.current.setAttribute(
+      "style",
+      `display: block; left: ${previousSliderToMenuLeft}px; width: ${previousSliderWidth}px`
+    );
 
     requestAnimationFrame(() => {
       this.sliderRef.current.setAttribute(
         "style",
-        `display: block; transform: translate3d(${distance}px, 0, 0); width: ${width}px`
+        `display: block; left: ${distance}px; width: ${width}px`
       );
     });
-
   }
 
   render(): ReactElement {
@@ -93,16 +114,19 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
             [`${CLASS_NAME}__container--hidden`]: shouldHide
           })}
         >
-          <div className={`${CLASS_NAME}__title`}>Dev Life</div>
+          <Link href="/" >
+            <a className={`${CLASS_NAME}__title`}>Dev Life</a>
+          </Link>
+
           <div className={`${CLASS_NAME}__menu`} ref={this.menuRef}>
             <Link
               href="/"
             >
-              <div className={classNames(`${CLASS_NAME}__menu-entry`, {
+              <a className={classNames(`${CLASS_NAME}__menu-entry`, {
                 [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/"
               })}>
                 Blog
-              </div>
+              </a>
             </Link>
             {menu.items.map(item => {
               if (item.object === "custom") {
@@ -119,25 +143,28 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
                   href={`/${actualPage}?slug=${slug}&apiRoute=${item.object}`}
                   key={item.ID}
                 >
-                  <div className={classNames(`${CLASS_NAME}__menu-entry`, {
+                  <a className={classNames(`${CLASS_NAME}__menu-entry`, {
                     [`${CLASS_NAME}__menu-entry--active`]: router.pathname === `/${item.object}`
                   })}>
                     {item.title}
-                  </div>
+                  </a>
                 </Link>
               );
             })}
             <Link
               href="/portfolio"
             >
-              <div className={classNames(`${CLASS_NAME}__menu-entry`, {
+              <a className={classNames(`${CLASS_NAME}__menu-entry`, {
                 [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/portfolio"
               })}>
                 Portfolio
-              </div>
+              </a>
             </Link>
             <div className={`${CLASS_NAME}__menu-button`}>Subscribe</div>
-            <div className={`${CLASS_NAME}__menu-slider`} ref={this.sliderRef}/>
+            <div
+              className={`${CLASS_NAME}__menu-slider`}
+              ref={this.sliderRef}
+            />
           </div>
         </div>
       </div>
