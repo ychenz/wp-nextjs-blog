@@ -23,10 +23,11 @@ export const Menu = styled.div`
   right: 0;
 `;
 
-export const MenuEntry = styled.div<{ isActive: boolean }>`
+export const MenuEntry = styled.div<{ isActive?: boolean }>`
   font-size: 14px;
   line-height: 16px;
   color: ${({ isActive }) => (isActive ? "#000000" : "#434343")};
+  font-weight: ${({ isActive }) => (isActive ? 500 : 400)};
   cursor: pointer;
   margin-right: 64px;
   

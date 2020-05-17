@@ -72,7 +72,12 @@
 
     // This rule enforces consistent spacing inside braces of object literals, destructuring assignments, and
     // import/export specifiers.
-    "object-curly-spacing": ["error", "always"]
+    "object-curly-spacing": ["error", "always"],
+
+    // Enforce semi-colon
+    "semi": ["error", "always"],
+    "import/prefer-default-export": "off",
+    "lines-between-class-members": "off"
   },
   "overrides": [
     {

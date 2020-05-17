@@ -1,13 +1,22 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require("path");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const glob = require("glob");
+const withStyles = require("@webdeb/next-styles");
 
-module.exports = {
+module.exports = withStyles({
+  sass: true, // use .scss files
+  modules: true, // style.(m|module).css & style.(m|module).scss for module files
+  lessLoaderOptions: {
+    javascriptEnabled: true,
+  },
+  sassLoaderOptions: {
+    sassOptions: {
+      includePaths: ["src/styles"] // @import 'variables'; # loads (src/styles/varialbes.scss), you got it..
+    },
+  },
+  ignoreOrder: true, // for https://github.com/webpack-contrib/mini-css-extract-plugin/issues/250#issuecomment-544898772
   webpack: config => {
     config.module.rules.push(
       {
-        test: /\.(css|scss)/,
+        test: /\.(css)/,
         loader: "emit-file-loader",
         options: {
           name: "dist/[path][name].[ext]",
@@ -16,23 +25,6 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["babel-loader", "raw-loader", "postcss-loader"],
-      },
-      {
-        test: /\.s(a|c)ss$/,
-        use: [
-          "babel-loader",
-          "raw-loader",
-          "postcss-loader",
-          {
-            loader: "sass-loader",
-            options: {
-              includePaths: ["styles", "node_modules"]
-                .map(d => path.join(__dirname, d))
-                .map(g => glob.sync(g))
-                .reduce((a, c) => a.concat(c), []),
-            },
-          },
-        ],
       },
       {
         test: /\.svg$/,
@@ -50,6 +42,7 @@ module.exports = {
         ]
       },
     );
+
     return config;
   },
-};
+});

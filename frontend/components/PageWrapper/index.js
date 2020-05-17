@@ -1,6 +1,8 @@
 import React from "react";
 import WPAPI from "wpapi";
-import Config from "../config";
+import Config from "../../config";
+import Navigation from "../Navigation";
+import "./styles.scss";
 
 const wp = new WPAPI({ endpoint: Config.apiUrl });
 
@@ -23,7 +25,16 @@ const PageWrapper = Comp =>
     }
 
     render() {
-      return <Comp {...this.props} />;
+      const { headerMenu } = this.props;
+
+      return (
+        <div >
+          <Navigation menu={headerMenu} />
+          <div className="PageWrapper__children">
+            <Comp  {...this.props} />
+          </div>
+        </div>
+      );
     }
   };
 

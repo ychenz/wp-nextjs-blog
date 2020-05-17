@@ -5,7 +5,6 @@ import Error from "next/error";
 import WPAPI from "wpapi";
 import Layout from "../components/Layout";
 import PageWrapper from "../components/PageWrapper";
-import Menu from "../components/Menu";
 import Config from "../config";
 
 const wp = new WPAPI({ endpoint: Config.apiUrl });
@@ -31,7 +30,7 @@ class Category extends Component {
   }
 
   render() {
-    const { categories, posts, headerMenu } = this.props;
+    const { categories, posts } = this.props;
     if (categories.length === 0) return <Error statusCode={404} />;
 
     const fposts = posts.map(post => {
@@ -63,9 +62,9 @@ class Category extends Component {
         </div>
       );
     });
+
     return (
       <Layout>
-        <Menu menu={headerMenu} />
         <div className="content mh4 mt4 mb6 w-two-thirds-l center-l">
           <span className="gray f3 b">Category Archives:</span>
           <h1 className="f1 mt3">{categories[0].name}</h1>

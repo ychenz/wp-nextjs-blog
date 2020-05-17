@@ -3,7 +3,6 @@ import axios from "axios";
 import Router from "next/router";
 import Layout from "../components/Layout";
 import PageWrapper from "../components/PageWrapper";
-import Menu from "../components/Menu";
 import Config from "../config";
 
 class Login extends Component {
@@ -45,7 +44,6 @@ class Login extends Component {
 
     return (
       <Layout>
-        <Menu menu={headerMenu} />
         <div className="content login mh4 mv4 w-two-thirds-l center-l">
           <div>
             <h1>Log in</h1>

@@ -4,16 +4,10 @@ import Router from "next/router";
 import WPAPI from "wpapi";
 import Layout from "../components/Layout";
 import PageWrapper from "../components/PageWrapper";
-import Menu from "../components/Menu";
 import Config from "../config";
 import Logo from "../static/images/starter-kit-logo.svg";
 
 const wp = new WPAPI({ endpoint: Config.apiUrl });
-
-const headerImageStyle = {
-  marginTop: 50,
-  marginBottom: 50,
-};
 
 const tokenExpired = () => {
   if (process.browser) {
@@ -75,8 +69,7 @@ class Index extends Component {
   }
 
   render() {
-    const { id } = this.state;
-    const { posts, pages, headerMenu, page } = this.props;
+    const { posts, pages, page } = this.props;
 
     const fposts = posts.map(post => {
       return (
@@ -114,7 +107,6 @@ class Index extends Component {
 
     return (
       <Layout>
-        <Menu menu={headerMenu} />
         <div className="intro bg-black white ph3 pv4 ph5-m pv5-l flex flex-column flex-row-l">
           <div className="color-logo w-50-l mr3-l">
             <Logo width={440} height={280} />

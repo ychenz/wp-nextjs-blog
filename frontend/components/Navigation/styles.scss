@@ -1,0 +1,82 @@
+@import "src/styles/colors";
+@import "src/styles/variables";
+@import url('https://fonts.googleapis.com/css?family=Saira:300|Nunito:600&display=swap');
+
+.Navigation {
+  position: fixed;
+  width: 100%;
+  z-index: 3;
+  transition: .5s ease;
+
+  &__container {
+    background: white;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    position: absolute;
+    width: 100%;
+    transition: .3s ease;
+    top: 0;
+
+    &--hidden {
+      top: -90px;
+    }
+  }
+
+  &__title {
+    margin-left: 56px;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  &__menu {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 0;
+  }
+
+  &__menu-entry {
+    font-size: $normal-font-size;
+    font-family: "Saira", sans-serif;
+    line-height: $normal-line-height;
+    color: $color-gray-0;
+    cursor: pointer;
+    margin-right: 64px;
+
+    &:hover {
+      color: $color-black;
+    }
+  }
+
+  &__menu-button {
+    font-family: "Nunito", sans-serif;
+    margin-right: 48px;
+    padding: 8px 24px;
+    background-color: #4DD488;
+    border-radius: 2px;
+    color: white;
+    cursor: pointer;
+    transition: .3s ease;
+
+    &:hover {
+      background-color: $color-black;
+    }
+  }
+
+  &__menu-entry--active {
+    color: #000000;
+    font-weight: 600;
+  }
+
+  &__menu-slider {
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    background-color: black;
+    transition: .3s ease;
+    display: none;
+  }
+}

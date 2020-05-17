@@ -1,4 +1,4 @@
-/* eslint-disable global-require */
+/* eslint-disable */
 module.exports = {
   plugins: [
     require('postcss-easy-import')({ prefix: '_' }), // keep this first

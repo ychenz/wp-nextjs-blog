@@ -8,7 +8,6 @@ const Layout = props => {
 
   return (
     <div>
-      <Navigation />
       <Header />
       <main>
         {children}

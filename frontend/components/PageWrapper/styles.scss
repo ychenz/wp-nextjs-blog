@@ -1,0 +1,7 @@
+@import "src/styles/variables";
+
+.PageWrapper {
+  &__children {
+    padding-top: $navigation-height;
+  }
+}

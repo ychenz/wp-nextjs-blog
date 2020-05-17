@@ -5,6 +5,7 @@ import Menu from "../components/Menu";
 import Layout from "../components/Layout";
 import PageWrapper from "../components/PageWrapper";
 import Config from "../config";
+import Navigation from "../components/Navigation";
 
 const wp = new WPAPI({ endpoint: Config.apiUrl });
 
@@ -50,7 +51,6 @@ class Post extends Component {
 
     return (
       <Layout className="test">
-        <Menu menu={headerMenu} />
         {heroUrl ? (
           <div className={`hero flex items-center post-type-${post.type}`}>
             <img
