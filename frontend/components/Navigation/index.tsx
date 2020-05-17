@@ -128,12 +128,12 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
               );
             })}
             <Link
-              href="/login"
+              href="/portfolio"
             >
               <div className={classNames(`${CLASS_NAME}__menu-entry`, {
-                [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/login"
+                [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/portfolio"
               })}>
-                login
+                Portfolio
               </div>
             </Link>
             <div className={`${CLASS_NAME}__menu-button`}>Subscribe</div>
