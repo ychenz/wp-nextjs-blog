@@ -13,6 +13,7 @@
   justify-content: center;
   height: 90px;
   top: 0; // required for animation to work
+  background-color: $color-white;
 
   &--hidden {
     top: -90px;

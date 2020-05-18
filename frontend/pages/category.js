@@ -66,7 +66,6 @@ class Category extends Component {
     return (
       <Layout>
         <div className="content mh4 mt4 mb6 w-two-thirds-l center-l">
-          <span className="gray f3 b">Category Archives:</span>
           <h1 className="f1 mt3">{categories[0].name}</h1>
           {fposts}
         </div>

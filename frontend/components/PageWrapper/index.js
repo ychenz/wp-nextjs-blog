@@ -27,7 +27,7 @@ const PageWrapper = Comp =>
       const { headerMenu } = this.props;
 
       return (
-        <div >
+        <div className="PageWrapper">
           <Navigation menu={headerMenu} />
           <div className="PageWrapper__children">
             <Comp  {...this.props} />
