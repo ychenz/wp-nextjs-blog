@@ -1,7 +1,10 @@
 @import "src/styles/variables";
 
 .PageWrapper {
+
   &__children {
     padding-top: $navigation-height + $ui-unit-double;
+    max-width: $screen-large;
+    margin:auto;
   }
 }

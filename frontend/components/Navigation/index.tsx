@@ -108,15 +108,17 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
     const { shouldHide } = this.state;
 
     return (
-      <div className={CLASS_NAME}>
+      <div className={classNames(CLASS_NAME, {
+        [`${CLASS_NAME}--hidden`]: shouldHide
+      })}>
         <div
-          className={classNames(`${CLASS_NAME}__container`, {
-            [`${CLASS_NAME}__container--hidden`]: shouldHide
-          })}
+          className={`${CLASS_NAME}__container`}
         >
-          <Link href="/" >
-            <a className={`${CLASS_NAME}__title`}>Dev Life</a>
-          </Link>
+          <div className={`${CLASS_NAME}__title`}>
+            <Link href="/" >
+              <a>Dev Life</a>
+            </Link>
+          </div>
 
           <div className={`${CLASS_NAME}__menu`} ref={this.menuRef}>
             <Link

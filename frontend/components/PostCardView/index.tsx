@@ -68,19 +68,21 @@ class PostCardView extends PureComponent<PostCardViewProps> {
           <a className={`${CLASS_NAME}__link`} />
         </Link>
 
-        <div className={`${CLASS_NAME}__image-container`}>
-          <img
-            className={`${CLASS_NAME}__image`}
-            alt={post.title.rendered}
-            src={PostCardView.getFeaturedImage(post)}
-          />
-        </div>
+        {PostCardView.getFeaturedImage(post) && (
+          <div className={`${CLASS_NAME}__image-container`}>
+            <img
+              className={`${CLASS_NAME}__image`}
+              alt={post.title.rendered}
+              src={PostCardView.getFeaturedImage(post)}
+            />
+          </div>
+        )}
         <div className={`${CLASS_NAME}__text-container`}>
           <div className={`${CLASS_NAME}__category`} style={{ color: getWPCategoryColor(category.id) }}>
             {category.name}
           </div>
           <div className={`${CLASS_NAME}__title`}>{post.title.rendered}</div>
-          <div className={`${CLASS_NAME}__date`}>{formatDate(post.modified_gmt)}</div>
+          <div className={`${CLASS_NAME}__date`}>{formatDate(post.date_gmt)}</div>
         </div>
       </div>
     );
