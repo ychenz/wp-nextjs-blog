@@ -2,7 +2,7 @@
 @import "src/styles/colors";
 
 .PageWrapper {
- &__children {
+  &__children {
     padding-top: $navigation-height + $ui-unit-double;
     max-width: $screen-large;
     margin:auto;
