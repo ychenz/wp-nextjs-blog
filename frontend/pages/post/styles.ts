@@ -2,6 +2,11 @@ import styled from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
 import { getWPCategoryColor } from "services/string";
 
+export const Root = styled.div`
+  max-width: ${cssVariables.postContentMaxWidth};
+  margin: auto;
+`;
+
 export const Title = styled.div`
   margin-top: 40px;
   font-family: Saira, sans-serif;
@@ -14,6 +19,15 @@ export const Title = styled.div`
 export const CategoryContainer = styled.div`
   margin: ${cssVariables.uiUnit} 0 40px 0;
   display: flex;
+  align-items: center;
+`;
+
+export const CreationDate = styled.div`
+  font-family: Sunflower, sans-serif;
+  font-size: ${cssVariables.smallFontSize};
+  line-height: 16px;
+  color: ${cssColors.colorGray5};
+  margin-right: ${cssVariables.uiUnitDouble};
 `;
 
 export const CategoryLink = styled.a<{ categoryId: number }>`
@@ -42,5 +56,7 @@ export const Content = styled.div`
     line-height: ${cssVariables.paragraphLineHeight};
     color: ${cssColors.colorGray4};
     margin-bottom: 40px;
+    padding: 0 ${cssVariables.uiUnit};
+    text-align: justify;
   }
 `;

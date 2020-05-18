@@ -3,10 +3,13 @@ import Link from "next/link";
 import Error from "next/error";
 import wp from "services/WPAPIConfig";
 import { WPPost, getFeaturedImageUrl, getCategories, WPCategory } from "services/dataModels";
+import { formatDate } from "services/string";
 import Layout from "components/Layout";
 import PageWrapper from "components/PageWrapper";
 import {
+  Root,
   Title,
+  CreationDate,
   CategoryLink,
   CategoryContainer,
   Content
@@ -69,25 +72,28 @@ class Post extends PureComponent<PostProps> {
 
     return (
       <Layout>
-        <Title>{post.title.rendered}</Title>
-        <CategoryContainer>
-          {categories && categories.map(category => Post.renderCategoryPill(category))}
-        </CategoryContainer>
-        {heroUrl ? (
-          <div className={`hero flex items-center post-type-${post.type}`}>
-            <img
-              alt="Featured"
-              className="w-100"
-              src={heroUrl}
-            />
-          </div>
-        ) : ""}
-        <Content
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: post.content.rendered,
-          }}
-        />
+        <Root>
+          <Title>{post.title.rendered}</Title>
+          <CategoryContainer>
+            <CreationDate>{formatDate(post.date_gmt)}</CreationDate>
+            {categories && categories.map(category => Post.renderCategoryPill(category))}
+          </CategoryContainer>
+          {heroUrl ? (
+            <div className={`hero flex items-center post-type-${post.type}`}>
+              <img
+                alt="Featured"
+                className="w-100"
+                src={heroUrl}
+              />
+            </div>
+          ) : ""}
+          <Content
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: post.content.rendered,
+            }}
+          />
+        </Root>
       </Layout>
     );
   }

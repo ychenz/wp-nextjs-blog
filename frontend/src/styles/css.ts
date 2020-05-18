@@ -7,7 +7,8 @@ export const cssColors = {
   colorLightOrange: "#F1B236",
   colorTitle1: "#505050",
   colorWhite: "#FFFFFF",
-  colorGray4: "#3E454C"
+  colorGray4: "#3E454C",
+  colorGray5: "#999999"
 };
 
 export const cssVariables = {
@@ -18,9 +19,13 @@ export const cssVariables = {
   mediumFontWeight: 500,
   xxxLargeFontSize: "40px",
   smallFontSize: "12px",
-  paragraphFontSize: "20px",
 
+  paragraphFontSize: "20px",
   paragraphLineHeight: "36px",
+
+  postContentMaxWidth: "768px",
+  screenMedium: "820px",
+  screenLarge: "970px"
 };
 
 export const WPCategoryColors = [
