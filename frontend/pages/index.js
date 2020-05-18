@@ -51,12 +51,3 @@ class Index extends Component {
 
 export default PageWrapper(Index);
 
-// export async function getServerSideProps() {
-//   const posts = await wp.posts().embed();
-//
-//   return {
-//     props: {
-//       posts
-//     }, // will be passed to the page component as props
-//   };
-// }

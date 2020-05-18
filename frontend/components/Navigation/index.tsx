@@ -56,10 +56,6 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
     this.moveSlider();
   }
 
-  componentDidUpdate(): void {
-    this.moveSlider();
-  }
-
   componentWillUnmount(): void {
     window.removeEventListener("scroll", this.handlePageScrolledBound);
   }
