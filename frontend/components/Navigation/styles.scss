@@ -34,6 +34,7 @@
     font-size: 24px;
     line-height: 28px;
     cursor: pointer;
+    color: $color-black;
   }
 
   &__menu {
@@ -51,6 +52,7 @@
     cursor: pointer;
     margin-right: 64px;
     padding: $ui-unit-normal 0;
+    text-decoration: none;
 
     &:hover {
       color: $color-black;

@@ -110,9 +110,9 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
         <div
           className={`${CLASS_NAME}__container`}
         >
-          <div className={`${CLASS_NAME}__title`}>
+          <div>
             <Link href="/" >
-              <a>Dev Life</a>
+              <a className={`${CLASS_NAME}__title`}>Dev Life</a>
             </Link>
           </div>
 

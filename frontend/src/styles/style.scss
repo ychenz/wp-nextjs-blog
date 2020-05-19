@@ -10,36 +10,9 @@ body {
   background-color: $color-background-gray;
 }
 
-p,
-ul,
-ol {
-  line-height: 1.5rem;
-}
-
-h2 {
-  border-top: 4px solid black;
-  padding-top: 12px;
-}
-
 a {
-  color: $color-black;
   text-decoration: none;
-}
-
-ul {
-  list-style: none;
-  padding-left: 1.5rem;
-}
-
-li:before {
-  content: "\25C6";
-  padding-right: 0.5rem;
-  float: left;
-  margin-left: -1.5rem;
-}
-
-li {
-  padding: 1rem 0;
+  color: $color-modern-blue;
 }
 
 .content {
@@ -69,13 +42,6 @@ li {
 
 .brand {
   height: 4rem;
-}
-
-.links {
-  a {
-    white-space: nowrap;
-    margin-left: 24px;
-  }
 }
 
 .round-btn {
@@ -251,26 +217,4 @@ li {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.graphql {
-  .color-logo {
-    svg path {
-      fill: #EE185D;
-    }
-  }
-
-  .api-toggle {
-    .rest {
-      background-color: #A6A6A6;
-
-      &:hover {
-        background-color: white;
-      }
-    }
-
-    .graphql {
-      background-color: white;
-    }
-  }
 }

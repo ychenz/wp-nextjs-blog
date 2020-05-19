@@ -7,8 +7,11 @@ export const cssColors = {
   colorLightOrange: "#F1B236",
   colorTitle1: "#505050",
   colorWhite: "#FFFFFF",
+  colorGray3: "#E5E5E5",
   colorGray4: "#3E454C",
-  colorGray5: "#999999"
+  colorGray5: "#999999",
+  colorBlack: "#111111",
+  colorGreen: "#00FF00"
 };
 
 export const cssVariables = {
@@ -18,10 +21,14 @@ export const cssVariables = {
   heavyFontWeight: 600,
   mediumFontWeight: 500,
   xxxLargeFontSize: "40px",
+  xxLargeFontSize: "24px",
+  xLargeFontSize: "18px",
+  largeFontSize: "16px",
+  mediumFontSize: "14px",
   smallFontSize: "12px",
 
   paragraphFontSize: "20px",
-  paragraphLineHeight: "36px",
+  paragraphLineHeight: "32px",
 
   postContentMaxWidth: "768px",
   screenMedium: "820px",

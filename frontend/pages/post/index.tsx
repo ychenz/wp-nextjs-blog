@@ -9,6 +9,7 @@ import PageWrapper from "components/PageWrapper";
 import {
   Root,
   Title,
+  FeaturedImage,
   CreationDate,
   CategoryLink,
   CategoryContainer,
@@ -67,7 +68,7 @@ class Post extends PureComponent<PostProps> {
       return <Error statusCode={404} />;
     }
 
-    const heroUrl = getFeaturedImageUrl(post);
+    const featuredImageUrl = getFeaturedImageUrl(post);
     const categories = getCategories(post);
 
     return (
@@ -78,14 +79,13 @@ class Post extends PureComponent<PostProps> {
             <CreationDate>{formatDate(post.date_gmt)}</CreationDate>
             {categories && categories.map(category => Post.renderCategoryPill(category))}
           </CategoryContainer>
-          {heroUrl ? (
-            <div className={`hero flex items-center post-type-${post.type}`}>
+          {featuredImageUrl ? (
+            <FeaturedImage>
               <img
                 alt="Featured"
-                className="w-100"
-                src={heroUrl}
+                src={featuredImageUrl}
               />
-            </div>
+            </FeaturedImage>
           ) : ""}
           <Content
             // eslint-disable-next-line react/no-danger

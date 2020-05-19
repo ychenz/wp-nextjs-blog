@@ -13,7 +13,17 @@ export const Title = styled.div`
   font-weight: ${cssVariables.mediumFontWeight};
   font-size: ${cssVariables.xxxLargeFontSize};
   line-height: 48px;
-  color: ${cssColors.colorTitle1};
+  color: ${cssColors.colorGray4};
+`;
+
+export const FeaturedImage = styled.figure`
+  margin: 24px 0 32px;
+
+  & > img {
+    max-width:100%;
+    height:auto;
+    max-height: 750px;
+  }
 `;
 
 export const CategoryContainer = styled.div`
@@ -50,13 +60,86 @@ export const CategoryLink = styled.a<{ categoryId: number }>`
 `;
 
 export const Content = styled.div`
-  & > p {
-    font-family: Nunito, sans-serif;
+  padding: 0 ${cssVariables.uiUnit};
+  font-family: Nunito, sans-serif;
+
+  & p {
     font-size: ${cssVariables.paragraphFontSize};
     line-height: ${cssVariables.paragraphLineHeight};
     color: ${cssColors.colorGray4};
-    margin-bottom: 40px;
-    padding: 0 ${cssVariables.uiUnit};
+    margin-bottom: 32px;
     text-align: justify;
+  }
+  
+  & > h2 {
+    margin: 8px 0;
+    font-family: Saira, sans-serif;
+    font-weight: ${cssVariables.heavyFontWeight};
+    font-size: ${cssVariables.xxLargeFontSize};
+    line-height: ${cssVariables.paragraphLineHeight};
+    color: ${cssColors.colorBlack};
+  }
+  
+  & > h3 {
+    margin: 8px 0;
+    font-family: Saira, sans-serif;
+    font-weight: ${cssVariables.heavyFontWeight};
+    font-size: ${cssVariables.paragraphFontSize};
+    line-height: ${cssVariables.paragraphLineHeight};
+    color: ${cssColors.colorBlack};
+  }
+  
+  & a {
+    color: ${cssColors.colorModernBlue};
+    text-decoration: underline;
+    
+    &:hover {
+      color: ${cssColors.colorUiPrimary};
+    }
+  }
+  
+  & ul {
+    list-style: square;
+    margin-bottom: 32px
+  }
+  
+  & ol {
+     margin-bottom: 32px;
+  }
+  
+  & li {
+    font-size: ${cssVariables.paragraphFontSize};
+    line-height: ${cssVariables.paragraphLineHeight};
+    color: ${cssColors.colorGray4};
+    text-align: justify;
+    margin-bottom: 24px;
+  }
+  
+  & .wp-block-code {
+    padding: 16px;
+    background-color: ${cssColors.colorGray3};
+    font-size: ${cssVariables.largeFontSize};
+    line-height: 20px;
+    color: ${cssColors.colorGray4};
+    margin-bottom: 32px;
+  }
+  
+  & figure {
+    margin: 16px 0 32px;
+
+    & > img {
+      max-width:100%;
+      height:auto;
+    }
+
+    & > figcaption {
+      margin-top: ${cssVariables.uiUnit};
+      font-family: Saira, sans-serif;
+      text-align: center;
+      color: ${cssColors.colorGray5};
+      font-size: ${cssVariables.mediumFontSize};
+      line-height: 16px;
+      font-weight: 400;
+    }
   }
 `;
