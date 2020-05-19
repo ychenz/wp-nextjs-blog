@@ -21,6 +21,7 @@ export const Title = styled.div`
   line-height: 48px;
   color: ${cssColors.colorGray4};
   animation: ${animFadeIn} 0.2s;
+  padding: 0 ${cssVariables.uiUnit};
 `;
 
 export const CategoryContainer = styled.div`
@@ -28,6 +29,7 @@ export const CategoryContainer = styled.div`
   display: flex;
   align-items: center;
   animation: ${animFadeIn} 0.5s;
+  padding: 0 ${cssVariables.uiUnit};
 `;
 
 export const FeaturedImage = styled.figure`
@@ -69,7 +71,7 @@ export const CategoryLink = styled.a<{ categoryId: number }>`
 `;
 
 export const Content = styled.div`
-  animation: ${animFadeIn} 1.5s;
+  animation: ${animFadeIn} 1s;
   padding: 0 ${cssVariables.uiUnit};
   font-family: Nunito, sans-serif;
 
@@ -132,10 +134,11 @@ export const Content = styled.div`
     line-height: 20px;
     color: ${cssColors.colorGray4};
     margin-bottom: 32px;
+    overflow-x: auto;
   }
   
   & figure {
-    margin: 16px 0 32px;
+    margin: 16px -${cssVariables.uiUnit} 32px; // The image should fill horizontally on small screen
 
     & > img {
       max-width:100%;
