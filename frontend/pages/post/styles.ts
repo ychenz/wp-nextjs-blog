@@ -1,6 +1,12 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
 import { getWPCategoryColor } from "services/string";
+
+const animFadeIn = keyframes`
+  from { opacity: 0; }
+
+  to { opacity: 1; }
+`;
 
 export const Root = styled.div`
   max-width: ${cssVariables.postContentMaxWidth};
@@ -14,22 +20,25 @@ export const Title = styled.div`
   font-size: ${cssVariables.xxxLargeFontSize};
   line-height: 48px;
   color: ${cssColors.colorGray4};
-`;
-
-export const FeaturedImage = styled.figure`
-  margin: 24px 0 32px;
-
-  & > img {
-    max-width:100%;
-    height:auto;
-    max-height: 750px;
-  }
+  animation: ${animFadeIn} 0.2s;
 `;
 
 export const CategoryContainer = styled.div`
   margin: ${cssVariables.uiUnit} 0 40px 0;
   display: flex;
   align-items: center;
+  animation: ${animFadeIn} 0.5s;
+`;
+
+export const FeaturedImage = styled.figure`
+  margin: 24px 0 32px;
+  animation: ${animFadeIn} 0.5s;
+
+  & > img {
+    max-width:100%;
+    height:auto;
+    max-height: 750px;
+  }
 `;
 
 export const CreationDate = styled.div`
@@ -60,6 +69,7 @@ export const CategoryLink = styled.a<{ categoryId: number }>`
 `;
 
 export const Content = styled.div`
+  animation: ${animFadeIn} 1.5s;
   padding: 0 ${cssVariables.uiUnit};
   font-family: Nunito, sans-serif;
 

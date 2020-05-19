@@ -83,7 +83,10 @@
     "react/react-in-jsx-scope": "off",
 
     // wordpress use underscore for some of its fields
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+
+    // Allowing <a> without href, <Link> from nextjs handle this
+    "jsx-a11y/anchor-is-valid": "off"
   },
   "overrides": [
     {
