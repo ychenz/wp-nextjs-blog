@@ -8,10 +8,6 @@ import PostCardView from "../components/PostCardView";
 const transition = transitions.scaleDown;
 
 class Index extends Component {
-  state = {
-    id: "",
-  };
-
   static async getInitialProps() {
     const posts = await wp.posts().embed();
 
@@ -20,7 +16,6 @@ class Index extends Component {
 
   render() {
     const { posts } = this.props;
-    console.log(posts[0]);
 
     return (
       <Layout>

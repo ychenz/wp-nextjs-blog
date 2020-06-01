@@ -3,6 +3,8 @@ import classNames from "classnames";
 import { withRouter, NextRouter } from "next/router";
 import React, { PureComponent, ReactElement } from "react";
 import { WPRequest } from "wpapi";
+import Modal from "components/Modal";
+import { BLOG_NAME } from "../../constants";
 import "./styles.scss";
 
 const CLASS_NAME = "Navigation";
@@ -15,6 +17,7 @@ interface NavigationProps {
 interface NavigationStates {
   previousScrollPosition: number;
   shouldHide: boolean;
+  modalHidden: boolean;
 }
 
 const getSlug = url => {
@@ -33,6 +36,7 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
     this.state = {
       previousScrollPosition: 0,
       shouldHide: false,
+      modalHidden: true
     };
   }
 
@@ -99,73 +103,89 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
     });
   }
 
+  toggleSubscribeModal = (): void => {
+    const { modalHidden } = this.state;
+
+    this.setState({
+      modalHidden: !modalHidden
+    });
+  }
+
   render(): ReactElement {
     const { router, menu } = this.props;
-    const { shouldHide } = this.state;
+    const { shouldHide, modalHidden } = this.state;
 
     return (
-      <div className={classNames(CLASS_NAME, {
-        [`${CLASS_NAME}--hidden`]: shouldHide
-      })}>
-        <div
-          className={`${CLASS_NAME}__container`}
-        >
-          <div>
-            <Link href="/" >
-              <a className={`${CLASS_NAME}__title`}>Dev Life</a>
-            </Link>
-          </div>
+      <>
+        <div className={classNames(CLASS_NAME, {
+          [`${CLASS_NAME}--hidden`]: shouldHide
+        })}>
+          <div
+            className={`${CLASS_NAME}__container`}
+          >
+            <div>
+              <Link href="/" >
+                <a className={`${CLASS_NAME}__title`}>{BLOG_NAME}</a>
+              </Link>
+            </div>
 
-          <div className={`${CLASS_NAME}__menu`} ref={this.menuRef}>
-            <Link
-              href="/"
-            >
-              <a className={classNames(`${CLASS_NAME}__menu-entry`, {
-                [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/"
-              })}>
-                Blog
-              </a>
-            </Link>
-            {menu.items.map(item => {
-              if (item.object === "custom") {
-                return null;
-              }
+            <div className={`${CLASS_NAME}__menu`} ref={this.menuRef}>
+              <Link
+                href="/"
+              >
+                <a className={classNames(`${CLASS_NAME}__menu-entry`, {
+                  [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/"
+                })}>
+                  Blog
+                </a>
+              </Link>
+              {menu.items.map(item => {
+                if (item.object === "custom") {
+                  return null;
+                }
 
-              const slug = getSlug(item.url);
-              const actualPage = item.object === "category" ? "category" : "post";
-              const urlPathname = `/${item.object}/${slug}`;
+                const slug = getSlug(item.url);
+                const actualPage = item.object === "category" ? "category" : "post";
+                const urlPathname = `/${item.object}/${slug}`;
 
-              return (
-                <Link
-                  as={urlPathname}
-                  href={`/${actualPage}?slug=${slug}&apiRoute=${item.object}`}
-                  key={item.ID}
-                >
-                  <a className={classNames(`${CLASS_NAME}__menu-entry`, {
-                    [`${CLASS_NAME}__menu-entry--active`]: router.pathname === `/${item.object}`
-                  })}>
-                    {item.title}
-                  </a>
-                </Link>
-              );
-            })}
-            <Link
-              href="/portfolio"
-            >
-              <a className={classNames(`${CLASS_NAME}__menu-entry`, {
-                [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/portfolio"
-              })}>
-                Portfolio
-              </a>
-            </Link>
-            <div className={`${CLASS_NAME}__menu-button`}>Subscribe</div>
-            <div
-              className={`${CLASS_NAME}__menu-slider`}
-              ref={this.sliderRef}
-            />
+                return (
+                  <Link
+                    as={urlPathname}
+                    href={`/${actualPage}?slug=${slug}&apiRoute=${item.object}`}
+                    key={item.ID}
+                  >
+                    <a className={classNames(`${CLASS_NAME}__menu-entry`, {
+                      [`${CLASS_NAME}__menu-entry--active`]: router.pathname === `/${item.object}`
+                    })}>
+                      {item.title}
+                    </a>
+                  </Link>
+                );
+              })}
+              <Link
+                href="/portfolio"
+              >
+                <a className={classNames(`${CLASS_NAME}__menu-entry`, {
+                  [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/portfolio"
+                })}>
+                  Portfolio
+                </a>
+              </Link>
+              <div
+                className={`${CLASS_NAME}__menu-button`}
+                onClick={this.toggleSubscribeModal}
+              >
+                Subscribe
+              </div>
+              <div
+                className={`${CLASS_NAME}__menu-slider`}
+                ref={this.sliderRef}
+              />
+            </div>
           </div>
         </div>
-      </div>
+        <Modal hidden={modalHidden} onToggle={this.toggleSubscribeModal} />
+      </>
     );
   }
 }

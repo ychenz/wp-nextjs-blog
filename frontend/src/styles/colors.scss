@@ -5,13 +5,12 @@ $color-gray-2: #999999;
 $color-gray-3: #E5E5E5;
 $color-gray-4: #3E454C;
 
-$color-title-1: #505050;
-
 $color-light-gray: #BBBBBB;
 $color-white: #FFFFFF;
 
 $color-background-gray: #FAFAFA;
 
+$color-bg-primary: #505050;
 $color-ui-primary: #A161BF;
 $color-modern-blue: #1DA7DA;
 $color-soft-green: #52D58B;
@@ -21,3 +20,5 @@ $color-light-orange: #F1B236;
 
 $color-pink: #EE185D;
 $color-light-grey: #A6A6A6;
+$color-title-1: $color-bg-primary;
+

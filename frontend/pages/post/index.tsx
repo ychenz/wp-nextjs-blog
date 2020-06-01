@@ -1,17 +1,16 @@
 import React, { PureComponent, ReactElement } from "react";
-import Link from "next/link";
 import Error from "next/error";
 import wp from "services/WPAPIConfig";
-import { WPPost, getFeaturedImageUrl, getCategories, WPCategory } from "services/dataModels";
+import { WPPost, getFeaturedImageUrl, getCategories } from "services/dataModels";
 import { formatDate } from "services/string";
 import Layout from "components/Layout";
 import PageWrapper from "components/PageWrapper";
+import CategoryPill from "components/CategoryPill/CategoryPill";
 import {
   Root,
   Title,
   FeaturedImage,
   CreationDate,
-  CategoryLink,
   CategoryContainer,
   Content
 } from "./styles";
@@ -20,7 +19,7 @@ interface PostProps {
   post: WPPost;
 }
 
-class Post extends PureComponent<PostProps> {
+class PostPage extends PureComponent<PostProps> {
   static async getInitialProps(context): Promise<{post:WPPost}> {
     const { slug, apiRoute } = context.query;
 
@@ -47,20 +46,6 @@ class Post extends PureComponent<PostProps> {
     return { post };
   }
 
-  static renderCategoryPill(category: Partial<WPCategory>): ReactElement {
-    const urlPathname = `/category/${category.slug}`;
-
-    return (
-      <Link
-        as={urlPathname}
-        href={`/category?slug=${category.slug}&apiRoute=category`}
-        key={category.id}
-      >
-        <CategoryLink categoryId={category.id}>{category.name}</CategoryLink>
-      </Link>
-    );
-  }
-
   render(): ReactElement {
     const { post } = this.props;
 
@@ -77,7 +62,7 @@ class Post extends PureComponent<PostProps> {
           <Title>{post.title.rendered}</Title>
           <CategoryContainer>
             <CreationDate>{formatDate(post.date_gmt)}</CreationDate>
-            {categories && categories.map(category => Post.renderCategoryPill(category))}
+            {categories && categories.map(category => <CategoryPill category={category} />)}
           </CategoryContainer>
           {featuredImageUrl ? (
             <FeaturedImage>
@@ -99,4 +84,4 @@ class Post extends PureComponent<PostProps> {
   }
 }
 
-export default PageWrapper(Post);
+export default PageWrapper(PostPage);

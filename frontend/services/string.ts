@@ -22,7 +22,7 @@ export function pluralize(number: number, string: string): string {
  * @returns {String} e.g: "Sep 2nd 2007"
  */
 export function formatDate(gmtDatetime: string): string {
-  return moment.tz(gmtDatetime).local().format("MMM Do YYYY").toString();
+  return moment.utc(gmtDatetime).local().format("MMM Do YYYY").toString();
 }
 
 export function getWPCategoryColor(categoryId: number): string {

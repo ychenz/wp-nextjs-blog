@@ -5,6 +5,7 @@ export const cssColors = {
   colorDarkSoftGreen: "#4DD488",
   colorWarmOrange: "#F06E10",
   colorLightOrange: "#F1B236",
+  colorBgPrimary: "#505050",
   colorTitle1: "#505050",
   colorWhite: "#FFFFFF",
   colorGray3: "#E5E5E5",
@@ -32,7 +33,9 @@ export const cssVariables = {
 
   postContentMaxWidth: "768px",
   screenMedium: "820px",
-  screenLarge: "970px"
+  screenLarge: "970px",
+
+  titleFontFamily: "Saira, sans-serif"
 };
 
 export const WPCategoryColors = [

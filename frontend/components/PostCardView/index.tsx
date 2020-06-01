@@ -14,7 +14,6 @@ class PostCardView extends PureComponent<PostCardViewProps> {
   render(): ReactElement {
     const { post } = this.props;
     const category = getCategories(post);
-    console.log(category);
 
     return (
       <div className={CLASS_NAME}>

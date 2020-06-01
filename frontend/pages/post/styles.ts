@@ -51,25 +51,6 @@ export const CreationDate = styled.div`
   margin-right: ${cssVariables.uiUnitDouble};
 `;
 
-export const CategoryLink = styled.a<{ categoryId: number }>`
-  color: ${({ categoryId }) => getWPCategoryColor(categoryId)};
-  border: 1px solid ${({ categoryId }) => getWPCategoryColor(categoryId)};
-  border-radius: 4px;
-  font-family: Sunflower, sans-serif;
-  font-weight: ${cssVariables.mediumFontWeight};
-  font-size: ${cssVariables.smallFontSize};
-  line-height: 20px;
-  cursor: pointer;
-  padding: 0 ${cssVariables.uiUnit};
-  margin-right: ${cssVariables.uiUnit};
-  transition: .3s ease;
-  
-  &:hover {
-    background-color: ${({ categoryId }) => getWPCategoryColor(categoryId)};
-    color: ${cssColors.colorWhite};
-  }
-`;
-
 export const Content = styled.div`
   animation: ${animFadeIn} 1s;
   padding: 0 ${cssVariables.uiUnit};

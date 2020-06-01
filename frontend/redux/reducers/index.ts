@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import resourceReducer from "./resources";
+import subscribeReducer from "./subscribe";
 
 // COMBINED REDUCERS
 const rootReducer = combineReducers({
-  resources: resourceReducer
+  subscribe: subscribeReducer
 });
 
 export default rootReducer;
