@@ -18,7 +18,7 @@ function Portfolio(): ReactElement {
         <ParticleBackground>
           <Particles params={particles as IParticlesParams} />
         </ParticleBackground>
-        <div>My portfolio Page</div>
+        <div><b>Welcome</b> {" "} This will be ready soon!</div>
       </div>
     </>
   );

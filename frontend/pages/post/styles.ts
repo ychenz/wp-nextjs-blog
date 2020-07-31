@@ -63,18 +63,9 @@ export const Content = styled.div`
     margin-bottom: 32px;
     text-align: justify;
   }
-  
-  & > h2 {
-    margin: 8px 0;
-    font-family: Saira, sans-serif;
-    font-weight: ${cssVariables.heavyFontWeight};
-    font-size: ${cssVariables.xxLargeFontSize};
-    line-height: ${cssVariables.paragraphLineHeight};
-    color: ${cssColors.colorBlack};
-  }
-  
-  & > h3 {
-    margin: 8px 0;
+
+  & > h3, h2 {
+    margin: 48px 0 24px;
     font-family: Saira, sans-serif;
     font-weight: ${cssVariables.heavyFontWeight};
     font-size: ${cssVariables.paragraphFontSize};

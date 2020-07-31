@@ -1,1 +1,1 @@
-export const BLOG_NAME = "ZYC Blog";
+export const BLOG_NAME = "WDev";

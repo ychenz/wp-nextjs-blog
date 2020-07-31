@@ -1,3 +1,7 @@
+[![Build status](https://travis-ci.org/postlight/headless-wp-starter.svg)](https://travis-ci.org/postlight/headless-wp-starter)
+
+wdev.life Blog
+
 This Repository is created with Postlight's Headless WordPress + React Starter Kit
 
 Here is the [link to the original Repo](https://github.com/postlight/headless-wp-starter)
@@ -5,8 +9,6 @@ Here is the [link to the original Repo](https://github.com/postlight/headless-wp
 The following is the official README
 
 ![WordPress + React Starter Kit](frontend/static/images/wordpress-plus-react-header.png)
-
-[![Build status](https://travis-ci.org/postlight/headless-wp-starter.svg)](https://travis-ci.org/postlight/headless-wp-starter)
 
 [Postlight](https://postlight.com)'s Headless WordPress + React Starter Kit is an automated toolset that will spin up three things:
 

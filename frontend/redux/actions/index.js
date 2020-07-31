@@ -1,4 +1,4 @@
-import { RSAA } from "redux-api-middleware";
+import { createAction } from "redux-api-middleware";
 
 export function setState(name, value) {
   return {
@@ -14,6 +14,7 @@ export function setState(name, value) {
  * @param {Object} options.payload
  */
 export function makeApiRequest(options) {
+  console.log("make api request");
   const {
     method,
     endpoint,
@@ -21,21 +22,18 @@ export function makeApiRequest(options) {
   } = options;
 
   return (request, success, failure) => {
-    return {
-      [RSAA]: {
-        endpoint,
-        method,
-        headers: {
-          "Content-Type": "application/json"
-        },
-        ...payload && { body: JSON.stringify(payload) },
-        types: [
-          request,
-          success,
-          failure
-        ]
-      }
-    };
+    return createAction({
+      endpoint,
+      method,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      ...payload && { body: JSON.stringify(payload) },
+      types: [
+        request,
+        success,
+        failure
+      ]
+    });
   };
 }
-

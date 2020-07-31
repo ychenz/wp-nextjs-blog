@@ -2,15 +2,18 @@ import Immutable from "immutable";
 
 interface SubscribeStateAttributes {
   request: {
+    loading: boolean;
     status?: number;
   };
   response: unknown;
 }
 
-const initialSubscribeState = Immutable.Record<SubscribeStateAttributes>({
-  request: null,
+const initialSubscribeState = {
+  request: {
+    loading: false
+  },
   response: null
-});
+};
 
 function subscribeReducer(state = initialSubscribeState, action): typeof initialSubscribeState {
   switch (action.type) {

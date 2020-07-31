@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { withRouter, NextRouter } from "next/router";
 import React, { PureComponent, ReactElement } from "react";
 import { WPRequest } from "wpapi";
-import Modal from "components/Modal";
+import Modal from "./Modal";
 import { BLOG_NAME } from "../../constants";
 import "./styles.scss";
 
@@ -64,14 +64,11 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
     window.removeEventListener("scroll", this.handlePageScrolledBound);
   }
 
-  handlePageScrolled(): void {
-    const currentScrollPosition = window.pageYOffset;
-    const { previousScrollPosition } = this.state;
-    const shouldHide = previousScrollPosition <= currentScrollPosition;
+  toggleSubscribeModal = (): void => {
+    const { modalHidden } = this.state;
 
     this.setState({
-      previousScrollPosition: currentScrollPosition,
-      shouldHide
+      modalHidden: !modalHidden
     });
   }
 
@@ -103,11 +100,14 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
     });
   }
 
-  toggleSubscribeModal = (): void => {
-    const { modalHidden } = this.state;
+  handlePageScrolled(): void {
+    const currentScrollPosition = window.pageYOffset;
+    const { previousScrollPosition } = this.state;
+    const shouldHide = previousScrollPosition <= currentScrollPosition;
 
     this.setState({
-      modalHidden: !modalHidden
+      previousScrollPosition: currentScrollPosition,
+      shouldHide
     });
   }
 
@@ -171,12 +171,14 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
                   Portfolio
                 </a>
               </Link>
-              <div
+
+              <button
+                type="button"
                 className={`${CLASS_NAME}__menu-button`}
                 onClick={this.toggleSubscribeModal}
               >
                 Subscribe
-              </div>
+              </button>
               <div
                 className={`${CLASS_NAME}__menu-slider`}
                 ref={this.sliderRef}
