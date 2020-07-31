@@ -3,6 +3,7 @@ export const cssColors = {
   colorModernBlue: "#1DA7DA",
   colorSoftGreen: "#52D58B",
   colorDarkSoftGreen: "#4DD488",
+  colorBloodRed: "#EE443A",
   colorWarmOrange: "#F06E10",
   colorLightOrange: "#F1B236",
   colorBgPrimary: "#505050",
@@ -11,7 +12,7 @@ export const cssColors = {
   colorGray3: "#E5E5E5",
   colorGray4: "#3E454C",
   colorGray5: "#999999",
-  colorBlack: "#111111",
+  colorBlack: "#1F1F1F",
   colorGreen: "#00FF00",
   colorTransparent: "transparent"
 };
@@ -22,6 +23,7 @@ export const cssVariables = {
   uiUnitDouble: "16px",
   heavyFontWeight: 600,
   mediumFontWeight: 500,
+  pentaLargeFontSize: "48px",
   xxxLargeFontSize: "40px",
   xxLargeFontSize: "24px",
   xLargeFontSize: "18px",

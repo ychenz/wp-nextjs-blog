@@ -1,5 +1,6 @@
 import Head from "next/head";
-import { ReactElement } from "react";
+import Link from "next/link";
+import React, { ReactElement } from "react";
 import Particles, { IParticlesParams } from "react-particles-js";
 import Button from "components/Button";
 import PageWrapper from "components/PageWrapper";
@@ -24,11 +25,15 @@ function Portfolio(): ReactElement {
         <div>
           <Title>Portfolio</Title>
           <ButtonContainer>
-            <Button
-              name="Advanced Charting"
-              onClick={()=>{}}
-              isTransparent={true}
-            />
+            <Link
+              href="/portfolio/charting"
+            >
+              <Button
+                name="Advanced Charting"
+                onClick={()=>{}}
+                isTransparent={true}
+              />
+            </Link>
           </ButtonContainer>
         </div>
       </div>

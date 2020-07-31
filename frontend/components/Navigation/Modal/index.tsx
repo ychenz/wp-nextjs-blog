@@ -1,6 +1,6 @@
 import React, { MouseEvent, ReactElement } from "react";
 import Button from "components/Button";
-import { BLOG_NAME } from "../../constants";
+import { BLOG_NAME } from "../../../constants";
 import {
   Root,
   Container,
