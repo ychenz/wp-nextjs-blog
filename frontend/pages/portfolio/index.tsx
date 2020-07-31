@@ -1,10 +1,13 @@
 import Head from "next/head";
 import { ReactElement } from "react";
 import Particles, { IParticlesParams } from "react-particles-js";
+import Button from "components/Button";
 import PageWrapper from "components/PageWrapper";
 import particles from "./particles.json";
 import {
-  ParticleBackground
+  ParticleBackground,
+  Title,
+  ButtonContainer
 } from "./styles";
 
 function Portfolio(): ReactElement {
@@ -18,7 +21,16 @@ function Portfolio(): ReactElement {
         <ParticleBackground>
           <Particles params={particles as IParticlesParams} />
         </ParticleBackground>
-        <div><b>Welcome</b> {" "} This will be ready soon!</div>
+        <div>
+          <Title>Portfolio</Title>
+          <ButtonContainer>
+            <Button
+              name="Advanced Charting"
+              onClick={()=>{}}
+              isTransparent={true}
+            />
+          </ButtonContainer>
+        </div>
       </div>
     </>
   );

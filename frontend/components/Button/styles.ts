@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
 
-export const Root = styled.button`
+export const Root = styled.button<{ isTransparent: boolean }>`
   border: none;
   background-color: ${cssColors.colorWhite};
+  background-color: ${({ isTransparent }) => isTransparent ? cssColors.colorTransparent : cssColors.colorWhite};
   cursor: pointer;
   font-family: ${cssVariables.titleFontFamily};
   font-weight: ${cssVariables.mediumFontWeight};

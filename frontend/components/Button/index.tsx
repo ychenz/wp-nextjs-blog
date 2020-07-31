@@ -7,16 +7,17 @@ interface ButtonProps {
   name: string;
   isLoading?: boolean;
   isSuccess?: boolean;
+  isTransparent?: boolean;
   onClick(): void;
 }
 
 class Button extends React.PureComponent<ButtonProps> {
 
   render(): ReactElement {
-    const { name, onClick, isLoading, isSuccess } = this.props;
+    const { name, onClick, isLoading, isSuccess, isTransparent } = this.props;
 
     return (
-      <Root onClick={onClick} >
+      <Root isTransparent={isTransparent} onClick={onClick} >
         {isLoading && "LOADING ..." }
         {isSuccess && "SUCCESS!" }
         {!isLoading && !isSuccess && name}

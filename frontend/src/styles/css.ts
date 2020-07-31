@@ -12,7 +12,8 @@ export const cssColors = {
   colorGray4: "#3E454C",
   colorGray5: "#999999",
   colorBlack: "#111111",
-  colorGreen: "#00FF00"
+  colorGreen: "#00FF00",
+  colorTransparent: "transparent"
 };
 
 export const cssVariables = {
