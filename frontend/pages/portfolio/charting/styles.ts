@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
 
 export const Root = styled.div`
-  
 `;
 
 export const HorizontalContainer = styled.div<{ marginTop: number }>`

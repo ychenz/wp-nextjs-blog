@@ -1,5 +1,7 @@
 import { ReactElement } from "react";
+import moment from "moment";
 import PageWrapper from "components/PageWrapper";
+import LineChart, { TimeSeriesData } from "components/LineChart";
 import PieChartIcon from "static/images/PieChart.svg";
 import ExchangeIcon from "static/images/Exchange.svg";
 import ArrowUp from "static/images/ArrowUp.svg";
@@ -14,6 +16,7 @@ import {
   CurrentPriceText,
   PriceChange
 } from "./styles";
+import testData from "./test_data.json";
 
 function Charting(): ReactElement {
   const companyName = "Alphabet Inc Class A";
@@ -23,6 +26,11 @@ function Charting(): ReactElement {
   const currentPrice = 2712.24;
   const priceChange = currentPrice - previousPrice;
   const priceChangePercentage = Math.round((currentPrice - previousPrice) * 1000 / previousPrice) / 10;
+
+  const timeSeriesDataList: TimeSeriesData[] = testData.map(entry => ({
+    timestamp: moment(entry.date, "YYYY-MM-DD HH:mm:ss").valueOf(),
+    value: entry.close
+  }));
 
   return (
     <Root>
@@ -54,6 +62,7 @@ function Charting(): ReactElement {
         <PriceChange isNegative={priceChangePercentage < 0}>{`${priceChangePercentage}%`}</PriceChange>
       </HorizontalContainer>
 
+      <LineChart timeSeriesDataList={timeSeriesDataList}/>
     </Root>
   );
 }

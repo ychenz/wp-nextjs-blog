@@ -12,6 +12,7 @@ export const cssColors = {
   colorGray3: "#E5E5E5",
   colorGray4: "#3E454C",
   colorGray5: "#999999",
+  colorGray6: "#565656",
   colorBlack: "#1F1F1F",
   colorGreen: "#00FF00",
   colorTransparent: "transparent"
