@@ -8,7 +8,10 @@ import {
   YLabelsContainer,
   YLabelsText,
   XLabelContainer,
-  XLabelsText
+  XLabelsText,
+  ColumnsContainer,
+  Column,
+  DataPoint
 } from "./styles";
 
 
@@ -53,7 +56,7 @@ class LineChart extends React.PureComponent<LineChartProps> {
       minLabel = Math.floor(minValue / 10) * 10; // round min down to nearest 10
     }
 
-    const labelDistance = (maxLabel - minLabel) / (Y_LABEL_COUNT - 1)
+    const labelDistance = (maxLabel - minLabel) / (Y_LABEL_COUNT - 1);
 
     // From max (top) to min (down)
     return [...Array(Y_LABEL_COUNT).keys()].map(
@@ -61,16 +64,18 @@ class LineChart extends React.PureComponent<LineChartProps> {
     );
   }
 
+  get isDropping(): boolean {
+    const { timeSeriesDataList } = this.props;
+
+    return timeSeriesDataList[0].value >= timeSeriesDataList[timeSeriesDataList.length - 1].value;
+  }
+
   render(): ReactElement {
     const { timeSeriesDataList } = this.props;
-    console.log(timeSeriesDataList);
 
     if (!timeSeriesDataList) {
       return <div>Loading</div>;
     }
-
-    console.log(this.xLabels);
-    console.log(this.yLabels);
 
     return (
       <Root>
@@ -98,6 +103,17 @@ class LineChart extends React.PureComponent<LineChartProps> {
             </XLabelsText>
           ))}
         </XLabelContainer>
+
+        <ColumnsContainer>
+          {timeSeriesDataList.map(data => (
+            <Column count={timeSeriesDataList.length}>
+              <DataPoint
+                height={data.value - parseInt(this.yLabels[Y_LABEL_COUNT - 1], 10)}
+                isBad={this.isDropping}
+              />
+            </Column>
+          ))}
+        </ColumnsContainer>
       </Root>
     );
   }

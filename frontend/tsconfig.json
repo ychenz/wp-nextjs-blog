@@ -16,6 +16,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "downlevelIteration": true, // Allows something like  [...Array(Y_LABEL_COUNT - 1).keys()].map(...)
     "jsx": "preserve",
     "baseUrl": "./",
     "paths": {

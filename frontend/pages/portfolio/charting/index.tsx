@@ -62,7 +62,7 @@ function Charting(): ReactElement {
         <PriceChange isNegative={priceChangePercentage < 0}>{`${priceChangePercentage}%`}</PriceChange>
       </HorizontalContainer>
 
-      <LineChart timeSeriesDataList={timeSeriesDataList}/>
+      <LineChart timeSeriesDataList={timeSeriesDataList.reverse()}/>
     </Root>
   );
 }

@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
 import { CHART_HEIGHT, Y_LABEL_COUNT, X_LABEL_COUNT } from "./constants";
 
+const Y_LABEL_WIDTH = 40;
 export const Root = styled.div`
   position: relative;
   width: 100%;
   min-width: 800px;
   margin-top: 40px;
-  padding-left: 40px; // leaving space for Y labels
+  padding-left: ${Y_LABEL_WIDTH}px; // leaving space for Y labels
 `;
 
 export const FrameBackground = styled.div`
@@ -57,4 +58,41 @@ export const XLabelsText = styled.div`
   font-size: ${cssVariables.largeFontSize};
   line-height: 25px;
   color: ${cssColors.colorGray6};
+`;
+
+// ColumnsContainer make sure columns are displayed horizontally
+export const ColumnsContainer = styled.div`
+  position: absolute;
+  display: flex;
+  left: ${Y_LABEL_WIDTH}px;
+  top: 0;
+  height: ${CHART_HEIGHT}px;
+  width: calc(100% - ${Y_LABEL_WIDTH}px);
+`;
+
+// columns contain data points. Points lights up if user hover on columns
+export const Column = styled.div<{ count: number }>`
+  position: relative;
+  width: ${({ count }) => `calc(100%/${count})`};
+  cursor: pointer;
+  
+  &:hover {
+    border-right: 1px dashed ${cssColors.colorGray4};
+  }
+`;
+
+export const DataPoint = styled.div<{ height: number, isBad: boolean }>`
+  display: none;
+  position: absolute;
+  right: -6px;
+  bottom: ${({ height }) => height}px;
+  height: 10px;
+  width: 10px;
+  border: 1px solid ${cssColors.colorWhite};
+  border-radius: 50%;
+  background-color: ${({ isBad }) => isBad ? cssColors.colorBloodRed : cssColors.colorDarkSoftGreen};
+  
+  ${Column}:hover & {
+    display: initial;
+  }
 `;
