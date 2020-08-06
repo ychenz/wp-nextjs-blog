@@ -30,13 +30,13 @@ function Charting(): ReactElement {
   const timeSeriesDataList: TimeSeriesData[] = testData.map(entry => ({
     timestamp: moment(entry.date, "YYYY-MM-DD HH:mm:ss").valueOf(),
     value: entry.close
-  }));
+  })).reverse(); // latest data should be at last
 
   return (
     <Root>
       <HorizontalContainer marginTop={48}>
         <IconContainer>
-          <PieChartIcon/>
+          <PieChartIcon />
         </IconContainer>
         <Title>
           Advanced Charting
@@ -62,7 +62,7 @@ function Charting(): ReactElement {
         <PriceChange isNegative={priceChangePercentage < 0}>{`${priceChangePercentage}%`}</PriceChange>
       </HorizontalContainer>
 
-      <LineChart timeSeriesDataList={timeSeriesDataList.reverse()}/>
+      <LineChart timeSeriesDataList={timeSeriesDataList}/>
     </Root>
   );
 }

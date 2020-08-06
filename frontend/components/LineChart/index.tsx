@@ -1,10 +1,12 @@
 import React, { ReactElement } from "react";
 import moment from "moment";
-import { X_LABEL_COUNT, Y_LABEL_COUNT } from "./constants";
+import LineChartGraph from "./LineChartGraph";
+import { X_LABEL_COUNT, Y_LABEL_COUNT, CHART_HEIGHT } from "./constants";
 import {
   Root,
-  FrameBackground,
+  LineChartFrame,
   FrameBackgroundGridLine,
+  LineChartGraphContainer,
   YLabelsContainer,
   YLabelsText,
   XLabelContainer,
@@ -72,10 +74,17 @@ class LineChart extends React.PureComponent<LineChartProps> {
 
   render(): ReactElement {
     const { timeSeriesDataList } = this.props;
+    const { yLabels } = this;
 
     if (!timeSeriesDataList) {
       return <div>Loading</div>;
     }
+
+    // Consider height of the chart is 100%, this calculates a list of percentage of height of each points
+    const percentageHeights = timeSeriesDataList.map(data => (
+      (data.value - parseInt(yLabels[Y_LABEL_COUNT - 1], 10)) /
+      (parseInt(yLabels[0], 10) - parseInt(yLabels[Y_LABEL_COUNT - 1], 10))
+    ));
 
     return (
       <Root>
@@ -87,14 +96,31 @@ class LineChart extends React.PureComponent<LineChartProps> {
           ))}
         </YLabelsContainer>
 
-        <FrameBackground>
-
+        <LineChartFrame>
+          <ColumnsContainer>
+            {timeSeriesDataList.map(data => (
+              <Column count={timeSeriesDataList.length}>
+                <DataPoint
+                  height={
+                    (
+                      (data.value - parseInt(yLabels[Y_LABEL_COUNT - 1], 10)) /
+                      (parseInt(yLabels[0], 10) - parseInt(yLabels[Y_LABEL_COUNT - 1], 10))
+                    ) * CHART_HEIGHT
+                  }
+                  isBad={this.isDropping}
+                />
+              </Column>
+            ))}
+          </ColumnsContainer>
           {  // We do not draw last line to prevent overlapping with the background frame
             [...Array(Y_LABEL_COUNT - 1).keys()].map(i => (
               <FrameBackgroundGridLine key={i} count={i} />
             ))
           }
-        </FrameBackground>
+          <LineChartGraphContainer>
+            <LineChartGraph percentageHeights={percentageHeights} />
+          </LineChartGraphContainer>
+        </LineChartFrame>
 
         <XLabelContainer>
           {[...Array(X_LABEL_COUNT).keys()].map(i => (
@@ -103,17 +129,6 @@ class LineChart extends React.PureComponent<LineChartProps> {
             </XLabelsText>
           ))}
         </XLabelContainer>
-
-        <ColumnsContainer>
-          {timeSeriesDataList.map(data => (
-            <Column count={timeSeriesDataList.length}>
-              <DataPoint
-                height={data.value - parseInt(this.yLabels[Y_LABEL_COUNT - 1], 10)}
-                isBad={this.isDropping}
-              />
-            </Column>
-          ))}
-        </ColumnsContainer>
       </Root>
     );
   }

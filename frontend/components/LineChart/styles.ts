@@ -11,11 +11,22 @@ export const Root = styled.div`
   padding-left: ${Y_LABEL_WIDTH}px; // leaving space for Y labels
 `;
 
-export const FrameBackground = styled.div`
+export const LineChartFrame = styled.div`
   position: relative;
   height: ${CHART_HEIGHT}px;
   border-left: 1px solid ${cssColors.colorBlack};
   border-bottom: 1px solid ${cssColors.colorBlack};
+`;
+
+// ColumnsContainer make sure columns are displayed horizontally
+export const ColumnsContainer = styled.div`
+  position: absolute;
+  display: flex;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
 `;
 
 const firstLineMarginTop = 12;
@@ -26,6 +37,16 @@ export const FrameBackgroundGridLine = styled.div<{ count: number }>`
   left: 0;
   top: calc(${firstLineMarginTop}px + ${({ count }) => count * yLineDistance }px);
   border-top: 1px solid ${cssColors.colorGray5};
+  z-index: 1;
+`;
+
+export const LineChartGraphContainer = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 `;
 
 export const YLabelsContainer = styled.div`
@@ -60,16 +81,6 @@ export const XLabelsText = styled.div`
   color: ${cssColors.colorGray6};
 `;
 
-// ColumnsContainer make sure columns are displayed horizontally
-export const ColumnsContainer = styled.div`
-  position: absolute;
-  display: flex;
-  left: ${Y_LABEL_WIDTH}px;
-  top: 0;
-  height: ${CHART_HEIGHT}px;
-  width: calc(100% - ${Y_LABEL_WIDTH}px);
-`;
-
 // columns contain data points. Points lights up if user hover on columns
 export const Column = styled.div<{ count: number }>`
   position: relative;
@@ -84,8 +95,8 @@ export const Column = styled.div<{ count: number }>`
 export const DataPoint = styled.div<{ height: number, isBad: boolean }>`
   display: none;
   position: absolute;
-  right: -6px;
-  bottom: ${({ height }) => height}px;
+  right: -6px;  // we need -4px to move it to the center, as diameter of the point is 8px
+  bottom: calc(${({ height }) => height}px - 6px);
   height: 10px;
   width: 10px;
   border: 1px solid ${cssColors.colorWhite};

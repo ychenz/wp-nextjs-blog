@@ -1,9 +1,9 @@
 export const cssColors = {
   colorUiPrimary: "#A161BF",
   colorModernBlue: "#1DA7DA",
-  colorSoftGreen: "#52D58B",
+  colorSoftGreen: "#52D58B", // color good
   colorDarkSoftGreen: "#4DD488",
-  colorBloodRed: "#EE443A",
+  colorBloodRed: "#EE443A", // color bad
   colorWarmOrange: "#F06E10",
   colorLightOrange: "#F1B236",
   colorBgPrimary: "#505050",
@@ -15,7 +15,9 @@ export const cssColors = {
   colorGray6: "#565656",
   colorBlack: "#1F1F1F",
   colorGreen: "#00FF00",
-  colorTransparent: "transparent"
+  colorTransparent: "transparent",
+  colorGoodTransparent: "rgba(82, 213, 139, 0.8)",
+  colorBadTransparent: "rgba(238, 68, 58, 0.8)"
 };
 
 export const cssVariables = {
