@@ -41,6 +41,8 @@ export const cssVariables = {
   screenMedium: "820px",
   screenLarge: "970px",
 
+  smallBorderRadius: "4px",
+
   titleFontFamily: "Saira, sans-serif"
 };
 

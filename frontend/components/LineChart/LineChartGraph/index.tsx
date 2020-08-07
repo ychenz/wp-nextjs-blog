@@ -8,11 +8,12 @@ import {
 
 interface LineChartGraphProps {
   percentageHeights: number[];
+  showGradient?: boolean;
 }
 
 class LineChartGraph extends PureComponent<LineChartGraphProps> {
   render(): ReactElement {
-    const { percentageHeights  } =  this.props;
+    const { percentageHeights, showGradient  } =  this.props;
 
     // This draws a polygon mask on top of gradient background using percentage data
     // e.g: clip-path: polygon(5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
@@ -48,10 +49,13 @@ class LineChartGraph extends PureComponent<LineChartGraphProps> {
             vectorEffect="non-scaling-stroke"
           />
         </SvgPolyLine>
-        <ClippedGradient
-          polygonPoints={allMaskPolygonPoints.join(",")}
-          isBad={isDropping}
-        />
+        {showGradient && (
+          <ClippedGradient
+            polygonPoints={allMaskPolygonPoints.join(",")}
+            isBad={isDropping}
+          />
+        )}
+
       </Root>
     );
   }

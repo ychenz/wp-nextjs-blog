@@ -107,3 +107,37 @@ export const DataPoint = styled.div<{ height: number, isBad: boolean }>`
     display: initial;
   }
 `;
+
+export const TooltipContainer = styled.div<{ isInverted: boolean }>`
+  position: fixed; // x, y location value is relative to the browser window, so using fixed
+  background-color: ${cssColors.colorGray4};
+  border-radius: ${cssVariables.smallBorderRadius};
+  padding: ${cssVariables.uiUnit};
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 50ms ease;
+  pointer-events: none;  // NOTE: this is REQUIRED for the transform to work
+  white-space: nowrap;  // Prevent all containing text from wrapping
+  
+  ${({ isInverted }) => isInverted && `
+    transform: translateX(calc(-100% - 24px));
+  `}
+`;
+
+export const TooltipValueText = styled.div`
+  color: ${cssColors.colorWhite};
+  font-family: ${cssVariables.titleFontFamily};
+  font-weight: ${cssVariables.heavyFontWeight};
+  font-size: ${cssVariables.smallFontSize};
+  line-height: 20px;
+`;
+
+export const TooltipDateText = styled.div`
+  margin-left: ${cssVariables.uiUnitDouble};
+  color: ${cssColors.colorWhite};
+  font-family: ${cssVariables.titleFontFamily};
+  font-size: ${cssVariables.smallFontSize};
+  line-height: 20px;
+`;

@@ -13,13 +13,27 @@ import {
   XLabelsText,
   ColumnsContainer,
   Column,
-  DataPoint
+  DataPoint,
+  TooltipContainer,
+  TooltipValueText,
+  TooltipDateText
 } from "./styles";
-
 
 export interface TimeSeriesData {
   timestamp: number;
   value: number;
+}
+
+interface TooltipData {
+  x: number;
+  y?: number;
+  isInverted: boolean;
+  value: number;
+  timestamp: number;
+}
+
+interface LineChartState {
+  tooltipData: TooltipData;
 }
 
 interface LineChartProps {
@@ -27,7 +41,13 @@ interface LineChartProps {
   timeSeriesDataList: TimeSeriesData[]
 }
 
-class LineChart extends React.PureComponent<LineChartProps> {
+class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
+  state: LineChartState = {
+    tooltipData: null
+  }
+
+  handleColumnMouseLeaveBound = this.handleColumnMouseLeave.bind(this);
+  handleColumnMouseMoveBound = this.handleColumnMouseMove.bind(this);
 
   get xLabels(): string[] {
     const { timeSeriesDataList } = this.props;
@@ -72,8 +92,42 @@ class LineChart extends React.PureComponent<LineChartProps> {
     return timeSeriesDataList[0].value >= timeSeriesDataList[timeSeriesDataList.length - 1].value;
   }
 
+  handleColumnMouseEnter(event: React.MouseEvent<HTMLDivElement>, columnData: TimeSeriesData): void {
+    const target = event.target as HTMLDivElement;
+    const targetBoundingClientRect = target.getBoundingClientRect();
+    const x = targetBoundingClientRect.right + 12; // tooltip is shown on the right of the vertical line (right border)
+    const isInverted = x > window.innerWidth - 200; // Display tooltip on the other side of the line if its out of window
+
+    this.setState({
+      tooltipData: {
+        value: columnData.value,
+        timestamp: columnData.timestamp,
+        x,
+        isInverted
+      }
+    })
+  }
+
+  handleColumnMouseMove(event: React.MouseEvent): void {
+    const { clientY } = event;
+
+    this.setState(prevState => ({
+      tooltipData: {
+        ...prevState.tooltipData,
+        y: clientY
+      }
+    }))
+  }
+
+  handleColumnMouseLeave(): void {
+    this.setState({
+      tooltipData: null
+    })
+  }
+
   render(): ReactElement {
     const { timeSeriesDataList } = this.props;
+    const { tooltipData } = this.state;
     const { yLabels } = this;
 
     if (!timeSeriesDataList) {
@@ -99,7 +153,13 @@ class LineChart extends React.PureComponent<LineChartProps> {
         <LineChartFrame>
           <ColumnsContainer>
             {timeSeriesDataList.map(data => (
-              <Column count={timeSeriesDataList.length}>
+              <Column
+                key={data.timestamp}
+                count={timeSeriesDataList.length}
+                onMouseEnter={e => this.handleColumnMouseEnter(e, data)}
+                onMouseMove={this.handleColumnMouseMoveBound}
+                onMouseLeave={this.handleColumnMouseLeaveBound}
+              >
                 <DataPoint
                   height={
                     (
@@ -118,7 +178,10 @@ class LineChart extends React.PureComponent<LineChartProps> {
             ))
           }
           <LineChartGraphContainer>
-            <LineChartGraph percentageHeights={percentageHeights} />
+            <LineChartGraph
+              percentageHeights={percentageHeights}
+              showGradient
+            />
           </LineChartGraphContainer>
         </LineChartFrame>
 
@@ -129,6 +192,16 @@ class LineChart extends React.PureComponent<LineChartProps> {
             </XLabelsText>
           ))}
         </XLabelContainer>
+
+        {tooltipData && (
+          <TooltipContainer
+            style={{ top: tooltipData.y, left: tooltipData.x}}
+            isInverted={tooltipData.isInverted}
+          >
+            <TooltipValueText>{`$${Math.round(tooltipData.value*100)/100}`}</TooltipValueText>
+            <TooltipDateText>{moment(tooltipData.timestamp).format("MMM Do YYYY, H:mm")}</TooltipDateText>
+          </TooltipContainer>
+        )}
       </Root>
     );
   }
