@@ -82,10 +82,15 @@ export const XLabelsText = styled.div`
 `;
 
 // columns contain data points. Points lights up if user hover on columns
-export const Column = styled.div<{ count: number }>`
+export const Column = styled.div<{ count: number, isActive: boolean }>`
   position: relative;
   width: ${({ count }) => `calc(100%/${count})`};
   cursor: pointer;
+  border-right: ${({ isActive }) => isActive ? `1px dashed ${cssColors.colorGray4}` : "none"};
+  
+  &:active {
+    border-right: 1px dashed ${cssColors.colorGray4};
+  }
   
   &:hover {
     border-right: 1px dashed ${cssColors.colorGray4};
@@ -104,6 +109,10 @@ export const DataPoint = styled.div<{ height: number, isBad: boolean }>`
   background-color: ${({ isBad }) => isBad ? cssColors.colorBloodRed : cssColors.colorDarkSoftGreen};
   
   ${Column}:hover & {
+    display: initial;
+  }
+  
+  ${Column}:active & {
     display: initial;
   }
 `;
@@ -140,4 +149,20 @@ export const TooltipDateText = styled.div`
   font-family: ${cssVariables.titleFontFamily};
   font-size: ${cssVariables.smallFontSize};
   line-height: 20px;
+`;
+
+export const TooltipPercentageChange = styled.div<{ isBad: boolean }>`
+  display: flex;
+  align-items: center;
+  margin-right: ${cssVariables.uiUnit};
+  color: ${({ isBad }) => isBad ? cssColors.colorBloodRed : cssColors.colorDarkSoftGreen};
+  font-family: ${cssVariables.titleFontFamily};
+  font-weight: ${cssVariables.mediumFontWeight};
+  font-size: ${cssVariables.smallFontSize};
+  line-height: 20px;
+`
+
+export const TooltipPercentageChangeIcon = styled.div`
+  margin-right: ${cssVariables.uiUnitHalf};
+  height: 20px;
 `;

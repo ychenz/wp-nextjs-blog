@@ -1,6 +1,9 @@
 import React, { ReactElement } from "react";
 import moment from "moment";
+import { round } from "services/mathUtils"
 import LineChartGraph from "./LineChartGraph";
+import ArrowUp from "static/images/ArrowUp.svg";
+import ArrowDown from "static/images/ArrowDown.svg";
 import { X_LABEL_COUNT, Y_LABEL_COUNT, CHART_HEIGHT } from "./constants";
 import {
   Root,
@@ -16,7 +19,9 @@ import {
   DataPoint,
   TooltipContainer,
   TooltipValueText,
-  TooltipDateText
+  TooltipDateText,
+  TooltipPercentageChange,
+  TooltipPercentageChangeIcon
 } from "./styles";
 
 export interface TimeSeriesData {
@@ -32,8 +37,17 @@ interface TooltipData {
   timestamp: number;
 }
 
+interface DragRangeData {
+  mouseIsDown: boolean;
+  activeColumnIndex: number;
+  endColumnIndex?: number;
+  startValue: number;
+  endValue?: number;
+}
+
 interface LineChartState {
   tooltipData: TooltipData;
+  dragRangeData: DragRangeData;
 }
 
 interface LineChartProps {
@@ -43,11 +57,14 @@ interface LineChartProps {
 
 class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
   state: LineChartState = {
-    tooltipData: null
+    tooltipData: null,
+    dragRangeData: null
   }
 
   handleColumnMouseLeaveBound = this.handleColumnMouseLeave.bind(this);
   handleColumnMouseMoveBound = this.handleColumnMouseMove.bind(this);
+  handleColumnMouseDownBound = this.handleColumnMouseDown.bind(this);
+  handleColumnMouseUpBound = this.handleColumnMouseUp.bind(this);
 
   get xLabels(): string[] {
     const { timeSeriesDataList } = this.props;
@@ -92,7 +109,18 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
     return timeSeriesDataList[0].value >= timeSeriesDataList[timeSeriesDataList.length - 1].value;
   }
 
-  handleColumnMouseEnter(event: React.MouseEvent<HTMLDivElement>, columnData: TimeSeriesData): void {
+  handleColumnMouseEnter(event: React.MouseEvent<HTMLDivElement>, columnData: TimeSeriesData, columnIndex: number): void {
+    const { dragRangeData } = this.state;
+
+    let dragRangeDataModified: DragRangeData = null;
+    if (dragRangeData && dragRangeData.mouseIsDown) {
+      dragRangeDataModified = {
+        ...dragRangeData,
+        endValue: columnData.value,
+        endColumnIndex: columnIndex
+      }
+    }
+
     const target = event.target as HTMLDivElement;
     const targetBoundingClientRect = target.getBoundingClientRect();
     const x = targetBoundingClientRect.right + 12; // tooltip is shown on the right of the vertical line (right border)
@@ -104,7 +132,8 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
         timestamp: columnData.timestamp,
         x,
         isInverted
-      }
+      },
+      dragRangeData: dragRangeDataModified
     })
   }
 
@@ -125,9 +154,57 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
     })
   }
 
+  handleColumnMouseDown(columnData: TimeSeriesData, columnIndex: number): void{
+    this.setState({
+      dragRangeData: {
+        mouseIsDown: true,
+        startValue: columnData.value,
+        activeColumnIndex: columnIndex
+      }
+    })
+  }
+
+  handleColumnMouseUp(): void{
+    this.setState({
+      dragRangeData: null
+    })
+  }
+
+  renderXLabels(): ReactElement {
+    return (
+      <XLabelContainer>
+        {[...Array(X_LABEL_COUNT).keys()].map(i => (
+          <XLabelsText key={i}>
+            {this.xLabels[i]}
+          </XLabelsText>
+        ))}
+      </XLabelContainer>
+    )
+  }
+
+  renderYLabels(): ReactElement {
+    return (
+      <YLabelsContainer>
+        {[...Array(Y_LABEL_COUNT).keys()].map(i => (
+          <YLabelsText key={i} count={i}>
+            {this.yLabels[i]}
+          </YLabelsText>
+        ))}
+      </YLabelsContainer>
+    )
+  }
+
+  static isTooltipPriceDropping(dragRangeData: DragRangeData): boolean {
+    if (dragRangeData.activeColumnIndex < dragRangeData.endColumnIndex) {
+      return dragRangeData.endValue <= dragRangeData.startValue;
+    } else {
+      return dragRangeData.endValue > dragRangeData.startValue;
+    }
+  }
+
   render(): ReactElement {
     const { timeSeriesDataList } = this.props;
-    const { tooltipData } = this.state;
+    const { tooltipData, dragRangeData } = this.state;
     const { yLabels } = this;
 
     if (!timeSeriesDataList) {
@@ -142,23 +219,20 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
 
     return (
       <Root>
-        <YLabelsContainer>
-          {[...Array(Y_LABEL_COUNT).keys()].map(i => (
-            <YLabelsText key={i} count={i}>
-              {this.yLabels[i]}
-            </YLabelsText>
-          ))}
-        </YLabelsContainer>
+        {this.renderYLabels()}
 
         <LineChartFrame>
           <ColumnsContainer>
-            {timeSeriesDataList.map(data => (
+            {timeSeriesDataList.map((data, i) => (
               <Column
                 key={data.timestamp}
                 count={timeSeriesDataList.length}
-                onMouseEnter={e => this.handleColumnMouseEnter(e, data)}
+                onMouseEnter={e => this.handleColumnMouseEnter(e, data, i)}
                 onMouseMove={this.handleColumnMouseMoveBound}
                 onMouseLeave={this.handleColumnMouseLeaveBound}
+                onMouseDown={() => this.handleColumnMouseDownBound(data, i)}
+                onMouseUp={this.handleColumnMouseUpBound}
+                isActive={dragRangeData && dragRangeData.activeColumnIndex === i}
               >
                 <DataPoint
                   height={
@@ -185,20 +259,44 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
           </LineChartGraphContainer>
         </LineChartFrame>
 
-        <XLabelContainer>
-          {[...Array(X_LABEL_COUNT).keys()].map(i => (
-            <XLabelsText key={i}>
-              {this.xLabels[i]}
-            </XLabelsText>
-          ))}
-        </XLabelContainer>
+        {this.renderXLabels()}
 
         {tooltipData && (
           <TooltipContainer
             style={{ top: tooltipData.y, left: tooltipData.x}}
             isInverted={tooltipData.isInverted}
           >
-            <TooltipValueText>{`$${Math.round(tooltipData.value*100)/100}`}</TooltipValueText>
+            {dragRangeData && dragRangeData.endValue && (
+              <TooltipPercentageChange isBad={LineChart.isTooltipPriceDropping(dragRangeData)}>
+                <div>
+                  {
+                    dragRangeData.activeColumnIndex <= dragRangeData.endColumnIndex ? (
+                      `${round(dragRangeData.endValue - dragRangeData.startValue, 2)}`
+                    ) : `${round(dragRangeData.startValue - dragRangeData.endValue, 2)}`
+                  }
+                </div>
+                <TooltipPercentageChangeIcon>
+                  {LineChart.isTooltipPriceDropping(dragRangeData) ? (
+                      <ArrowDown width={12} height={12}/>
+                    ) : (
+                      <ArrowUp width={12} height={12}/>
+                    )
+                  }
+                </TooltipPercentageChangeIcon>
+                <div>
+                  {
+                    dragRangeData.activeColumnIndex <= dragRangeData.endColumnIndex ? (
+                      `(${round((
+                        dragRangeData.endValue - dragRangeData.startValue) * 100 /dragRangeData.startValue,2
+                      )}%)`
+                    ) : `(${round((
+                      dragRangeData.startValue - dragRangeData.endValue) * 100 /dragRangeData.endValue,2
+                    )}%)`
+                  }
+                </div>
+              </TooltipPercentageChange>
+            )}
+            <TooltipValueText>{`$${round(tooltipData.value, 2)}`}</TooltipValueText>
             <TooltipDateText>{moment(tooltipData.timestamp).format("MMM Do YYYY, H:mm")}</TooltipDateText>
           </TooltipContainer>
         )}
