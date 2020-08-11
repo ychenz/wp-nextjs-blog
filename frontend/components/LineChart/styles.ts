@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
-import { CHART_HEIGHT, Y_LABEL_COUNT, X_LABEL_COUNT } from "./constants";
+import { CHART_HEIGHT, Y_LABEL_COUNT, X_LABEL_COUNT, MIN_CHART_WIDTH } from "./constants";
 
 const Y_LABEL_WIDTH = 40;
 export const Root = styled.div`
   position: relative;
-  width: 100%;
-  min-width: 800px;
-  margin-top: 40px;
+  width: calc(100% - ${Y_LABEL_WIDTH}px);
   padding-left: ${Y_LABEL_WIDTH}px; // leaving space for Y labels
+  min-width: ${MIN_CHART_WIDTH}px;
+  margin-top: 40px;
 `;
 
 export const LineChartFrame = styled.div`

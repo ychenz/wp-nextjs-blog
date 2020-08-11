@@ -9,7 +9,7 @@ export const cssColors = {
   colorBgPrimary: "#505050",
   colorTitle1: "#505050",
   colorWhite: "#FFFFFF",
-  colorGray3: "#E5E5E5",
+  colorGray3: "#E5E5E5", // hover background
   colorGray4: "#3E454C",
   colorGray5: "#999999",
   colorGray6: "#565656",
@@ -42,6 +42,9 @@ export const cssVariables = {
   screenLarge: "970px",
 
   smallBorderRadius: "4px",
+  mediumBorderRadius: "8px",
+  largeBorderRadius: "10px",
+  xLargeBorderRadius: "12px",
 
   titleFontFamily: "Saira, sans-serif"
 };

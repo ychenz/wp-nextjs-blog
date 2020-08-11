@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
+import { MIN_CHART_WIDTH } from "components/LineChart/constants";
 
 export const Root = styled.div`
 `;
 
 export const HorizontalContainer = styled.div<{ marginTop: number }>`
+  position: relative;
+  min-width: ${MIN_CHART_WIDTH}px;;
   margin-top: ${({ marginTop }) => marginTop || "0"}px;
   display: flex;
   align-items: center;
@@ -65,5 +68,8 @@ export const PriceChange = styled.div<{ isNegative: boolean }>`
   margin-right: ${cssVariables.uiUnit};
 `;
 
-
-
+export const DateRangeSelectorContainer = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+`;

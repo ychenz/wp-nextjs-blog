@@ -22,7 +22,7 @@ import {
   TooltipValueText,
   TooltipDateText,
   TooltipPercentageChange,
-  TooltipPercentageChangeIcon
+  TooltipPercentageChangeIcon,
 } from "./styles";
 
 export interface TimeSeriesData {
@@ -224,7 +224,6 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
         {this.renderYLabels()}
 
         <LineChartFrame>
-
           <ColumnsContainer>
             {timeSeriesDataList.map((data, i) => (
               <Column

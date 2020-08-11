@@ -20,7 +20,7 @@ interface PostProps {
 }
 
 class PostPage extends PureComponent<PostProps> {
-  static async getInitialProps(context): Promise<{post:WPPost}> {
+  static async getInitialProps(context): Promise<{post: WPPost}> {
     const { slug, apiRoute } = context.query;
 
     let apiMethod = wp.posts();
