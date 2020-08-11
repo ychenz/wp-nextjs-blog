@@ -82,7 +82,7 @@ export const XLabelsText = styled.div`
 `;
 
 // columns contain data points. Points lights up if user hover on columns
-export const Column = styled.div<{ count: number, isActive: boolean }>`
+export const Column = styled.div<{ count: number;isActive: boolean }>`
   position: relative;
   width: ${({ count }) => `calc(100%/${count})`};
   cursor: pointer;
@@ -97,7 +97,7 @@ export const Column = styled.div<{ count: number, isActive: boolean }>`
   }
 `;
 
-export const DataPoint = styled.div<{ height: number, isBad: boolean }>`
+export const DataPoint = styled.div<{ height: number;isBad: boolean }>`
   display: none;
   position: absolute;
   right: -6px;  // we need -4px to move it to the center, as diameter of the point is 8px
@@ -160,7 +160,7 @@ export const TooltipPercentageChange = styled.div<{ isBad: boolean }>`
   font-weight: ${cssVariables.mediumFontWeight};
   font-size: ${cssVariables.smallFontSize};
   line-height: 20px;
-`
+`;
 
 export const TooltipPercentageChangeIcon = styled.div`
   margin-right: ${cssVariables.uiUnitHalf};

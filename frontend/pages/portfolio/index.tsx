@@ -30,8 +30,8 @@ function Portfolio(): ReactElement {
             >
               <Button
                 name="Advanced Charting"
-                onClick={()=>{}}
-                isTransparent={true}
+                onClick={() => undefined}
+                isTransparent
               />
             </Link>
           </ButtonContainer>

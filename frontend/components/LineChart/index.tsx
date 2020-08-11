@@ -1,10 +1,11 @@
 import React, { ReactElement } from "react";
 import moment from "moment";
-import { round } from "services/mathUtils"
-import LineChartGraph from "./LineChartGraph";
+import { round } from "services/mathUtils";
 import ArrowUp from "static/images/ArrowUp.svg";
 import ArrowDown from "static/images/ArrowDown.svg";
 import { X_LABEL_COUNT, Y_LABEL_COUNT, CHART_HEIGHT } from "./constants";
+import LineChartGraph from "./LineChartGraph";
+
 import {
   Root,
   LineChartFrame,
@@ -52,10 +53,18 @@ interface LineChartState {
 
 interface LineChartProps {
   isTimeSeries?: boolean;
-  timeSeriesDataList: TimeSeriesData[]
+  timeSeriesDataList: TimeSeriesData[];
 }
 
 class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
+  static isTooltipPriceDropping(dragRangeData: DragRangeData): boolean {
+    if (dragRangeData.activeColumnIndex < dragRangeData.endColumnIndex) {
+      return dragRangeData.endValue <= dragRangeData.startValue;
+    }
+
+    return dragRangeData.endValue > dragRangeData.startValue;
+  }
+
   state: LineChartState = {
     tooltipData: null,
     dragRangeData: null
@@ -113,12 +122,13 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
     const { dragRangeData } = this.state;
 
     let dragRangeDataModified: DragRangeData = null;
+
     if (dragRangeData && dragRangeData.mouseIsDown) {
       dragRangeDataModified = {
         ...dragRangeData,
         endValue: columnData.value,
         endColumnIndex: columnIndex
-      }
+      };
     }
 
     const target = event.target as HTMLDivElement;
@@ -134,7 +144,7 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
         isInverted
       },
       dragRangeData: dragRangeDataModified
-    })
+    });
   }
 
   handleColumnMouseMove(event: React.MouseEvent): void {
@@ -145,13 +155,13 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
         ...prevState.tooltipData,
         y: clientY
       }
-    }))
+    }));
   }
 
   handleColumnMouseLeave(): void {
     this.setState({
       tooltipData: null
-    })
+    });
   }
 
   handleColumnMouseDown(columnData: TimeSeriesData, columnIndex: number): void{
@@ -161,13 +171,13 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
         startValue: columnData.value,
         activeColumnIndex: columnIndex
       }
-    })
+    });
   }
 
   handleColumnMouseUp(): void{
     this.setState({
       dragRangeData: null
-    })
+    });
   }
 
   renderXLabels(): ReactElement {
@@ -179,7 +189,7 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
           </XLabelsText>
         ))}
       </XLabelContainer>
-    )
+    );
   }
 
   renderYLabels(): ReactElement {
@@ -191,15 +201,7 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
           </YLabelsText>
         ))}
       </YLabelsContainer>
-    )
-  }
-
-  static isTooltipPriceDropping(dragRangeData: DragRangeData): boolean {
-    if (dragRangeData.activeColumnIndex < dragRangeData.endColumnIndex) {
-      return dragRangeData.endValue <= dragRangeData.startValue;
-    } else {
-      return dragRangeData.endValue > dragRangeData.startValue;
-    }
+    );
   }
 
   render(): ReactElement {
@@ -222,6 +224,7 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
         {this.renderYLabels()}
 
         <LineChartFrame>
+
           <ColumnsContainer>
             {timeSeriesDataList.map((data, i) => (
               <Column
@@ -263,7 +266,7 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
 
         {tooltipData && (
           <TooltipContainer
-            style={{ top: tooltipData.y, left: tooltipData.x}}
+            style={{ top: tooltipData.y, left: tooltipData.x }}
             isInverted={tooltipData.isInverted}
           >
             {dragRangeData && dragRangeData.endValue && (

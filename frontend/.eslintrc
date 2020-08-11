@@ -1,5 +1,6 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
+  //  "parser": "babel-eslint",
   "plugins": [
     "@typescript-eslint",
     // this ensures Don’t call Hooks inside loops, conditions, or nested functions. Instead, always use Hooks at the
