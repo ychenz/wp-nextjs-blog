@@ -1,9 +1,10 @@
 import React, { PureComponent, ReactElement } from "react";
-import Router, { useRouter } from "next/router";
+import Router from "next/router";
 import moment from "moment";
 import PageWrapper from "components/PageWrapper";
 import LineChart, { TimeSeriesData } from "components/LineChart";
 import DateRangeSelector, { DateRanges } from "components/DateRangeSelector";
+import { fetcher, HttpResponse } from "services/httpRequest";
 import PieChartIcon from "static/images/PieChart.svg";
 import ExchangeIcon from "static/images/Exchange.svg";
 import ArrowUp from "static/images/ArrowUp.svg";
@@ -23,13 +24,34 @@ import testData from "./test_data.json";
 
 const ROUTE_PATH = "/portfolio/charting";
 
+interface FMPStockData {
+  date: string;  // date in format YYYY-MM-DD HH:mm:ss
+  open: number;
+  low: number;
+  high: number;
+  close: number;
+  volume: number;
+}
+
 interface PureComponentPropsFromServer {
   dateRange: DateRanges;
+  stockDataList: FMPStockData[];
 }
 
 class Charting extends PureComponent<PureComponentPropsFromServer> {
-  static async getInitialProps({ query }): Promise<{ dateRange: DateRanges }> {
-    return { dateRange: query.dateRange };
+  static async getInitialProps({ query }): Promise<{ dateRange: DateRanges; stockDataList: FMPStockData[] }> {
+    const res: HttpResponse<FMPStockData[]> = await fetcher({
+      url: "https://financialmodelingprep.com/api/v3/historical-chart/15min/AAPL",
+      method: "GET",
+      queryParams: {
+        apikey: "demo"
+      }
+    });
+
+    return {
+      dateRange: query.dateRange,
+      stockDataList: res.parsedBody
+    };
   }
 
   static onRangeSelected(dateRange: DateRanges): void {
@@ -48,7 +70,9 @@ class Charting extends PureComponent<PureComponentPropsFromServer> {
     const priceChange = currentPrice - previousPrice;
     const priceChangePercentage = Math.round((currentPrice - previousPrice) * 1000 / previousPrice) / 10;
 
-    const timeSeriesDataList: TimeSeriesData[] = testData.map(entry => ({
+    const { stockDataList } = this.props;
+
+    const timeSeriesDataList: TimeSeriesData[] = stockDataList.map(entry => ({
       timestamp: moment(entry.date, "YYYY-MM-DD HH:mm:ss").valueOf(),
       value: entry.close
     })).reverse(); // latest data should be at last
