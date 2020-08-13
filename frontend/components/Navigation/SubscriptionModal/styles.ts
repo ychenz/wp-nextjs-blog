@@ -21,19 +21,10 @@ export const Root = styled.div<{ hidden: boolean }>`
   `};
 `;
 
-export const Container = styled.div<{ hidden: boolean }>`
+export const ModalContainer = styled.div`
   height: 512px;
-  width: 528px;
-  display: initial;  // Required for animation
-  background-color: ${cssColors.colorWhite};
-  opacity: 1;
-  transition: opacity .3s ease;
+  width: 520px;
   padding: 0 ${paddingSides};
-  position: relative;
-  
-  ${({ hidden }) => hidden && `
-     opacity: 0;
-  `};
 `;
 
 export const Title = styled.div`

@@ -1,9 +1,9 @@
-import React, { MouseEvent, ReactElement } from "react";
+import React, { ReactElement } from "react";
 import Button from "components/Button";
+import ModalLayout from "components/ModalLayout";
 import { BLOG_NAME } from "../../../constants";
 import {
-  Root,
-  Container,
+  ModalContainer,
   Title,
   FormInput,
   AcknowledgeText,
@@ -20,20 +20,10 @@ interface ModalState {
   email: string;
 }
 
-class Modal extends React.PureComponent<ModalProps, ModalState> {
+class SubscriptionModal extends React.PureComponent<ModalProps, ModalState> {
   state = {
     name: "",
     email: ""
-  }
-
-  handleClickOutside = (event: MouseEvent): void => {
-    const { onToggle } = this.props;
-
-    event.preventDefault();
-
-    if(event.target === event.currentTarget) {
-      onToggle();
-    }
   }
 
   onNameChange = (e): void => {
@@ -51,16 +41,18 @@ class Modal extends React.PureComponent<ModalProps, ModalState> {
 
   onSubscribe = (): void => {
     const { name, email } = this.state;
-
   }
 
 
   render(): ReactElement {
-    const { hidden } = this.props;
+    const { hidden, onToggle } = this.props;
 
     return (
-      <Root hidden={hidden} onClick={this.handleClickOutside}>
-        <Container hidden={hidden}>
+      <ModalLayout
+        hidden={hidden}
+        onToggle={onToggle}
+      >
+        <ModalContainer>
           <Title><b>Subscribe</b> to receive notification whenever we publish new contents</Title>
           <FormInput maxLength={40} type="text" placeholder="*NAME" onChange={this.onNameChange} />
           <FormInput maxLength={255} type="text" placeholder="*EMAIL" onChange={this.onEmailChange} />
@@ -70,10 +62,10 @@ class Modal extends React.PureComponent<ModalProps, ModalState> {
           <ButtonContainer>
             <Button name="SUBSCRIBE" onClick={this.onSubscribe}/>
           </ButtonContainer>
-        </Container>
-      </Root>
+        </ModalContainer>
+      </ModalLayout>
     );
   }
 }
 
-export default Modal;
+export default SubscriptionModal;

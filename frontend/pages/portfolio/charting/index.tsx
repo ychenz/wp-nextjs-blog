@@ -8,6 +8,7 @@ import { fetcher, HttpResponse } from "services/httpRequest";
 import PieChartIcon from "static/images/PieChart.svg";
 import ExchangeIcon from "static/images/Exchange.svg";
 import ArrowUp from "static/images/ArrowUp.svg";
+import StockSelectionModal from "./StockSelectionModal";
 import {
   Root,
   HorizontalContainer,
@@ -33,12 +34,16 @@ interface FMPStockData {
   volume: number;
 }
 
-interface PureComponentPropsFromServer {
+interface ChartingPropsFromServer {
   dateRange: DateRanges;
   stockDataList: FMPStockData[];
 }
 
-class Charting extends PureComponent<PureComponentPropsFromServer> {
+interface ChartingState {
+  modalHidden: boolean;
+}
+
+class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
   static async getInitialProps({ query }): Promise<{ dateRange: DateRanges; stockDataList: FMPStockData[] }> {
     const res: HttpResponse<FMPStockData[]> = await fetcher({
       url: "https://financialmodelingprep.com/api/v3/historical-chart/15min/AAPL",
@@ -61,6 +66,16 @@ class Charting extends PureComponent<PureComponentPropsFromServer> {
     });
   }
 
+  state = { modalHidden: true }
+
+  handleModalToggle = (): void => {
+    const { modalHidden } = this.state;
+
+    this.setState({
+      modalHidden: !modalHidden
+    });
+  }
+
   render(): ReactElement {
     const companyName = "Alphabet Inc Class A";
     const ticker = "GOOGL";
@@ -71,6 +86,7 @@ class Charting extends PureComponent<PureComponentPropsFromServer> {
     const priceChangePercentage = Math.round((currentPrice - previousPrice) * 1000 / previousPrice) / 10;
 
     const { stockDataList } = this.props;
+    const { modalHidden } = this.state;
 
     const timeSeriesDataList: TimeSeriesData[] = stockDataList.map(entry => ({
       timestamp: moment(entry.date, "YYYY-MM-DD HH:mm:ss").valueOf(),
@@ -92,7 +108,7 @@ class Charting extends PureComponent<PureComponentPropsFromServer> {
 
         <HorizontalContainer marginTop={48}>
           <CompanyNameText>{companyName}</CompanyNameText>
-          <div>
+          <div onClick={this.handleModalToggle}>
             <ExchangeIcon/>
           </div>
         </HorizontalContainer>
@@ -117,6 +133,7 @@ class Charting extends PureComponent<PureComponentPropsFromServer> {
         </HorizontalContainer>
 
         <LineChart timeSeriesDataList={timeSeriesDataList}/>
+        <StockSelectionModal hidden={modalHidden} onToggle={this.handleModalToggle} />
       </Root>
     );
   }

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { withRouter, NextRouter } from "next/router";
 import React, { PureComponent, ReactElement } from "react";
 import { WPRequest } from "wpapi";
-import Modal from "./Modal";
+import SubscriptionModal from "./SubscriptionModal";
 import { BLOG_NAME } from "../../constants";
 import "./styles.scss";
 
@@ -186,7 +186,7 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
             </div>
           </div>
         </div>
-        <Modal hidden={modalHidden} onToggle={this.toggleSubscribeModal} />
+        <SubscriptionModal hidden={modalHidden} onToggle={this.toggleSubscribeModal} />
       </>
     );
   }
