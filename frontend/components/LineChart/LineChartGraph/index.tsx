@@ -18,7 +18,7 @@ class LineChartGraph extends PureComponent<LineChartGraphProps> {
     // This draws a polygon mask on top of gradient background using percentage data
     // e.g: clip-path: polygon(5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
     const maskPolygonPoints = percentageHeights.map((percentageHeight, i) => (
-      // Points order: "percetangeWidth% percentageHeight%", 0% is at top-left corner, so for height we need 1-height
+      // Points order: "percentageWidth% percentageHeight%", 0% is at top-left corner, so for height we need 1-height
       `${(100/percentageHeights.length)*(i+1)}% ${(1-percentageHeight)*100}%`
     ));
 

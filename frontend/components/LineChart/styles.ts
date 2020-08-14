@@ -97,11 +97,10 @@ export const Column = styled.div<{ count: number;isActive: boolean }>`
   }
 `;
 
-export const DataPoint = styled.div<{ height: number;isBad: boolean }>`
+export const DataPoint = styled.div<{ isBad: boolean }>`
   display: none;
   position: absolute;
-  right: -6px;  // we need -4px to move it to the center, as diameter of the point is 8px
-  bottom: calc(${({ height }) => height}px - 6px);
+  right: -6px;  // we need -6px to move the point to the center, as diameter of the point is 12px (10 + 2 border)
   height: 10px;
   width: 10px;
   border: 1px solid ${cssColors.colorWhite};

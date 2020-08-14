@@ -20,14 +20,6 @@ interface DateRangeSelectorProps {
 }
 
 class DateRangeSelector extends React.PureComponent<DateRangeSelectorProps> {
-  componentDidMount(): void {
-    const { dateRange, onRangeSelected } = this.props;
-
-    if (!dateRange) {
-      onRangeSelected(DateRanges.FiveDays); // Default select 5 days range
-    }
-  }
-
   render(): React.ReactElement {
     const { dateRange, onRangeSelected } = this.props;
     const allDateRanges = [
@@ -43,6 +35,7 @@ class DateRangeSelector extends React.PureComponent<DateRangeSelectorProps> {
       <Root>
         {allDateRanges.map(range => (
           <DateRangeButton
+            key={range}
             isActive={range === dateRange}
             onClick={() => onRangeSelected(range)}
           >

@@ -21,7 +21,7 @@ interface TopicsPageProps {
 }
 
 class TopicsPage extends PureComponent<TopicsPageProps> {
-  static async getInitialProps(context): Promise<{ slug: string, categories:WPCategory[], posts?:WPPost[] }>{
+  static async getInitialProps(context): Promise<{ slug: string; categories: WPCategory[]; posts?: WPPost[] }>{
     const { slug } = context.query;
 
     const categories: WPCategory[] = await wp
@@ -50,7 +50,9 @@ class TopicsPage extends PureComponent<TopicsPageProps> {
     return (
       <Layout>
         <CategoryContainer>
-          {categories.map(category => <CategoryPill isActive={category.slug === slug} category={category} />)}
+          {categories.map(category => (
+            <CategoryPill key={category.slug} isActive={category.slug === slug} category={category} />
+          ))}
         </CategoryContainer>
         <StackGrid
           columnWidth={312}

@@ -5,9 +5,11 @@ import PageWrapper from "components/PageWrapper";
 import LineChart, { TimeSeriesData } from "components/LineChart";
 import DateRangeSelector, { DateRanges } from "components/DateRangeSelector";
 import { fetcher, HttpResponse } from "services/httpRequest";
+import { round } from "services/mathUtils";
 import PieChartIcon from "static/images/PieChart.svg";
 import ExchangeIcon from "static/images/Exchange.svg";
 import ArrowUp from "static/images/ArrowUp.svg";
+import ArrowDown from "static/images/ArrowDown.svg";
 import StockSelectionModal from "./StockSelectionModal";
 import {
   Root,
@@ -34,9 +36,31 @@ interface FMPStockData {
   volume: number;
 }
 
+interface FMPCompanyProfileData {
+  symbol: string;  // date in format YYYY-MM-DD HH:mm:ss
+  price: number;
+  companyName: string; // Apple Inc
+  beta: number;
+  volAvg: number;
+  mktCap: string; // "1.37587904E12"
+  lastDiv: number;
+  range: string;
+  changes:  number;
+  changesPercentage: string; // "(+0.23)"
+  exchange: string; // "Nasdaq Global Select"
+  industry: string; // "Computer Hardware"
+  website: string; // "http://www.apple.com"
+  description: string;
+  ceo: string;
+  sector: string; // "Technology"
+  image: string; // "https://financialmodelingprep.com/images-New-jpg/AAPL.jpg"
+}
+
 interface ChartingPropsFromServer {
-  dateRange: DateRanges;
+  dateRange: DateRanges; // dateRange from query params
+  stockSymbol: string; // stock symbol from query params
   stockDataList: FMPStockData[];
+  companyProfile: FMPCompanyProfileData;
 }
 
 interface ChartingState {
@@ -44,29 +68,75 @@ interface ChartingState {
 }
 
 class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
-  static async getInitialProps({ query }): Promise<{ dateRange: DateRanges; stockDataList: FMPStockData[] }> {
-    const res: HttpResponse<FMPStockData[]> = await fetcher({
-      url: "https://financialmodelingprep.com/api/v3/historical-chart/15min/AAPL",
+  static async getInitialProps({ query }): Promise<{
+    dateRange: DateRanges;
+    stockDataList: FMPStockData[];
+    companyProfile: FMPCompanyProfileData;
+    stockSymbol: string;
+  }> {
+    const stockSymbol = query.symbol || "AAPL";
+
+    const stockDataRes: HttpResponse<FMPStockData[]> = await fetcher({
+      url: `https://financialmodelingprep.com/api/v3/historical-chart/30min/${stockSymbol}`,
       method: "GET",
       queryParams: {
-        apikey: "demo"
+        apikey: "68ea4a477785266e41b4ec5478fc6a1d"
+      }
+    });
+
+    const profileRes: HttpResponse<FMPCompanyProfileData[]> = await fetcher({
+      url: `https://financialmodelingprep.com/api/v3/profile/${stockSymbol}`,
+      method: "GET",
+      queryParams: {
+        apikey: "68ea4a477785266e41b4ec5478fc6a1d"
       }
     });
 
     return {
       dateRange: query.dateRange,
-      stockDataList: res.parsedBody
+      stockSymbol: query.symbol,
+      stockDataList: stockDataRes.parsedBody,
+      companyProfile: profileRes.parsedBody[0]
     };
   }
 
-  static onRangeSelected(dateRange: DateRanges): void {
-    Router.push({
-      pathname: ROUTE_PATH,
-      query: { dateRange },
-    });
+  state = { modalHidden: true }
+
+  componentDidMount(): void {
+    const { stockSymbol, dateRange } = this.props;
+
+    let queryParams = {};
+
+    if (!stockSymbol) {
+      queryParams = { symbol: "AAPL" };
+    }
+
+    if (!dateRange) {
+      queryParams = {
+        ...queryParams,
+        dateRange: DateRanges.FiveDays
+      };
+    }
+
+    if (!stockSymbol) {
+      Router.push({
+        pathname: ROUTE_PATH,
+        query: queryParams
+      });
+    }
   }
 
-  state = { modalHidden: true }
+  onRangeSelected = (dateRange: DateRanges): void => {
+    const { stockSymbol } = this.props;
+
+    Router.push({
+      pathname: ROUTE_PATH,
+      query: {
+        dateRange,
+        symbol: stockSymbol
+      },
+    });
+  }
 
   handleModalToggle = (): void => {
     const { modalHidden } = this.state;
@@ -77,16 +147,21 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
   }
 
   render(): ReactElement {
-    const companyName = "Alphabet Inc Class A";
-    const ticker = "GOOGL";
-    const currentDateTime = "Jul. 24, 6:11 p.m. EDT";
-    const previousPrice = 2680.24;
-    const currentPrice = 2712.24;
-    const priceChange = currentPrice - previousPrice;
-    const priceChangePercentage = Math.round((currentPrice - previousPrice) * 1000 / previousPrice) / 10;
-
-    const { stockDataList } = this.props;
+    const { stockDataList, companyProfile } = this.props;
     const { modalHidden } = this.state;
+
+    // todo create loading screen
+    if (!stockDataList || !companyProfile) {
+      return <div>Loading Data ...</div>;
+    }
+
+    const { companyName, symbol, price, changes } = companyProfile;
+
+    const currentDateTime = moment().format("MMM Do");
+    const previousPrice = price - changes;
+    const currentPrice = price;
+    const priceChange = round(currentPrice - previousPrice, 2);
+    const priceChangePercentage =round((currentPrice - previousPrice) * 100 / previousPrice, 2);
 
     const timeSeriesDataList: TimeSeriesData[] = stockDataList.map(entry => ({
       timestamp: moment(entry.date, "YYYY-MM-DD HH:mm:ss").valueOf(),
@@ -113,7 +188,7 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
           </div>
         </HorizontalContainer>
         <HorizontalContainer marginTop={0}>
-          <Ticker>{ticker}</Ticker>
+          <Ticker>{symbol}</Ticker>
           <DateStr>{currentDateTime}</DateStr>
         </HorizontalContainer>
         <HorizontalContainer marginTop={8}>
@@ -121,13 +196,13 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
           <PriceChange isNegative={priceChange < 0}>
             {priceChange > 0 ? `+${priceChange}` : priceChange}
           </PriceChange>
-          <ArrowUp/>
+          {priceChangePercentage < 0 ? <ArrowDown /> : <ArrowUp />}
           <PriceChange isNegative={priceChangePercentage < 0}>{`${priceChangePercentage}%`}</PriceChange>
 
           <DateRangeSelectorContainer>
             <DateRangeSelector
               dateRange={dateRange}
-              onRangeSelected={Charting.onRangeSelected}
+              onRangeSelected={this.onRangeSelected}
             />
           </DateRangeSelectorContainer>
         </HorizontalContainer>

@@ -237,12 +237,13 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
                 isActive={dragRangeData && dragRangeData.activeColumnIndex === i}
               >
                 <DataPoint
-                  height={
-                    (
+                  style={{
+                    // Here we must put dynamic style here to prevent styled component generate too many classes
+                    bottom: (
                       (data.value - parseInt(yLabels[Y_LABEL_COUNT - 1], 10)) /
                       (parseInt(yLabels[0], 10) - parseInt(yLabels[Y_LABEL_COUNT - 1], 10))
-                    ) * CHART_HEIGHT
-                  }
+                    ) * CHART_HEIGHT - 6
+                  }}
                   isBad={this.isDropping}
                 />
               </Column>
