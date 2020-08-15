@@ -26,6 +26,8 @@ import {
 import testData from "./test_data.json";
 
 const ROUTE_PATH = "/portfolio/charting";
+// const FMP_API_KEY = "68ea4a477785266e41b4ec5478fc6a1d";
+const FMP_API_KEY = "demo";
 
 interface FMPStockData {
   date: string;  // date in format YYYY-MM-DD HH:mm:ss
@@ -34,6 +36,14 @@ interface FMPStockData {
   high: number;
   close: number;
   volume: number;
+}
+
+interface FMPStockDataDaily {
+  symbol: string;
+  historical: {
+    date: string; // e.g: "2020-08-14"
+    close: number;
+  }[];
 }
 
 interface FMPCompanyProfileData {
@@ -59,7 +69,7 @@ interface FMPCompanyProfileData {
 interface ChartingPropsFromServer {
   dateRange: DateRanges; // dateRange from query params
   stockSymbol: string; // stock symbol from query params
-  stockDataList: FMPStockData[];
+  stockDataList: TimeSeriesData[];
   companyProfile: FMPCompanyProfileData;
 }
 
@@ -68,34 +78,91 @@ interface ChartingState {
 }
 
 class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
+  static filterStockDataByDateRange(stockDataList: TimeSeriesData[], dateRange: DateRanges): TimeSeriesData[] {
+    const latestTimestamp = stockDataList[0].timestamp;
+    let msToSubtract;
+    const msInADay = 86400000;
+
+    switch (dateRange) {
+      case DateRanges.FiveDays:
+        msToSubtract = 5 * msInADay;
+        break;
+      case DateRanges.OneMonth:
+        msToSubtract = 30 * msInADay;
+        break;
+      case DateRanges.SixMonths:
+        msToSubtract = 180 * msInADay;
+        break;
+      case DateRanges.OneYear:
+        msToSubtract = 365 * msInADay;
+        break;
+      case DateRanges.FiveYears:
+        msToSubtract = 5 * 365 * msInADay;
+        break;
+      case DateRanges.TenYears:
+        msToSubtract = 10 * 365 * msInADay;
+        break;
+      default:
+    }
+
+    return stockDataList.filter(data => data.timestamp > latestTimestamp - msToSubtract);
+  }
+
   static async getInitialProps({ query }): Promise<{
     dateRange: DateRanges;
-    stockDataList: FMPStockData[];
+    stockDataList: TimeSeriesData[];
     companyProfile: FMPCompanyProfileData;
     stockSymbol: string;
   }> {
     const stockSymbol = query.symbol || "AAPL";
+    const dateRange: DateRanges = query.dateRange || DateRanges.FiveDays;
+    let stockDataList: TimeSeriesData[];
 
-    const stockDataRes: HttpResponse<FMPStockData[]> = await fetcher({
-      url: `https://financialmodelingprep.com/api/v3/historical-chart/30min/${stockSymbol}`,
-      method: "GET",
-      queryParams: {
-        apikey: "68ea4a477785266e41b4ec5478fc6a1d"
-      }
-    });
+    // Fetch 30 min interval data for shorter date range: 5D, 1M
+    if (dateRange === DateRanges.FiveDays || dateRange === DateRanges.OneMonth) {
+      const stockDataRes: HttpResponse<FMPStockData[]> = await fetcher<FMPStockData[]>({
+        url: `https://financialmodelingprep.com/api/v3/historical-chart/30min/${stockSymbol}`,
+        method: "GET",
+        queryParams: {
+          apikey: FMP_API_KEY
+        }
+      });
 
-    const profileRes: HttpResponse<FMPCompanyProfileData[]> = await fetcher({
+      stockDataList = stockDataRes.parsedBody.map(entry => ({
+        timestamp: moment(entry.date, "YYYY-MM-DD HH:mm:ss").valueOf(),
+        value: entry.close
+      })); // latest data should be at last
+    } else {
+      // Fetch 1 day interval data for longer date range
+      const stockDataRes: HttpResponse<FMPStockDataDaily> = await fetcher<FMPStockDataDaily>({
+        url: `https://financialmodelingprep.com/api/v3/historical-price-full/${stockSymbol}`,
+        method: "GET",
+        queryParams: {
+          apikey: FMP_API_KEY,
+          serietype: "line"
+        }
+      });
+
+      stockDataList = stockDataRes.parsedBody.historical.map(entry => ({
+        timestamp: moment(entry.date, "YYYY-MM-DD").valueOf(),
+        value: entry.close
+      }));
+    }
+
+    const profileRes: HttpResponse<FMPCompanyProfileData[]> = await fetcher<FMPCompanyProfileData[]>({
       url: `https://financialmodelingprep.com/api/v3/profile/${stockSymbol}`,
       method: "GET",
       queryParams: {
-        apikey: "68ea4a477785266e41b4ec5478fc6a1d"
+        apikey: FMP_API_KEY
       }
     });
+
+    stockDataList = Charting.filterStockDataByDateRange(stockDataList, dateRange).reverse(); // latest data should be at last
 
     return {
       dateRange: query.dateRange,
       stockSymbol: query.symbol,
-      stockDataList: stockDataRes.parsedBody,
+      stockDataList,
       companyProfile: profileRes.parsedBody[0]
     };
   }
@@ -147,7 +214,7 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
   }
 
   render(): ReactElement {
-    const { stockDataList, companyProfile } = this.props;
+    const { dateRange, stockDataList, companyProfile } = this.props;
     const { modalHidden } = this.state;
 
     // todo create loading screen
@@ -162,13 +229,6 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
     const currentPrice = price;
     const priceChange = round(currentPrice - previousPrice, 2);
     const priceChangePercentage =round((currentPrice - previousPrice) * 100 / previousPrice, 2);
-
-    const timeSeriesDataList: TimeSeriesData[] = stockDataList.map(entry => ({
-      timestamp: moment(entry.date, "YYYY-MM-DD HH:mm:ss").valueOf(),
-      value: entry.close
-    })).reverse(); // latest data should be at last
-
-    const { dateRange } = this.props;
 
     return (
       <Root>
@@ -207,7 +267,7 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
           </DateRangeSelectorContainer>
         </HorizontalContainer>
 
-        <LineChart timeSeriesDataList={timeSeriesDataList}/>
+        <LineChart timeSeriesDataList={stockDataList}/>
         <StockSelectionModal hidden={modalHidden} onToggle={this.handleModalToggle} />
       </Root>
     );
