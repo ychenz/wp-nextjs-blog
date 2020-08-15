@@ -23,9 +23,7 @@ class LineChartGraph extends PureComponent<LineChartGraphProps> {
     ));
 
     const isDropping = percentageHeights[0] >= percentageHeights[percentageHeights.length - 1];
-    const cornerPoints = isDropping
-      ? ["100% 0%", `${(100/percentageHeights.length)}% 0%`]  // if dropping, corners on top
-      : ["100% 100%", `${(100/percentageHeights.length)}% 100%`]; // if raising, corners at bottom
+    const cornerPoints = ["100% 100%", `${(100/percentageHeights.length)}% 100%`];
     const allMaskPolygonPoints = maskPolygonPoints.concat(cornerPoints);
 
     let polylinePoints = [];

@@ -16,7 +16,7 @@ export const SvgPolyLine = styled.svg`
   z-index: 2;
 `;
 
-export const ClippedGradient = styled.div<{ polygonPoints: string, isBad: boolean }>`
+export const ClippedGradient = styled.div<{ polygonPoints: string; isBad: boolean }>`
   position: absolute;
   top: 0;
   bottom: 0;
@@ -28,7 +28,7 @@ export const ClippedGradient = styled.div<{ polygonPoints: string, isBad: boolea
 
   background: linear-gradient(
     180deg,
-    ${({ isBad }) => isBad ? cssColors.colorTransparent : cssColors.colorGoodTransparent} 5.59%, // Green on top if raising
-    ${({ isBad }) => isBad ? cssColors.colorBadTransparent : cssColors.colorTransparent} 105.59%  // Red at bottom if dropping
+    ${({ isBad }) => isBad ? cssColors.colorBadTransparent : cssColors.colorGoodTransparent} 5.59%, // Green on top if raising
+    ${cssColors.colorTransparent} 105.59%  // Red at top if dropping
   );
 `;
