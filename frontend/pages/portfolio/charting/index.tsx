@@ -78,10 +78,16 @@ interface ChartingState {
 }
 
 class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
+  static getReducedStockData(stockDataList: TimeSeriesData[], factor: number): TimeSeriesData[] {
+    // Retain 1 entry for every 7
+    return stockDataList.filter((data, i ) => i % factor === 0);
+  }
+
   static filterStockDataByDateRange(stockDataList: TimeSeriesData[], dateRange: DateRanges): TimeSeriesData[] {
     const latestTimestamp = stockDataList[0].timestamp;
     let msToSubtract;
     const msInADay = 86400000;
+    let filteredStockData = stockDataList;
 
     switch (dateRange) {
       case DateRanges.FiveDays:
@@ -98,14 +104,16 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
         break;
       case DateRanges.FiveYears:
         msToSubtract = 5 * 365 * msInADay;
+        filteredStockData = Charting.getReducedStockData(stockDataList, 7);
         break;
       case DateRanges.TenYears:
         msToSubtract = 10 * 365 * msInADay;
+        filteredStockData = Charting.getReducedStockData(stockDataList, 7);
         break;
       default:
     }
 
-    return stockDataList.filter(data => data.timestamp > latestTimestamp - msToSubtract);
+    return filteredStockData.filter(data => data.timestamp > latestTimestamp - msToSubtract);
   }
 
   static async getInitialProps({ query }): Promise<{
