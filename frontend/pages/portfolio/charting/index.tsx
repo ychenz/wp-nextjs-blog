@@ -26,8 +26,8 @@ import {
 import testData from "./test_data.json";
 
 const ROUTE_PATH = "/portfolio/charting";
-// const FMP_API_KEY = "68ea4a477785266e41b4ec5478fc6a1d";
-const FMP_API_KEY = "demo";
+const FMP_API_KEY = "68ea4a477785266e41b4ec5478fc6a1d";
+// const FMP_API_KEY = "demo";
 
 interface FMPStockData {
   date: string;  // date in format YYYY-MM-DD HH:mm:ss
@@ -69,7 +69,7 @@ interface FMPCompanyProfileData {
 interface ChartingPropsFromServer {
   dateRange: DateRanges; // dateRange from query params
   stockSymbol: string; // stock symbol from query params
-  stockDataList: TimeSeriesData[];
+  stockDataLists: TimeSeriesData[][];
   companyProfile: FMPCompanyProfileData;
 }
 
@@ -104,6 +104,7 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
         break;
       case DateRanges.FiveYears:
         msToSubtract = 5 * 365 * msInADay;
+        // Getting weekly data
         filteredStockData = Charting.getReducedStockData(stockDataList, 7);
         break;
       case DateRanges.TenYears:
@@ -116,45 +117,62 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
     return filteredStockData.filter(data => data.timestamp > latestTimestamp - msToSubtract);
   }
 
-  static async getInitialProps({ query }): Promise<{
-    dateRange: DateRanges;
-    stockDataList: TimeSeriesData[];
-    companyProfile: FMPCompanyProfileData;
-    stockSymbol: string;
-  }> {
-    const stockSymbol = query.symbol || "AAPL";
-    const dateRange: DateRanges = query.dateRange || DateRanges.FiveDays;
-    let stockDataList: TimeSeriesData[];
-
+  static async fetchStockData(symbol: string, dateRange: DateRanges): Promise<TimeSeriesData[]> {
     // Fetch 30 min interval data for shorter date range: 5D, 1M
     if (dateRange === DateRanges.FiveDays || dateRange === DateRanges.OneMonth) {
       const stockDataRes: HttpResponse<FMPStockData[]> = await fetcher<FMPStockData[]>({
-        url: `https://financialmodelingprep.com/api/v3/historical-chart/30min/${stockSymbol}`,
+        url: `https://financialmodelingprep.com/api/v3/historical-chart/30min/${symbol}`,
         method: "GET",
         queryParams: {
           apikey: FMP_API_KEY
         }
       });
 
-      stockDataList = stockDataRes.parsedBody.map(entry => ({
+      return stockDataRes.parsedBody.map(entry => ({
         timestamp: moment(entry.date, "YYYY-MM-DD HH:mm:ss").valueOf(),
         value: entry.close
-      })); // latest data should be at last
-    } else {
-      // Fetch 1 day interval data for longer date range
-      const stockDataRes: HttpResponse<FMPStockDataDaily> = await fetcher<FMPStockDataDaily>({
-        url: `https://financialmodelingprep.com/api/v3/historical-price-full/${stockSymbol}`,
-        method: "GET",
-        queryParams: {
-          apikey: FMP_API_KEY,
-          serietype: "line"
-        }
-      });
-
-      stockDataList = stockDataRes.parsedBody.historical.map(entry => ({
-        timestamp: moment(entry.date, "YYYY-MM-DD").valueOf(),
-        value: entry.close
       }));
+    }
+
+    // Fetch 1 day interval data for longer date range
+    const stockDataRes: HttpResponse<FMPStockDataDaily> = await fetcher<FMPStockDataDaily>({
+      url: `https://financialmodelingprep.com/api/v3/historical-price-full/${symbol}`,
+      method: "GET",
+      queryParams: {
+        apikey: FMP_API_KEY,
+        serietype: "line"
+      }
+    });
+
+    return stockDataRes.parsedBody.historical.map(entry => ({
+      timestamp: moment(entry.date, "YYYY-MM-DD").valueOf(),
+      value: entry.close
+    }));
+  }
+
+  static async getInitialProps({ query }): Promise<{
+    dateRange: DateRanges;
+    stockDataLists: TimeSeriesData[][];
+    companyProfile: FMPCompanyProfileData;
+    stockSymbol: string;
+  }> {
+    /**
+     * Possible query params:
+     *   symbol: string;
+     *   symbol2?: string;
+     *   dateRange: DateRanges;
+     */
+    const stockSymbol = query.symbol || "AAPL";
+    const stockSymbol2 = query.symbol2;
+
+    const dateRange: DateRanges = query.dateRange || DateRanges.FiveDays;
+    const stockDataLists: TimeSeriesData[][] = [];
+
+    const stockData: TimeSeriesData[] = await Charting.fetchStockData(stockSymbol, dateRange);
+    stockDataLists.push(stockData);
+
+    if (stockSymbol2) {
+      stockDataLists.push(await Charting.fetchStockData(stockSymbol2, dateRange));
     }
 
     const profileRes: HttpResponse<FMPCompanyProfileData[]> = await fetcher<FMPCompanyProfileData[]>({
@@ -165,12 +183,26 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
       }
     });
 
-    stockDataList = Charting.filterStockDataByDateRange(stockDataList, dateRange).reverse(); // latest data should be at last
+    let stockDataListsCorrectOrder = stockDataLists.map(
+      stockDataList => Charting.filterStockDataByDateRange(stockDataList, dateRange).reverse()
+    );
+
+    if (stockSymbol2) {
+      // convert from stock prices to $10000 investment results
+      stockDataListsCorrectOrder = stockDataListsCorrectOrder.map(stockDataList => stockDataList.map(data => {
+        const sharesBought = 10000 / stockDataList[0].value;
+
+        return {
+          timestamp: data.timestamp,
+          value: sharesBought * data.value  // # of shares x price
+        };
+      }));
+    }
 
     return {
       dateRange: query.dateRange,
       stockSymbol: query.symbol,
-      stockDataList,
+      stockDataLists: stockDataListsCorrectOrder,
       companyProfile: profileRes.parsedBody[0]
     };
   }
@@ -222,11 +254,11 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
   }
 
   render(): ReactElement {
-    const { dateRange, stockDataList, companyProfile } = this.props;
+    const { dateRange, stockDataLists, companyProfile } = this.props;
     const { modalHidden } = this.state;
 
     // todo create loading screen
-    if (!stockDataList || !companyProfile) {
+    if (!stockDataLists || !companyProfile) {
       return <div>Loading Data ...</div>;
     }
 
@@ -275,7 +307,7 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
           </DateRangeSelectorContainer>
         </HorizontalContainer>
 
-        <LineChart timeSeriesDataList={stockDataList}/>
+        <LineChart timeSeriesDataLists={stockDataLists}/>
         <StockSelectionModal hidden={modalHidden} onToggle={this.handleModalToggle} />
       </Root>
     );

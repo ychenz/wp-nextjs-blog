@@ -53,7 +53,7 @@ interface LineChartState {
 
 interface LineChartProps {
   isTimeSeries?: boolean;
-  timeSeriesDataList: TimeSeriesData[];
+  timeSeriesDataLists: TimeSeriesData[][];
 }
 
 class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
@@ -63,6 +63,10 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
     }
 
     return dragRangeData.endValue > dragRangeData.startValue;
+  }
+
+  static isDropping(timeSeriesDataList: TimeSeriesData[]): boolean {
+    return timeSeriesDataList[0].value >= timeSeriesDataList[timeSeriesDataList.length - 1].value;
   }
 
   state: LineChartState = {
@@ -76,9 +80,12 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
   handleColumnMouseUpBound = this.handleColumnMouseUp.bind(this);
 
   get xLabels(): string[] {
-    const { timeSeriesDataList } = this.props;
-    const endTimestamp = timeSeriesDataList[0].timestamp;
-    const startTimestamp = timeSeriesDataList[timeSeriesDataList.length -1].timestamp;
+    const { timeSeriesDataLists } = this.props;
+    // timestamp should be same for all dataset, we just take the 1st one here is sufficient
+    const dataList1 = timeSeriesDataLists[0];
+
+    const endTimestamp = dataList1[0].timestamp;
+    const startTimestamp = dataList1[timeSeriesDataLists.length -1].timestamp;
     const duration = endTimestamp - startTimestamp;
 
     // we label X in the middle, so margin 1/2 of the in-between distance to the start and end, distance between labels
@@ -92,10 +99,12 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
   }
 
   get yLabels(): string[] {
-    const { timeSeriesDataList } = this.props;
+    const { timeSeriesDataLists } = this.props;
+    // Combine all data to get the true max/min values
+    const datalist = timeSeriesDataLists.reduce((list1, list2) => list1.concat(list2));
 
-    const maxValue = Math.max(...timeSeriesDataList.map(data => data.value));
-    const minValue = Math.min(...timeSeriesDataList.map(data => data.value));
+    const maxValue = Math.max(...datalist.map(data => data.value));
+    const minValue = Math.min(...datalist.map(data => data.value));
     let maxLabel = Math.ceil(maxValue / 100) * 100; // round max up to nearest 100
     let minLabel = Math.floor(minValue / 100) * 100; // round min down to nearest 100
 
@@ -110,12 +119,6 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
     return [...Array(Y_LABEL_COUNT).keys()].map(
       i => (Math.round(maxLabel - i * labelDistance)).toString()
     );
-  }
-
-  get isDropping(): boolean {
-    const { timeSeriesDataList } = this.props;
-
-    return timeSeriesDataList[0].value >= timeSeriesDataList[timeSeriesDataList.length - 1].value;
   }
 
   handleColumnMouseEnter(event: React.MouseEvent<HTMLDivElement>, columnData: TimeSeriesData, columnIndex: number): void {
@@ -205,19 +208,20 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
   }
 
   render(): ReactElement {
-    const { timeSeriesDataList } = this.props;
+    const { timeSeriesDataLists } = this.props;
     const { tooltipData, dragRangeData } = this.state;
     const { yLabels } = this;
+    const dataList1 = timeSeriesDataLists[0];
 
-    if (!timeSeriesDataList) {
+    if (!timeSeriesDataLists) {
       return <div>Loading</div>;
     }
 
     // Consider height of the chart is 100%, this calculates a list of percentage of height of each points
-    const percentageHeights = timeSeriesDataList.map(data => (
+    const percentageHeightsList = timeSeriesDataLists.map(timeSeriesDataList => timeSeriesDataList.map(data => (
       (data.value - parseInt(yLabels[Y_LABEL_COUNT - 1], 10)) /
       (parseInt(yLabels[0], 10) - parseInt(yLabels[Y_LABEL_COUNT - 1], 10))
-    ));
+    )));
 
     return (
       <Root>
@@ -225,10 +229,10 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
 
         <LineChartFrame>
           <ColumnsContainer>
-            {timeSeriesDataList.map((data, i) => (
+            {dataList1.map((data, i) => (
               <Column
                 key={data.timestamp}
-                count={timeSeriesDataList.length}
+                count={dataList1.length}
                 onMouseEnter={e => this.handleColumnMouseEnter(e, data, i)}
                 onMouseMove={this.handleColumnMouseMoveBound}
                 onMouseLeave={this.handleColumnMouseLeaveBound}
@@ -236,16 +240,20 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
                 onMouseUp={this.handleColumnMouseUpBound}
                 isActive={dragRangeData && dragRangeData.activeColumnIndex === i}
               >
-                <DataPoint
-                  style={{
-                    // Here we must put dynamic style here to prevent styled component generate too many classes
-                    bottom: (
-                      (data.value - parseInt(yLabels[Y_LABEL_COUNT - 1], 10)) /
-                      (parseInt(yLabels[0], 10) - parseInt(yLabels[Y_LABEL_COUNT - 1], 10))
-                    ) * CHART_HEIGHT - 6
-                  }}
-                  isBad={this.isDropping}
-                />
+                {
+                  timeSeriesDataLists.map(timeSeriesDataList => (
+                    <DataPoint
+                      style={{
+                        // Here we must put dynamic style here to prevent styled component generate too many classes
+                        bottom: (
+                          (timeSeriesDataList[i].value - parseInt(yLabels[Y_LABEL_COUNT - 1], 10)) /
+                          (parseInt(yLabels[0], 10) - parseInt(yLabels[Y_LABEL_COUNT - 1], 10))
+                        ) * CHART_HEIGHT - 6
+                      }}
+                      isBad={LineChart.isDropping(timeSeriesDataList)}
+                    />
+                  ))
+                }
               </Column>
             ))}
           </ColumnsContainer>
@@ -254,12 +262,17 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
               <FrameBackgroundGridLine key={i} count={i} />
             ))
           }
-          <LineChartGraphContainer>
-            <LineChartGraph
-              percentageHeights={percentageHeights}
-              showGradient
-            />
-          </LineChartGraphContainer>
+
+          {
+            percentageHeightsList.map(percentageHeights => (
+              <LineChartGraphContainer>
+                <LineChartGraph
+                  percentageHeights={percentageHeights}
+                  showGradient={percentageHeightsList.length === 1}
+                />
+              </LineChartGraphContainer>
+            ))
+          }
         </LineChartFrame>
 
         {this.renderXLabels()}

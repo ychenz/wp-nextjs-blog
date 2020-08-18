@@ -53,7 +53,6 @@ class LineChartGraph extends PureComponent<LineChartGraphProps> {
             isBad={isDropping}
           />
         )}
-
       </Root>
     );
   }
