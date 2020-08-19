@@ -121,8 +121,6 @@ export const TooltipContainer = styled.div<{ isInverted: boolean }>`
   background-color: ${cssColors.colorGray4};
   border-radius: ${cssVariables.smallBorderRadius};
   padding: ${cssVariables.uiUnit};
-  display: flex;
-  align-items: center;
   z-index: 10;
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   transition: transform 50ms ease;
@@ -132,6 +130,16 @@ export const TooltipContainer = styled.div<{ isInverted: boolean }>`
   ${({ isInverted }) => isInverted && `
     transform: translateX(calc(-100% - 24px));
   `}
+`;
+
+export const TooltipEntryContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: ${cssVariables.uiUnitHalf};
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 export const TooltipValueText = styled.div`

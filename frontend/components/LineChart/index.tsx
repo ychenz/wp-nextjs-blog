@@ -19,6 +19,7 @@ import {
   Column,
   DataPoint,
   TooltipContainer,
+  TooltipEntryContainer,
   TooltipValueText,
   TooltipDateText,
   TooltipPercentageChange,
@@ -30,25 +31,21 @@ export interface TimeSeriesData {
   value: number;
 }
 
-interface TooltipData {
+interface TooltipsConfig {
   x: number;
   y?: number;
   isInverted: boolean;
-  value: number;
-  timestamp: number;
-}
-
-interface DragRangeData {
   mouseIsDown: boolean;
-  activeColumnIndex: number;
+  startColumnIndex: number;
   endColumnIndex?: number;
-  startValue: number;
-  endValue?: number;
 }
 
 interface LineChartState {
-  tooltipData: TooltipData;
-  dragRangeData: DragRangeData;
+  tooltipData: {
+    startData: TimeSeriesData[]; // columns data, length is the same as timeSeriesDataLists, contains only data for that index
+    endData?: TimeSeriesData[]; // Same as above, should have same length as timeSeriesDataLists
+    config: TooltipsConfig;
+  };
 }
 
 interface LineChartProps {
@@ -57,12 +54,12 @@ interface LineChartProps {
 }
 
 class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
-  static isTooltipPriceDropping(dragRangeData: DragRangeData): boolean {
-    if (dragRangeData.activeColumnIndex < dragRangeData.endColumnIndex) {
-      return dragRangeData.endValue <= dragRangeData.startValue;
+  static isTooltipPriceDropping(startValue: number, endValue: number, config: TooltipsConfig): boolean {
+    if (config.startColumnIndex < config.endColumnIndex) {
+      return endValue <= startValue;
     }
 
-    return dragRangeData.endValue > dragRangeData.startValue;
+    return endValue > startValue;
   }
 
   static isDropping(timeSeriesDataList: TimeSeriesData[]): boolean {
@@ -70,8 +67,7 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
   }
 
   state: LineChartState = {
-    tooltipData: null,
-    dragRangeData: null
+    tooltipData: null
   }
 
   handleColumnMouseLeaveBound = this.handleColumnMouseLeave.bind(this);
@@ -121,32 +117,41 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
     );
   }
 
-  handleColumnMouseEnter(event: React.MouseEvent<HTMLDivElement>, columnData: TimeSeriesData, columnIndex: number): void {
-    const { dragRangeData } = this.state;
-
-    let dragRangeDataModified: DragRangeData = null;
-
-    if (dragRangeData && dragRangeData.mouseIsDown) {
-      dragRangeDataModified = {
-        ...dragRangeData,
-        endValue: columnData.value,
-        endColumnIndex: columnIndex
-      };
-    }
+  handleColumnMouseEnter(event: React.MouseEvent<HTMLDivElement>, columnData: TimeSeriesData[], columnIndex: number): void {
+    const { tooltipData } = this.state;
 
     const target = event.target as HTMLDivElement;
     const targetBoundingClientRect = target.getBoundingClientRect();
     const x = targetBoundingClientRect.right + 12; // tooltip is shown on the right of the vertical line (right border)
     const isInverted = x > window.innerWidth - 200; // Display tooltip on the other side of the line if its out of window
+    let config: TooltipsConfig = {
+      isInverted,
+      x,
+      mouseIsDown: false,
+      startColumnIndex: columnIndex
+    };
+
+    let startTooltipsData: TimeSeriesData[] = columnData;
+    let endTooltipsData: TimeSeriesData[] = null;
+
+    // Update end column if user is dragging on the chart (mouse is pressed down)
+    if (tooltipData && tooltipData.config && tooltipData.config.mouseIsDown) {
+      startTooltipsData = tooltipData.startData;
+      endTooltipsData = columnData;
+      config = {
+        ...config,
+        mouseIsDown: tooltipData.config.mouseIsDown,
+        startColumnIndex: tooltipData.config.startColumnIndex,
+        endColumnIndex: columnIndex
+      };
+    }
 
     this.setState({
       tooltipData: {
-        value: columnData.value,
-        timestamp: columnData.timestamp,
-        x,
-        isInverted
-      },
-      dragRangeData: dragRangeDataModified
+        startData: startTooltipsData,
+        endData: endTooltipsData,
+        config
+      }
     });
   }
 
@@ -156,7 +161,10 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
     this.setState(prevState => ({
       tooltipData: {
         ...prevState.tooltipData,
-        y: clientY
+        config: {
+          ...prevState.tooltipData.config,
+          y: clientY
+        }
       }
     }));
   }
@@ -167,20 +175,33 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
     });
   }
 
-  handleColumnMouseDown(columnData: TimeSeriesData, columnIndex: number): void{
-    this.setState({
-      dragRangeData: {
-        mouseIsDown: true,
-        startValue: columnData.value,
-        activeColumnIndex: columnIndex
+  handleColumnMouseDown(columnData: TimeSeriesData[], columnIndex: number): void{
+    this.setState(prevState => ({
+      tooltipData: {
+        startData: prevState.tooltipData.startData,
+        endData: columnData,
+        config: {
+          ...prevState.tooltipData.config,
+          endColumnIndex: columnIndex,
+          mouseIsDown: true
+        }
       }
-    });
+    }));
   }
 
   handleColumnMouseUp(): void{
-    this.setState({
-      dragRangeData: null
-    });
+    this.setState(prevState => ({
+      tooltipData: {
+        startData: prevState.tooltipData.endData,
+        endData: null,
+        config: {
+          ...prevState.tooltipData.config,
+          endColumnIndex: null,
+          startColumnIndex: prevState.tooltipData.config.endColumnIndex,
+          mouseIsDown: false
+        }
+      }
+    }));
   }
 
   renderXLabels(): ReactElement {
@@ -209,9 +230,8 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
 
   render(): ReactElement {
     const { timeSeriesDataLists } = this.props;
-    const { tooltipData, dragRangeData } = this.state;
+    const { tooltipData } = this.state;
     const { yLabels } = this;
-    const dataList1 = timeSeriesDataLists[0];
 
     if (!timeSeriesDataLists) {
       return <div>Loading</div>;
@@ -223,22 +243,29 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
       (parseInt(yLabels[0], 10) - parseInt(yLabels[Y_LABEL_COUNT - 1], 10))
     )));
 
+    const dataList1 = timeSeriesDataLists[0];
+    const stockDataColumns: TimeSeriesData[][] = []; // data in columns
+
+    dataList1.forEach((data, i) => {
+      stockDataColumns.push(timeSeriesDataLists.map(timeSeriesDataList => timeSeriesDataList[i]));
+    });
+
     return (
       <Root>
         {this.renderYLabels()}
 
         <LineChartFrame>
           <ColumnsContainer>
-            {dataList1.map((data, i) => (
+            {stockDataColumns.map((stockDataColumn, i) => (
               <Column
-                key={data.timestamp}
+                key={stockDataColumn[0].timestamp}
                 count={dataList1.length}
-                onMouseEnter={e => this.handleColumnMouseEnter(e, data, i)}
+                onMouseEnter={e => this.handleColumnMouseEnter(e, stockDataColumn, i)}
                 onMouseMove={this.handleColumnMouseMoveBound}
                 onMouseLeave={this.handleColumnMouseLeaveBound}
-                onMouseDown={() => this.handleColumnMouseDownBound(data, i)}
+                onMouseDown={() => this.handleColumnMouseDownBound(stockDataColumn, i)}
                 onMouseUp={this.handleColumnMouseUpBound}
-                isActive={dragRangeData && dragRangeData.activeColumnIndex === i}
+                isActive={tooltipData && tooltipData.config && tooltipData.config.startColumnIndex === i}
               >
                 {
                   timeSeriesDataLists.map(timeSeriesDataList => (
@@ -279,41 +306,64 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
 
         {tooltipData && (
           <TooltipContainer
-            style={{ top: tooltipData.y, left: tooltipData.x }}
-            isInverted={tooltipData.isInverted}
+            style={{ top: tooltipData.config.y, left: tooltipData.config.x }}
+            isInverted={tooltipData.config.isInverted}
           >
-            {dragRangeData && dragRangeData.endValue && (
-              <TooltipPercentageChange isBad={LineChart.isTooltipPriceDropping(dragRangeData)}>
-                <div>
-                  {
-                    dragRangeData.activeColumnIndex <= dragRangeData.endColumnIndex ? (
-                      `${round(dragRangeData.endValue - dragRangeData.startValue, 2)}`
-                    ) : `${round(dragRangeData.startValue - dragRangeData.endValue, 2)}`
-                  }
-                </div>
-                <TooltipPercentageChangeIcon>
-                  {LineChart.isTooltipPriceDropping(dragRangeData) ? (
-                      <ArrowDown width={12} height={12}/>
-                    ) : (
-                      <ArrowUp width={12} height={12}/>
-                    )
-                  }
-                </TooltipPercentageChangeIcon>
-                <div>
-                  {
-                    dragRangeData.activeColumnIndex <= dragRangeData.endColumnIndex ? (
-                      `(${round((
-                        dragRangeData.endValue - dragRangeData.startValue) * 100 /dragRangeData.startValue,2
-                      )}%)`
-                    ) : `(${round((
-                      dragRangeData.startValue - dragRangeData.endValue) * 100 /dragRangeData.endValue,2
-                    )}%)`
-                  }
-                </div>
-              </TooltipPercentageChange>
-            )}
-            <TooltipValueText>{`$${round(tooltipData.value, 2)}`}</TooltipValueText>
-            <TooltipDateText>{moment(tooltipData.timestamp).format("MMM Do YYYY, H:mm")}</TooltipDateText>
+            {
+              tooltipData.startData && tooltipData.startData.map((stockData, i) => (
+                <>
+                  <TooltipEntryContainer>
+                    <TooltipValueText>
+                      {`$${round(
+                        tooltipData.config.mouseIsDown ? tooltipData.endData[i].value : stockData.value, 2
+                      )}`}
+                    </TooltipValueText>
+                    <TooltipDateText>{moment(stockData.timestamp).format("MMM Do YYYY, H:mm")}</TooltipDateText>
+                  </TooltipEntryContainer>
+
+                  {tooltipData.endData && (
+                    <TooltipPercentageChange isBad={
+                      LineChart.isTooltipPriceDropping(
+                        stockData.value,
+                        tooltipData.endData[i].value,
+                        tooltipData.config
+                      )
+                    }>
+                      <div>
+                        {
+                          tooltipData.config.startColumnIndex <= tooltipData.config.endColumnIndex ? (
+                            `${round(tooltipData.endData[i].value - stockData.value, 2)}`
+                          ) : `${round(stockData.value - tooltipData.endData[i].value, 2)}`
+                        }
+                      </div>
+                      <TooltipPercentageChangeIcon>
+                        {LineChart.isTooltipPriceDropping(
+                          stockData.value,
+                          tooltipData.endData[i].value,
+                          tooltipData.config
+                        ) ? (
+                          <ArrowDown width={12} height={12}/>
+                        ) : (
+                          <ArrowUp width={12} height={12}/>
+                        )
+                        }
+                      </TooltipPercentageChangeIcon>
+                      <div>
+                        {
+                          tooltipData.config.startColumnIndex <= tooltipData.config.endColumnIndex ? (
+                            `(${round((
+                              tooltipData.endData[i].value - stockData.value) * 100 /stockData.value,2
+                            )}%)`
+                          ) : `(${round((
+                            stockData.value - tooltipData.endData[i].value) * 100 /tooltipData.endData[i].value,2
+                          )}%)`
+                        }
+                      </div>
+                    </TooltipPercentageChange>
+                  )}
+                </>
+              ))
+            }
           </TooltipContainer>
         )}
       </Root>
