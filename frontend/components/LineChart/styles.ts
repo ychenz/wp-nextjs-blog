@@ -132,6 +132,16 @@ export const TooltipContainer = styled.div<{ isInverted: boolean }>`
   `}
 `;
 
+export const TooltipMultiColorIndicator = styled.div`
+  height: 6px;
+  width: 6px;
+  margin-right: ${cssVariables.uiUnit};
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  filter: blur(2px);
+  border-radius: 2px;
+`;
+
 export const TooltipEntryContainer = styled.div`
   display: flex;
   align-items: center;

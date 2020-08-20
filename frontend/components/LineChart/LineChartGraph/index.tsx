@@ -9,11 +9,12 @@ import {
 interface LineChartGraphProps {
   percentageHeights: number[];
   showGradient?: boolean;
+  color?: string;
 }
 
 class LineChartGraph extends PureComponent<LineChartGraphProps> {
   render(): ReactElement {
-    const { percentageHeights, showGradient  } =  this.props;
+    const { percentageHeights, showGradient, color } =  this.props;
 
     // This draws a polygon mask on top of gradient background using percentage data
     // e.g: clip-path: polygon(5% 5%, 100% 0%, 100% 75%, 75% 75%, 75% 100%, 50% 75%, 0% 75%);
@@ -33,6 +34,13 @@ class LineChartGraph extends PureComponent<LineChartGraphProps> {
       polylinePoints = polylinePoints.concat(`${x},${y}`);
     });
 
+    // Determine line color
+    let lineColor = isDropping ? cssColors.colorBloodRed : cssColors.colorSoftGreen;
+
+    if (color) {
+      lineColor = color;
+    }
+
     return (
       <Root>
         <SvgPolyLine
@@ -42,7 +50,7 @@ class LineChartGraph extends PureComponent<LineChartGraphProps> {
           <polyline
             points={polylinePoints.join(" ")}
             strokeWidth={2}
-            stroke={isDropping ? cssColors.colorBloodRed : cssColors.colorSoftGreen}
+            stroke={lineColor}
             fill="none"
             vectorEffect="non-scaling-stroke"
           />

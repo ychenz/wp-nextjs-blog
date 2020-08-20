@@ -3,7 +3,7 @@ import moment from "moment";
 import { round } from "services/mathUtils";
 import ArrowUp from "static/images/ArrowUp.svg";
 import ArrowDown from "static/images/ArrowDown.svg";
-import { X_LABEL_COUNT, Y_LABEL_COUNT, CHART_HEIGHT } from "./constants";
+import { X_LABEL_COUNT, Y_LABEL_COUNT, CHART_HEIGHT, diagramColors } from "./constants";
 import LineChartGraph from "./LineChartGraph";
 
 import {
@@ -19,6 +19,7 @@ import {
   Column,
   DataPoint,
   TooltipContainer,
+  TooltipMultiColorIndicator,
   TooltipEntryContainer,
   TooltipValueText,
   TooltipDateText,
@@ -157,16 +158,19 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
 
   handleColumnMouseMove(event: React.MouseEvent): void {
     const { clientY } = event;
+    const { tooltipData } = this.state;
 
-    this.setState(prevState => ({
-      tooltipData: {
-        ...prevState.tooltipData,
-        config: {
-          ...prevState.tooltipData.config,
-          y: clientY
+    if (tooltipData) {
+      this.setState(prevState => ({
+        tooltipData: {
+          ...prevState.tooltipData,
+          config: {
+            ...prevState.tooltipData.config,
+            y: clientY
+          }
         }
-      }
-    }));
+      }));
+    }
   }
 
   handleColumnMouseLeave(): void {
@@ -268,14 +272,16 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
                 isActive={tooltipData && tooltipData.config && tooltipData.config.startColumnIndex === i}
               >
                 {
-                  timeSeriesDataLists.map(timeSeriesDataList => (
+                  // In every column we render points vertically based on how many lines we have
+                  timeSeriesDataLists.map((timeSeriesDataList, lineIndex) => (
                     <DataPoint
                       style={{
                         // Here we must put dynamic style here to prevent styled component generate too many classes
                         bottom: (
                           (timeSeriesDataList[i].value - parseInt(yLabels[Y_LABEL_COUNT - 1], 10)) /
                           (parseInt(yLabels[0], 10) - parseInt(yLabels[Y_LABEL_COUNT - 1], 10))
-                        ) * CHART_HEIGHT - 6
+                        ) * CHART_HEIGHT - 6,
+                        backgroundColor: timeSeriesDataLists.length > 1 ? diagramColors[lineIndex % diagramColors.length] : null
                       }}
                       isBad={LineChart.isDropping(timeSeriesDataList)}
                     />
@@ -291,11 +297,12 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
           }
 
           {
-            percentageHeightsList.map(percentageHeights => (
+            percentageHeightsList.map((percentageHeights, i) => (
               <LineChartGraphContainer>
                 <LineChartGraph
                   percentageHeights={percentageHeights}
                   showGradient={percentageHeightsList.length === 1}
+                  color={timeSeriesDataLists.length > 1 ? diagramColors[i % diagramColors.length] : null}
                 />
               </LineChartGraphContainer>
             ))
@@ -313,6 +320,12 @@ class LineChart extends React.PureComponent<LineChartProps, LineChartState> {
               tooltipData.startData && tooltipData.startData.map((stockData, i) => (
                 <>
                   <TooltipEntryContainer>
+                    {timeSeriesDataLists.length > 1 && (
+                      <TooltipMultiColorIndicator
+                        style={{  background: diagramColors[i % diagramColors.length] }}
+                      />
+                    ) }
+
                     <TooltipValueText>
                       {`$${round(
                         tooltipData.config.mouseIsDown ? tooltipData.endData[i].value : stockData.value, 2

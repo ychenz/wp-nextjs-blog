@@ -67,8 +67,11 @@ interface FMPCompanyProfileData {
 }
 
 interface ChartingPropsFromServer {
-  dateRange: DateRanges; // dateRange from query params
-  stockSymbol: string; // stock symbol from query params
+  queryParams: {
+    dateRange: DateRanges; // dateRange from query params
+    symbol: string; // stock symbol from query params
+    symbol2?: string; // stock symbol from query params
+  };
   stockDataLists: TimeSeriesData[][];
   companyProfile: FMPCompanyProfileData;
 }
@@ -150,11 +153,19 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
     }));
   }
 
+  /**
+   * Server side function that initializes page data
+   *
+   * @param {Object} query Router query parameters
+   */
   static async getInitialProps({ query }): Promise<{
-    dateRange: DateRanges;
     stockDataLists: TimeSeriesData[][];
     companyProfile: FMPCompanyProfileData;
-    stockSymbol: string;
+    queryParams: {
+      dateRange?: DateRanges; // dateRange from query params
+      symbol?: string; // stock symbol from query params
+      symbol2?: string; // stock symbol from query params
+    };
   }> {
     /**
      * Possible query params:
@@ -200,8 +211,11 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
     }
 
     return {
-      dateRange: query.dateRange,
-      stockSymbol: query.symbol,
+      queryParams: {
+        symbol: stockSymbol,
+        symbol2: stockSymbol2,
+        dateRange
+      },
       stockDataLists: stockDataListsCorrectOrder,
       companyProfile: profileRes.parsedBody[0]
     };
@@ -210,37 +224,37 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
   state = { modalHidden: true }
 
   componentDidMount(): void {
-    const { stockSymbol, dateRange } = this.props;
+    const { queryParams } = this.props;
 
-    let queryParams = {};
+    let queryParamsNew = queryParams;
 
-    if (!stockSymbol) {
-      queryParams = { symbol: "AAPL" };
+    if (!queryParams.symbol) {
+      queryParamsNew.symbol = "AAPL";
     }
 
-    if (!dateRange) {
-      queryParams = {
-        ...queryParams,
+    if (!queryParams.dateRange) {
+      queryParamsNew = {
+        ...queryParamsNew,
         dateRange: DateRanges.FiveDays
       };
     }
 
-    if (!stockSymbol) {
+    if (!queryParams.symbol) {
       Router.push({
         pathname: ROUTE_PATH,
-        query: queryParams
+        query: queryParamsNew
       });
     }
   }
 
   onRangeSelected = (dateRange: DateRanges): void => {
-    const { stockSymbol } = this.props;
+    const { queryParams } = this.props;
 
     Router.push({
       pathname: ROUTE_PATH,
       query: {
-        dateRange,
-        symbol: stockSymbol
+        ...queryParams,
+        dateRange
       },
     });
   }
@@ -254,7 +268,7 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
   }
 
   render(): ReactElement {
-    const { dateRange, stockDataLists, companyProfile } = this.props;
+    const { queryParams, stockDataLists, companyProfile } = this.props;
     const { modalHidden } = this.state;
 
     // todo create loading screen
@@ -301,7 +315,7 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
 
           <DateRangeSelectorContainer>
             <DateRangeSelector
-              dateRange={dateRange}
+              dateRange={queryParams.dateRange}
               onRangeSelected={this.onRangeSelected}
             />
           </DateRangeSelectorContainer>
