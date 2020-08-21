@@ -3,6 +3,7 @@ import Router from "next/router";
 import moment from "moment";
 import PageWrapper from "components/PageWrapper";
 import LineChart, { TimeSeriesData } from "components/LineChart";
+import { diagramColors } from "components/LineChart/constants";
 import DateRangeSelector, { DateRanges } from "components/DateRangeSelector";
 import { fetcher, HttpResponse } from "services/httpRequest";
 import { round } from "services/mathUtils";
@@ -10,6 +11,7 @@ import PieChartIcon from "static/images/PieChart.svg";
 import ExchangeIcon from "static/images/Exchange.svg";
 import ArrowUp from "static/images/ArrowUp.svg";
 import ArrowDown from "static/images/ArrowDown.svg";
+import ConnectorIcon from "static/images/Connector.svg";
 import StockSelectionModal from "./StockSelectionModal";
 import {
   Root,
@@ -17,11 +19,14 @@ import {
   IconContainer,
   Title,
   CompanyNameText,
+  ChangeStockButtonContainer,
   Ticker,
   DateStr,
   CurrentPriceText,
   PriceChange,
-  DateRangeSelectorContainer
+  DateRangeSelectorContainer,
+  TickerCompared,
+  ConnectorIconContainer
 } from "./styles";
 import testData from "./test_data.json";
 
@@ -267,6 +272,60 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
     });
   }
 
+  renderChartTitle(): ReactElement {
+    const { companyProfile } = this.props;
+    const { companyName, symbol, price, changes } = companyProfile;
+
+    const currentDateTime = moment().format("MMM Do");
+    const previousPrice = price - changes;
+    const currentPrice = price;
+    const priceChange = round(currentPrice - previousPrice, 2);
+    const priceChangePercentage =round((currentPrice - previousPrice) * 100 / previousPrice, 2);
+
+    return (
+      <div>
+        <HorizontalContainer>
+          <CompanyNameText>{companyName}</CompanyNameText>
+          <ChangeStockButtonContainer onClick={this.handleModalToggle}>
+            <ExchangeIcon/>
+          </ChangeStockButtonContainer>
+        </HorizontalContainer>
+        <HorizontalContainer>
+          <Ticker>{symbol}</Ticker>
+          <DateStr>{currentDateTime}</DateStr>
+        </HorizontalContainer>
+        <HorizontalContainer marginTop={8}>
+          <CurrentPriceText>{`$${currentPrice}`}</CurrentPriceText>
+          <PriceChange isNegative={priceChange < 0}>
+            {priceChange > 0 ? `+${priceChange}` : priceChange}
+          </PriceChange>
+          {priceChangePercentage < 0 ? <ArrowDown /> : <ArrowUp />}
+          <PriceChange isNegative={priceChangePercentage < 0}>{`${priceChangePercentage}%`}</PriceChange>
+        </HorizontalContainer>
+      </div>
+    );
+  }
+
+  renderStockComparisonTitle(): ReactElement {
+    const { queryParams } = this.props;
+
+    return (
+      <div>
+        <CompanyNameText>GROWTH OF $10000</CompanyNameText>
+        <HorizontalContainer>
+          <TickerCompared style={{ color: diagramColors[0] }}>{queryParams.symbol}</TickerCompared>
+          <ConnectorIconContainer>
+            <ConnectorIcon />
+          </ConnectorIconContainer>
+          <TickerCompared style={{ color: diagramColors[1] }}>{queryParams.symbol2}</TickerCompared>
+          <ChangeStockButtonContainer onClick={this.handleModalToggle}>
+            <ExchangeIcon />
+          </ChangeStockButtonContainer>
+        </HorizontalContainer>
+      </div>
+    );
+  }
+
   render(): ReactElement {
     const { queryParams, stockDataLists, companyProfile } = this.props;
     const { modalHidden } = this.state;
@@ -275,14 +334,6 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
     if (!stockDataLists || !companyProfile) {
       return <div>Loading Data ...</div>;
     }
-
-    const { companyName, symbol, price, changes } = companyProfile;
-
-    const currentDateTime = moment().format("MMM Do");
-    const previousPrice = price - changes;
-    const currentPrice = price;
-    const priceChange = round(currentPrice - previousPrice, 2);
-    const priceChangePercentage =round((currentPrice - previousPrice) * 100 / previousPrice, 2);
 
     return (
       <Root>
@@ -296,22 +347,7 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
         </HorizontalContainer>
 
         <HorizontalContainer marginTop={48}>
-          <CompanyNameText>{companyName}</CompanyNameText>
-          <div onClick={this.handleModalToggle}>
-            <ExchangeIcon/>
-          </div>
-        </HorizontalContainer>
-        <HorizontalContainer marginTop={0}>
-          <Ticker>{symbol}</Ticker>
-          <DateStr>{currentDateTime}</DateStr>
-        </HorizontalContainer>
-        <HorizontalContainer marginTop={8}>
-          <CurrentPriceText>{`$${currentPrice}`}</CurrentPriceText>
-          <PriceChange isNegative={priceChange < 0}>
-            {priceChange > 0 ? `+${priceChange}` : priceChange}
-          </PriceChange>
-          {priceChangePercentage < 0 ? <ArrowDown /> : <ArrowUp />}
-          <PriceChange isNegative={priceChangePercentage < 0}>{`${priceChangePercentage}%`}</PriceChange>
+          {queryParams.symbol2 ? this.renderStockComparisonTitle() : this.renderChartTitle()}
 
           <DateRangeSelectorContainer>
             <DateRangeSelector
