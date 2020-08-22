@@ -3,6 +3,7 @@ import EditText from "components/EditText";
 import Button from "components/Button";
 import ModalLayout from "components/ModalLayout";
 import AddStockIcon from "static/images/Add.svg";
+import RemoveStockIcon from "static/images/Minus.svg";
 import {
   ContentContainer,
   Title,
@@ -12,31 +13,73 @@ import {
   SaveButtonContainer
 } from "./styles";
 
+export interface SavedSymbols {
+  symbol: string;
+  symbol2?: string;
+}
+
 interface StockSelectionModalProps {
   hidden: boolean;
+  value: SavedSymbols;
+  onSave(symbols: SavedSymbols): void;
   onToggle(): void;
 }
 
 interface StockSelectionModalState {
-  ticker1Value: string;
+  symbol: string;
+  symbol2?: string|null;
+  hasSymbol2: boolean;
 }
 
 class StockSelectionModal extends React.PureComponent<StockSelectionModalProps, StockSelectionModalState> {
   state = {
-    ticker1Value: ""
+    symbol: "",
+    symbol2: null,
+    hasSymbol2: false
+  }
+
+  componentDidMount(): void {
+    const { value } = this.props;
+
+    this.setState({
+      symbol: value.symbol,
+      symbol2: value.symbol2,
+      hasSymbol2: !!value.symbol2
+    });
   }
 
   handleStockTickerChange = (value: string): void => {
-    this.setState({ ticker1Value: value });
+    this.setState({ symbol: value });
+  }
+
+  handleStockTicker2Change = (value: string): void => {
+    this.setState({ symbol2: value });
+  }
+
+  handleToggleStock2Input = (): void => {
+    const { hasSymbol2, symbol2 } = this.state;
+
+    this.setState({
+      hasSymbol2: !hasSymbol2,
+      symbol2: hasSymbol2 ? null : symbol2
+    });
   }
 
   handleSaveClicked = (): void => {
+    const { onSave, onToggle } = this.props;
+    const { symbol, symbol2 } = this.state;
 
+    onSave({
+      symbol,
+      symbol2
+    });
+
+    onToggle();
   }
 
   render(): ReactElement {
     const { hidden, onToggle } = this.props;
-    const { ticker1Value } = this.state;
+    const { symbol, hasSymbol2, symbol2 } = this.state;
 
     return (
       <ModalLayout
@@ -50,26 +93,37 @@ class StockSelectionModal extends React.PureComponent<StockSelectionModalProps, 
 
           <EditTextContainer>
             <EditText
-              value={ticker1Value}
+              value={symbol}
               onChange={this.handleStockTickerChange}
               placeholder="Stock Ticker"
               maxLength={10}
             />
           </EditTextContainer>
 
-          <AddComparisonButtonContainer>
+          <AddComparisonButtonContainer type="button" onClick={this.handleToggleStock2Input}>
             <div>
-              <AddStockIcon />
+              {hasSymbol2 ? <RemoveStockIcon /> : <AddStockIcon />}
             </div>
             <AddComparisonButtonText>
-              Compare Stock Return
+              {hasSymbol2 ? "Remove Stock Comparison" : "Compare Stock Return"}
             </AddComparisonButtonText>
           </AddComparisonButtonContainer>
-        </ContentContainer>
 
-        <SaveButtonContainer>
-          <Button name="SAVE" onClick={this.handleSaveClicked} />
-        </SaveButtonContainer>
+          {hasSymbol2 && (
+            <EditTextContainer>
+              <EditText
+                value={symbol2}
+                onChange={this.handleStockTicker2Change}
+                placeholder="Stock Ticker To Compare With"
+                maxLength={10}
+              />
+            </EditTextContainer>
+          )}
+
+          <SaveButtonContainer>
+            <Button name="SAVE" onClick={this.handleSaveClicked} />
+          </SaveButtonContainer>
+        </ContentContainer>
       </ModalLayout>
     );
   }

@@ -13,6 +13,16 @@ export const ClearButtonContainer = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+  
+  &:hover {
+    & circle {
+      fill-opacity: 1;
+    }
+  }
+  
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const FormInput = styled.input`

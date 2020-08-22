@@ -19,11 +19,27 @@ export const EditTextContainer = styled.div`
   margin-top: 32px;
 `;
 
-export const AddComparisonButtonContainer = styled.div`
+export const AddComparisonButtonContainer = styled.button`
   display: flex;
   align-items: center;
-  margin: ${cssVariables.uiUnitDouble} 0 128px;
+  margin-top: ${cssVariables.uiUnitDouble};
   cursor: pointer;
+  border: none;
+  background: none;
+  
+  &:hover {
+    & circle {
+      fill-opacity: 1;
+    }
+    
+    & div {
+      font-weight: ${cssVariables.heavyFontWeight};
+    }
+  }
+  
+  &:focus {
+    outline: none;
+  }
 `;
 
 export const AddComparisonButtonText = styled.div`
@@ -36,8 +52,7 @@ export const AddComparisonButtonText = styled.div`
 `;
 
 export const SaveButtonContainer = styled.div`
-  position: absolute;
-  right: 96px;
-  bottom: 56px;
+  margin: 32px 0 56px;
+  float: right;
 `;
 

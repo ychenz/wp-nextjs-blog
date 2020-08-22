@@ -17,7 +17,7 @@ class Button extends React.PureComponent<ButtonProps> {
     const { name, onClick, isLoading, isSuccess, isTransparent } = this.props;
 
     return (
-      <Root isTransparent={isTransparent} onClick={onClick} >
+      <Root type="button" isTransparent={isTransparent} onClick={onClick} >
         {isLoading && "LOADING ..." }
         {isSuccess && "SUCCESS!" }
         {!isLoading && !isSuccess && name}

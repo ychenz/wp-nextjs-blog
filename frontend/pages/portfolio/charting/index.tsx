@@ -12,7 +12,7 @@ import ExchangeIcon from "static/images/Exchange.svg";
 import ArrowUp from "static/images/ArrowUp.svg";
 import ArrowDown from "static/images/ArrowDown.svg";
 import ConnectorIcon from "static/images/Connector.svg";
-import StockSelectionModal from "./StockSelectionModal";
+import StockSelectionModal, { SavedSymbols } from "./StockSelectionModal";
 import {
   Root,
   HorizontalContainer,
@@ -92,6 +92,10 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
   }
 
   static filterStockDataByDateRange(stockDataList: TimeSeriesData[], dateRange: DateRanges): TimeSeriesData[] {
+    if (stockDataList.length === 0) {
+      return [];
+    }
+
     const latestTimestamp = stockDataList[0].timestamp;
     let msToSubtract;
     const msInADay = 86400000;
@@ -272,6 +276,18 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
     });
   }
 
+  handleModalSaveTickerChange = (symbols: SavedSymbols): void => {
+    const { queryParams } = this.props;
+
+    Router.push({
+      pathname: ROUTE_PATH,
+      query: {
+        ...queryParams,
+        ...symbols  // change any stock ticker symbols if change happens
+      },
+    });
+  }
+
   renderChartTitle(): ReactElement {
     const { companyProfile } = this.props;
     const { companyName, symbol, price, changes } = companyProfile;
@@ -327,12 +343,13 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
   }
 
   render(): ReactElement {
-    const { queryParams, stockDataLists, companyProfile } = this.props;
+    const { queryParams, stockDataLists } = this.props;
     const { modalHidden } = this.state;
 
-    // todo create loading screen
-    if (!stockDataLists || !companyProfile) {
-      return <div>Loading Data ...</div>;
+    if (stockDataLists[0].length === 0 || (queryParams.symbol2 && stockDataLists[1].length === 0)) {
+      return (
+        <Root>Please Enter A Valid Stock Symbol!</Root>
+      );
     }
 
     return (
@@ -358,7 +375,15 @@ class Charting extends PureComponent<ChartingPropsFromServer,ChartingState> {
         </HorizontalContainer>
 
         <LineChart timeSeriesDataLists={stockDataLists}/>
-        <StockSelectionModal hidden={modalHidden} onToggle={this.handleModalToggle} />
+        <StockSelectionModal
+          value={{
+            symbol: queryParams.symbol,
+            symbol2: queryParams.symbol2
+          }}
+          hidden={modalHidden}
+          onToggle={this.handleModalToggle}
+          onSave={this.handleModalSaveTickerChange}
+        />
       </Root>
     );
   }
