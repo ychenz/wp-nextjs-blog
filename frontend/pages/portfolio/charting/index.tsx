@@ -31,8 +31,8 @@ import {
 import testData from "./test_data.json";
 
 const ROUTE_PATH = "/portfolio/charting";
-const FMP_API_KEY = "68ea4a477785266e41b4ec5478fc6a1d";
-// const FMP_API_KEY = "demo";
+// const FMP_API_KEY = "68ea4a477785266e41b4ec5478fc6a1d";
+const FMP_API_KEY = "demo";
 
 interface FMPStockData {
   date: string;  // date in format YYYY-MM-DD HH:mm:ss

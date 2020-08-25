@@ -29,7 +29,7 @@ class Menu extends Component {
 
     const handleSelectChange = (e) => {
       location.href = e.target.value;
-    }
+    };
 
     return (
       <div className="menu bb">

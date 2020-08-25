@@ -97,6 +97,12 @@ class StockSelectionModal extends React.PureComponent<StockSelectionModalProps, 
               onChange={this.handleStockTickerChange}
               placeholder="Stock Ticker"
               maxLength={10}
+              // todo using values from API
+              dropdownValues={symbol && [
+                { value: "AAPL", description: "Apple Inc." },
+                { value: "GOOGL", description: "Alphabet Inc Class A" },
+              ]}
+              disallowEmpty
             />
           </EditTextContainer>
 
@@ -116,6 +122,13 @@ class StockSelectionModal extends React.PureComponent<StockSelectionModalProps, 
                 onChange={this.handleStockTicker2Change}
                 placeholder="Stock Ticker To Compare With"
                 maxLength={10}
+                // todo using values from API
+                dropdownValues={symbol && [
+                  { value: "M", description: "Macy's" },
+                  { value: "AXP", description: "American Express Co." },
+                  { value: "TSLA", description: "Tesla Motor" },
+                ]}
+                disallowEmpty
               />
             </EditTextContainer>
           )}
