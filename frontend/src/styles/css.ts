@@ -38,6 +38,7 @@ export const cssVariables = {
   paragraphLineHeight: "32px",
 
   postContentMaxWidth: "768px",
+  postContentMinWidth: "320px",
   screenMedium: "820px",
   screenLarge: "970px",
 
@@ -46,7 +47,13 @@ export const cssVariables = {
   largeBorderRadius: "10px",
   xLargeBorderRadius: "12px",
 
-  titleFontFamily: "Saira, sans-serif"
+  titleFontFamily: "Saira, sans-serif",
+
+  boxShadowHoverStyle: `
+    &:hover {
+      box-shadow: 0 4px 6px rgba(2, 14, 29, 0.08);
+    }
+  `,
 };
 
 export const WPCategoryColors = [

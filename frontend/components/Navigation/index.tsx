@@ -163,10 +163,10 @@ class Navigation extends PureComponent<NavigationProps, NavigationStates> {
                 );
               })}
               <Link
-                href="/portfolio"
+                href="/portfolio-new"
               >
                 <a className={classNames(`${CLASS_NAME}__menu-entry`, {
-                  [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/portfolio"
+                  [`${CLASS_NAME}__menu-entry--active`]: router.pathname === "/portfolio-new"
                 })}>
                   Portfolio
                 </a>

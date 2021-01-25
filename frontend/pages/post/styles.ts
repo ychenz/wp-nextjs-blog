@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
-import { getWPCategoryColor } from "services/string";
 
 const animFadeIn = keyframes`
   from { opacity: 0; }

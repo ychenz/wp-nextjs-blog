@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
-import { Provider } from "react-redux";
 import { Store } from "redux";
 import App from "next/app";
-import withReduxStore from "../redux/with-redux-store";
+import Head from "next/head";
+import "src/styles/style.scss";
 
 interface AppProps {
   store: Store;
@@ -10,18 +10,22 @@ interface AppProps {
 
 class MyApp extends App<AppProps> {
   render(): ReactElement {
-    const { Component, pageProps, store } = this.props;
-
-    // return (
-    //   <Provider store={store}>
-    //     <Component {...pageProps} />
-    //   </Provider>
-    // );
+    const { Component, pageProps } = this.props;
 
     return (
-      <Component {...pageProps} />
+      <>
+        <Head>
+          <title>Yuchen Blog</title>
+          <script
+            id="__ada"
+            data-handle="yuchenbot"
+            src="https://static.ada.support/embed2.js"
+          />
+        </Head>
+        <Component {...pageProps} />
+      </>
     );
   }
 }
 
-export default withReduxStore(MyApp);
+export default MyApp;
