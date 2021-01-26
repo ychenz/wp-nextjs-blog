@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Link from "next/link";
 import Router from "next/router";
 import WPAPI from "wpapi";
-import StackGrid, { transitions, easings } from "react-stack-grid";
 import Layout from "../components/Layout";
 import PageWrapper from "../components/PageWrapper";
 import Config from "../config";

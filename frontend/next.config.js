@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withStyles = require("@webdeb/next-styles");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const path = require('path');
+const path = require("path");
 
 module.exports = withStyles({
   sass: true, // use .scss files
@@ -42,7 +42,7 @@ module.exports = withStyles({
             }
           },
         ]
-      },
+      }
     );
 
     // Here is the magic

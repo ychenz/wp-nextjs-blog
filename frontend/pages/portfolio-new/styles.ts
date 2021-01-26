@@ -4,7 +4,7 @@ import { cssVariables } from "src/styles/css";
 const PortfolioPage = styled.div`
   max-width: 950px;
   min-width: ${cssVariables.postContentMinWidth};
-  padding-top: 120px;
+  padding: 120px ${cssVariables.uiUnitDouble};
   margin: auto;
 `;
 
@@ -60,6 +60,19 @@ export const SectionContainer = styled.div`
   margin-top: 128px;
 `;
 
+export const FooterContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  
+  & > div {
+    flex: 50%; // This making sure we have equally divided 2 columns layout
+    min-width: 320px; // This allows auto-wrap for small screens
+  }
+`;
+
+/**
+ * Self Intro section
+ */
 export const SelfIntroSectionTitle = styled.div`
   font-family: "Saira", sans-serif;
   font-size: ${cssVariables.pentaLargeFontSize};
@@ -71,4 +84,90 @@ export const SelfIntroSectionTitle = styled.div`
 export const SelfIntroSectionContainer = styled.div`
   max-width: 700px;
   margin-top: 64px;
+`;
+
+/**
+ * Past work section
+ */
+export const PastWorkSectionContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+export const PastWorkSectionEntry = styled.div`
+  margin: 40px 40px 0 0;
+  
+  &:nth-child(4n) {
+    margin-right: 0;
+  }
+`;
+
+export const PastWorkSectionEntryThumbnail = styled.div`
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  & > img {
+    width: 206px;
+    height: 154px;
+  }
+`;
+
+export const PastWorkSectionEntryTitle = styled.button`
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0;
+  margin-top: ${cssVariables.uiUnitDouble};
+  font-family: "Nunito", sans-serif;
+  font-size: ${cssVariables.largeFontSize};
+  text-decoration-line: underline;
+  line-height: 20px;
+  cursor: pointer;
+`;
+
+/**
+ * Skills section
+ */
+export const SkillsSectionTagCloudContainer = styled.div`
+  margin-top: 40px;
+  width: 290px;
+  height: 206px;
+`;
+
+/**
+ * Contact section
+ */
+export const ContactSectionContainer = styled.div`
+  margin-top: 40px;
+`;
+
+export const ContactSectionSocialIconsContainer = styled.div`
+  display: flex;
+  margin-top: 24px;
+  align-items: center;
+  
+  & > svg {
+    margin-right: ${cssVariables.uiUnitDouble};
+  }
+`;
+
+export const ContactSectionDownloadResumeButton = styled.button`
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 0;
+  margin-top: 24px;
+  font-family: "Saira", sans-serif;
+  font-size: ${cssVariables.largeFontSize};
+  font-weight: ${cssVariables.mediumFontWeight};
+  text-decoration-line: underline;
+  line-height: 24px;
+  cursor: pointer;
+`;
+
+export const ContactSectionCopyRight = styled.div`
+  margin-top: 64px;
+  font-family: "Nunito", sans-serif;
+  font-size: ${cssVariables.largeFontSize};
+  line-height: 22px;
+ 
 `;

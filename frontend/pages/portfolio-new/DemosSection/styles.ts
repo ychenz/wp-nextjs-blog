@@ -2,28 +2,29 @@ import styled from "styled-components";
 import { cssVariables } from "src/styles/css";
 
 const DemosSection = styled.div`
-`;
-
-export const Row = styled.div`
   display: flex;
   flex-wrap: wrap;
 `;
 
-export const DemoCard = styled.div`
+export const DemoCard = styled.button`
+  background: none;
+  border: none;
+  text-align: left;
   display: flex;
-  width: 452px;
-  margin-top: 40px;
+  width: 412px;
   cursor: pointer;
   padding: 4px;
+  margin: 40px 40px 0 0;
   
   ${cssVariables.boxShadowHoverStyle}
+  
+  &:nth-child(2n) {
+    margin-right: 0;
+  }
 `;
 
 export const DemoCardIconContainer = styled.div`
   margin-right: 40px;
-`;
-
-export const DemoCardContentContainer = styled.div`
 `;
 
 export const DemoCardContent = styled.div`

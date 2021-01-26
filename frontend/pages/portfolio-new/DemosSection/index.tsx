@@ -10,9 +10,7 @@ import PlayOutlineIcon from "static/images/PlayOutline.svg";
 import { SectionSubTitle } from "../styles";
 import {
   Root,
-  Row,
   DemoCard,
-  DemoCardContentContainer,
   DemoCardContent,
   DemoCardIconContainer,
   DemoCardActionsContainer,
@@ -52,23 +50,21 @@ function DemosSection(): ReactElement {
 
   return (
     <Root>
-      <Row>
-        {contentList.map((content, i) => (
-          <DemoCard>
-            <DemoCardIconContainer>
-              {iconsList[i]}
-            </DemoCardIconContainer>
-            <DemoCardContentContainer>
-              <SectionSubTitle>{titleList[i]}</SectionSubTitle>
-              <DemoCardContent>{content}</DemoCardContent>
-              <DemoCardActionsContainer>
-                <DemoCardActionsGithub><GithubOutlineIcon /></DemoCardActionsGithub>
-                <DemoCardActionsPlay color={colors[i]}><PlayOutlineIcon /></DemoCardActionsPlay>
-              </DemoCardActionsContainer>
-            </DemoCardContentContainer>
-          </DemoCard>
-        ))}
-      </Row>
+      {contentList.map((content, i) => (
+        <DemoCard type="button" key={titleList[i]}>
+          <DemoCardIconContainer>
+            {iconsList[i]}
+          </DemoCardIconContainer>
+          <div>
+            <SectionSubTitle>{titleList[i]}</SectionSubTitle>
+            <DemoCardContent>{content}</DemoCardContent>
+            <DemoCardActionsContainer>
+              <DemoCardActionsGithub type="button"><GithubOutlineIcon /></DemoCardActionsGithub>
+              <DemoCardActionsPlay color={colors[i]}><PlayOutlineIcon /></DemoCardActionsPlay>
+            </DemoCardActionsContainer>
+          </div>
+        </DemoCard>
+      ))}
     </Root>
   );
 }
