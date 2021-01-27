@@ -9,6 +9,7 @@ import LinkedinIcon from "static/images/Linkedin1.svg";
 
 import { DemosSection } from "./DemosSection";
 import { EmploymentHistorySection } from "./EmploymentHistorySection";
+import { TestimonialsSection } from "./TestimonialsSection";
 import * as S from "./styles";
 
 const container = ".tagcloud";
@@ -83,6 +84,7 @@ function Portfolio(): ReactElement {
   const renderTestimonialsSection = (): ReactElement => (
     <S.SectionContainer>
       <S.SectionTitle>TESTIMONIALS</S.SectionTitle>
+      <TestimonialsSection />
     </S.SectionContainer>
   );
 
