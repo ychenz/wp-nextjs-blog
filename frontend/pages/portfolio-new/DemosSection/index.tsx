@@ -18,7 +18,7 @@ import {
   DemoCardActionsPlay
 } from "./styles";
 
-function DemosSection(): ReactElement {
+export function DemosSection(): ReactElement {
 
   const iconsList = [
     <BarChartIcon />,
@@ -36,7 +36,7 @@ function DemosSection(): ReactElement {
 
   const contentList = [
     "This demos a flexible stock market chart",
-    "Gomuku game demo: A fun game with smart AI",
+    "Play Gomuku game with a smart AI opponent",
     "Talking to my assistant on Messenger integration, wikipedia integration",
     "Headless wordpress with custom Nextjs frontend using server side rendering and SEO"
   ];
@@ -51,7 +51,11 @@ function DemosSection(): ReactElement {
   return (
     <Root>
       {contentList.map((content, i) => (
-        <DemoCard type="button" key={titleList[i]}>
+        <DemoCard
+          aria-label={`Demo button for ${titleList[i]}`}
+          type="button"
+          key={titleList[i]}
+        >
           <DemoCardIconContainer>
             {iconsList[i]}
           </DemoCardIconContainer>
@@ -68,5 +72,3 @@ function DemosSection(): ReactElement {
     </Root>
   );
 }
-
-export default DemosSection;

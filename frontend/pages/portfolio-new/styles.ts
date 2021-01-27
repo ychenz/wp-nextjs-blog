@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { cssVariables } from "src/styles/css";
 
+export const marginContentToTopic = "40px";
+export const gridColumnDistance = "40px";
+
 const PortfolioPage = styled.div`
   max-width: 950px;
   min-width: ${cssVariables.postContentMinWidth};
@@ -19,7 +22,7 @@ export const TopBar = styled.div`
 export const BackButton = styled.button`
   font-size: ${cssVariables.largeFontSize};
   font-weight: ${cssVariables.mediumFontWeight};
-  font-family: "Nunito", sans-serif;
+  font-family: ${cssVariables.contentFontFamily};
   background: none;
   border: none;
   cursor: pointer;
@@ -37,21 +40,21 @@ export const IconContainer = styled.a`
 `;
 
 export const SectionTitle = styled.div`
-  font-family: "Saira", sans-serif;
+  font-family: ${cssVariables.titleFontFamily};
   font-size: ${cssVariables.xxLargeFontSize};
   line-height: 32px;
   font-weight: ${cssVariables.heavyFontWeight};
 `;
 
 export const SectionSubTitle = styled.div`
-  font-family: "Saira", sans-serif;
+  font-family: ${cssVariables.titleFontFamily};
   font-size: ${cssVariables.largeFontSize};
   line-height: 24px;
   font-weight: ${cssVariables.heavyFontWeight};
 `;
 
 export const SectionContent = styled.div`
-  font-family: "Nunito", sans-serif;
+  font-family: ${cssVariables.contentFontFamily};
   font-size: ${cssVariables.largeFontSize};
   line-height: 22px;
 `;
@@ -74,7 +77,7 @@ export const FooterContainer = styled.div`
  * Self Intro section
  */
 export const SelfIntroSectionTitle = styled.div`
-  font-family: "Saira", sans-serif;
+  font-family: ${cssVariables.titleFontFamily};
   font-size: ${cssVariables.pentaLargeFontSize};
   line-height: 56px;
   font-weight: ${cssVariables.heavyFontWeight};
@@ -95,7 +98,7 @@ export const PastWorkSectionContainer = styled.div`
 `;
 
 export const PastWorkSectionEntry = styled.div`
-  margin: 40px 40px 0 0;
+  margin: ${marginContentToTopic} ${gridColumnDistance} 0 0;
   
   &:nth-child(4n) {
     margin-right: 0;
@@ -117,7 +120,7 @@ export const PastWorkSectionEntryTitle = styled.button`
   text-align: left;
   padding: 0;
   margin-top: ${cssVariables.uiUnitDouble};
-  font-family: "Nunito", sans-serif;
+  font-family: ${cssVariables.contentFontFamily};
   font-size: ${cssVariables.largeFontSize};
   text-decoration-line: underline;
   line-height: 20px;
@@ -128,7 +131,7 @@ export const PastWorkSectionEntryTitle = styled.button`
  * Skills section
  */
 export const SkillsSectionTagCloudContainer = styled.div`
-  margin-top: 40px;
+  margin-top: ${marginContentToTopic};
   width: 290px;
   height: 206px;
 `;
@@ -137,7 +140,7 @@ export const SkillsSectionTagCloudContainer = styled.div`
  * Contact section
  */
 export const ContactSectionContainer = styled.div`
-  margin-top: 40px;
+  margin-top: ${marginContentToTopic};
 `;
 
 export const ContactSectionSocialIconsContainer = styled.div`
@@ -156,7 +159,7 @@ export const ContactSectionDownloadResumeButton = styled.button`
   text-align: left;
   padding: 0;
   margin-top: 24px;
-  font-family: "Saira", sans-serif;
+  font-family: ${cssVariables.titleFontFamily};
   font-size: ${cssVariables.largeFontSize};
   font-weight: ${cssVariables.mediumFontWeight};
   text-decoration-line: underline;
@@ -166,7 +169,7 @@ export const ContactSectionDownloadResumeButton = styled.button`
 
 export const ContactSectionCopyRight = styled.div`
   margin-top: 64px;
-  font-family: "Nunito", sans-serif;
+  font-family: ${cssVariables.contentFontFamily};
   font-size: ${cssVariables.largeFontSize};
   line-height: 22px;
  

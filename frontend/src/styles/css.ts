@@ -1,3 +1,5 @@
+import {black} from "color-name";
+
 export const cssColors = {
   colorUiPrimary: "#A161BF",
   colorModernBlue: "#1DA7DA",
@@ -17,7 +19,9 @@ export const cssColors = {
   colorGreen: "#00FF00",
   colorTransparent: "transparent",
   colorGoodTransparent: "rgba(82, 213, 139, 0.8)",
-  colorBadTransparent: "rgba(238, 68, 58, 0.8)"
+  colorBadTransparent: "rgba(238, 68, 58, 0.8)",
+
+  colorBorder: "black",
 };
 
 export const cssVariables = {
@@ -48,10 +52,20 @@ export const cssVariables = {
   xLargeBorderRadius: "12px",
 
   titleFontFamily: "Saira, sans-serif",
+  contentFontFamily: "Nunito, sans-serif",
 
   boxShadowHoverStyle: `
     &:hover {
       box-shadow: 0 4px 6px rgba(2, 14, 29, 0.08);
+    }
+  `,
+  focusStyle: `
+    &:focus {
+      outline: none;
+      
+      &:not(:active) {
+          background: ${cssColors.colorGray3};
+      }
     }
   `,
 };

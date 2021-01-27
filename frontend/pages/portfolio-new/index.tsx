@@ -7,7 +7,8 @@ import FacebookIcon from "static/images/Facebook1.svg";
 import GithubIcon from "static/images/Github1.svg";
 import LinkedinIcon from "static/images/Linkedin1.svg";
 
-import DemosSection from "./DemosSection";
+import { DemosSection } from "./DemosSection";
+import { EmploymentHistorySection } from "./EmploymentHistorySection";
 import * as S from "./styles";
 
 const container = ".tagcloud";
@@ -75,6 +76,7 @@ function Portfolio(): ReactElement {
   const renderEmploymentHistorySection = (): ReactElement => (
     <S.SectionContainer>
       <S.SectionTitle>EMPLOYMENT HISTORY</S.SectionTitle>
+      <EmploymentHistorySection />
     </S.SectionContainer>
   );
 

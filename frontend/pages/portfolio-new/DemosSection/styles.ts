@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { cssVariables } from "src/styles/css";
 
+import { marginContentToTopic, gridColumnDistance } from "../styles";
+
 const DemosSection = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -14,7 +16,7 @@ export const DemoCard = styled.button`
   width: 412px;
   cursor: pointer;
   padding: 4px;
-  margin: 40px 40px 0 0;
+  margin: ${marginContentToTopic} ${gridColumnDistance} 0 0;
   
   ${cssVariables.boxShadowHoverStyle}
   
@@ -28,7 +30,7 @@ export const DemoCardIconContainer = styled.div`
 `;
 
 export const DemoCardContent = styled.div`
-  font-family: "Nunito", sans-serif;
+  font-family: ${cssVariables.contentFontFamily};
   font-size: ${cssVariables.largeFontSize};
   line-height: ${cssVariables.paragraphFontSize};
   margin-top: ${cssVariables.uiUnitDouble};
