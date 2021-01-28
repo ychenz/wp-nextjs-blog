@@ -5,7 +5,7 @@ import {
 } from "../styles";
 import * as S from "./styles";
 
-export function EmploymentHistorySection(): React.ReactElement {
+export default function EmploymentHistorySection(): React.ReactElement {
   const [employmentIndex, setEmploymentIndex] = useState(0);
 
   const data = [

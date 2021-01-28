@@ -18,7 +18,7 @@ import {
   DemoCardActionsPlay
 } from "./styles";
 
-export function DemosSection(): ReactElement {
+export default function DemosSection(): ReactElement {
 
   const iconsList = [
     <BarChartIcon />,
