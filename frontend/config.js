@@ -4,10 +4,11 @@ let wpUrl = "http://localhost:8080/wp-json";
 if (process.env.HOME === "/home/node") {
   wpUrl = "http://wp-headless:8080/wp-json";
 }
-// else {
-//   // Production
-//   wpUrl = "https://www.yuchenz.net/wp-json";
-// }
+
+// If we are in production, using wordpress api hosted on bluehost
+if (process.env.NODE_ENV === "production") {
+  wpUrl = "https://www.yuchenz.net/wp-json";
+}
 
 const Config = {
   apiUrl: wpUrl,
