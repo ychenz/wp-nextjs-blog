@@ -7,7 +7,7 @@ import DocumentIcon from "static/images/Document.svg";
 import GithubOutlineIcon from "static/images/GithubOutline.svg";
 import PlayOutlineIcon from "static/images/PlayOutline.svg";
 
-import { SectionSubTitle } from "../styles";
+import { SectionSubTitle } from "page-assets/portfolio-new/styles";
 import {
   Root,
   DemoCard,
@@ -16,7 +16,7 @@ import {
   DemoCardActionsContainer,
   DemoCardActionsGithub,
   DemoCardActionsPlay
-} from "./styles";
+} from "page-assets/portfolio-new/DemosSection/styles";
 
 export default function DemosSection(): ReactElement {
 

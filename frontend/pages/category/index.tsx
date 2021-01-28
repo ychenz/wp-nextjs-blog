@@ -10,7 +10,7 @@ import wp from "services/WPAPIConfig";
 import { WPCategory, WPPost } from "services/dataModels";
 import {
   CategoryContainer
-} from "./styles";
+} from "page-assets/category/styles";
 
 const transition = transitions.scaleDown;
 

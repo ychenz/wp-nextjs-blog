@@ -13,7 +13,7 @@ import {
   CreationDate,
   CategoryContainer,
   Content
-} from "./styles";
+} from "page-assets/post/styles";
 
 interface PostProps {
   post: WPPost;

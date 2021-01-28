@@ -6,11 +6,11 @@ import EmailIcon from "static/images/Email1.svg";
 import FacebookIcon from "static/images/Facebook1.svg";
 import GithubIcon from "static/images/Github1.svg";
 import LinkedinIcon from "static/images/Linkedin1.svg";
+import * as S from "page-assets/portfolio-new/styles";
 
 import DemosSection from "./DemosSection";
 import EmploymentHistorySection from "./EmploymentHistorySection";
 import TestimonialsSection from "./TestimonialsSection";
-import * as S from "./styles";
 
 const container = ".tagcloud";
 const texts = [

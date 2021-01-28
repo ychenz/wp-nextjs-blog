@@ -4,12 +4,12 @@ import React, { ReactElement } from "react";
 import Particles, { IParticlesParams } from "react-particles-js";
 import Button from "components/Button";
 import PageWrapper from "components/PageWrapper";
-import particles from "./particles.json";
+import particles from "page-assets/portfolio/particles.json";
 import {
   ParticleBackground,
   Title,
   ButtonContainer
-} from "./styles";
+} from "page-assets/portfolio/styles";
 
 function Portfolio(): ReactElement {
   return (

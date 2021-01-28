@@ -12,7 +12,6 @@ import ExchangeIcon from "static/images/Exchange.svg";
 import ArrowUp from "static/images/ArrowUp.svg";
 import ArrowDown from "static/images/ArrowDown.svg";
 import ConnectorIcon from "static/images/Connector.svg";
-import StockSelectionModal, { SavedSymbols } from "./StockSelectionModal";
 import {
   Root,
   HorizontalContainer,
@@ -27,8 +26,8 @@ import {
   DateRangeSelectorContainer,
   TickerCompared,
   ConnectorIconContainer
-} from "./styles";
-import testData from "./test_data.json";
+} from "page-assets/portfolio/charting/styles";
+import StockSelectionModal, { SavedSymbols } from "./StockSelectionModal";
 
 const ROUTE_PATH = "/portfolio/charting";
 // const FMP_API_KEY = "68ea4a477785266e41b4ec5478fc6a1d";
