@@ -7,7 +7,7 @@ if (process.env.HOME === "/home/node") {
 
 // If we are in production, using wordpress api hosted on bluehost
 if (process.env.NODE_ENV === "production") {
-  wpUrl = "https://www.yuchenz.net/wp-json";
+  wpUrl = "https://blogapi.yuchenz.net/wp-json";
 }
 
 const Config = {
