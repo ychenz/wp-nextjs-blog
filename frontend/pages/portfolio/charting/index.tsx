@@ -27,7 +27,7 @@ import {
   TickerCompared,
   ConnectorIconContainer
 } from "page-assets/portfolio/charting/styles";
-import StockSelectionModal, { SavedSymbols } from "./StockSelectionModal";
+import StockSelectionModal, { SavedSymbols } from "page-assets/portfolio/charting/StockSelectionModal";
 
 const ROUTE_PATH = "/portfolio/charting";
 // const FMP_API_KEY = "68ea4a477785266e41b4ec5478fc6a1d";

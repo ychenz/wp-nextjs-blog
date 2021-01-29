@@ -11,7 +11,7 @@ import {
   AddComparisonButtonContainer,
   AddComparisonButtonText,
   SaveButtonContainer
-} from "page-assets/portfolio/charting/StockSelectionModal/styles";
+} from "./styles";
 
 export interface SavedSymbols {
   symbol: string;
