@@ -14,7 +14,7 @@ import {
   DemoCardContent,
   DemoCardIconContainer,
   DemoCardActionsContainer,
-  DemoCardActionsGithub,
+  DemoCardActionsViewCode,
   DemoCardActionsPlay
 } from "./styles";
 
@@ -63,7 +63,7 @@ export default function DemosSection(): ReactElement {
             <SectionSubTitle>{titleList[i]}</SectionSubTitle>
             <DemoCardContent>{content}</DemoCardContent>
             <DemoCardActionsContainer>
-              <DemoCardActionsGithub type="button"><GithubOutlineIcon /></DemoCardActionsGithub>
+              <DemoCardActionsViewCode color="black"><GithubOutlineIcon /></DemoCardActionsViewCode>
               <DemoCardActionsPlay color={colors[i]}><PlayOutlineIcon /></DemoCardActionsPlay>
             </DemoCardActionsContainer>
           </div>

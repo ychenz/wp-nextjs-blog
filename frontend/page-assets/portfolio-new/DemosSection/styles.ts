@@ -42,11 +42,10 @@ export const DemoCardActionsContainer = styled.div`
   margin-top: ${cssVariables.uiUnitDouble};
 `;
 
-export const DemoCardActionsGithub = styled.button`
+export const DemoCardActionsViewCode = styled.div<{ color?: string }>`
   display: flex;
   align-items: center;
-  background: none;
-  border: none;
+  stroke: ${p => p.color};
   cursor: pointer;
   padding: 0;
 `;

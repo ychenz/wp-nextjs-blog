@@ -20,7 +20,7 @@ const texts = [
     "MongoDB", "WebSocket",
 ];
 
-function Portfolio(): ReactElement {
+function PortfolioNew(): ReactElement {
   /**
    * Rendering tag cloud sphere
    * Docs: https://www.npmjs.com/package/TagCloud?activeTab=readme
@@ -142,4 +142,4 @@ function Portfolio(): ReactElement {
   );
 }
 
-export default Portfolio;
+export default PortfolioNew;
