@@ -8,9 +8,9 @@ import GithubIcon from "static/images/Github1.svg";
 import LinkedinIcon from "static/images/Linkedin1.svg";
 import * as S from "page-assets/portfolio-new/styles";
 
-import DemosSection from "./DemosSection";
-import EmploymentHistorySection from "./EmploymentHistorySection";
-import TestimonialsSection from "./TestimonialsSection";
+import DemosSection from "page-assets/portfolio-new/DemosSection";
+import EmploymentHistorySection from "page-assets/portfolio-new/EmploymentHistorySection";
+import TestimonialsSection from "page-assets/portfolio-new/TestimonialsSection";
 
 const container = ".tagcloud";
 const texts = [

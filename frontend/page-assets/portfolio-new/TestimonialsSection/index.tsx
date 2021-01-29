@@ -1,6 +1,6 @@
 import React from "react";
 
-import * as S from "page-assets/portfolio-new/TestimonialsSection/styles";
+import * as S from "./styles";
 
 export default function TestimonialsSection(): React.ReactElement {
   const data = [

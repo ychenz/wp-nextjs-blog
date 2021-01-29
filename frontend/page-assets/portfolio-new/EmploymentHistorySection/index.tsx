@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import {
   SectionSubTitle
 } from "page-assets/portfolio-new/styles";
-import * as S from "page-assets/portfolio-new/EmploymentHistorySection/styles";
+import * as S from "./styles";
 
 export default function EmploymentHistorySection(): React.ReactElement {
   const [employmentIndex, setEmploymentIndex] = useState(0);

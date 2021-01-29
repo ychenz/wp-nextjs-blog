@@ -16,7 +16,7 @@ import {
   DemoCardActionsContainer,
   DemoCardActionsGithub,
   DemoCardActionsPlay
-} from "page-assets/portfolio-new/DemosSection/styles";
+} from "./styles";
 
 export default function DemosSection(): ReactElement {
 
