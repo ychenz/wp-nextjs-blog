@@ -15,7 +15,12 @@ export default function DemoSubpage(): ReactElement {
 
   const demoTitle = demosList.find(
     demoOption => demoOption.value === demo
-  ).name;
+  );
+
+  // This can be none on 1st render after refresh before value is injected from router
+  if (!demoTitle) {
+    return null;
+  }
 
   return (
     <PortfolioPageStyle.Root>
@@ -28,7 +33,7 @@ export default function DemoSubpage(): ReactElement {
         </PortfolioPageStyle.IconContainer>
       </PortfolioPageStyle.TopBar>
       <S.Title>
-        {demoTitle}
+        {demoTitle.name}
       </S.Title>
     </PortfolioPageStyle.Root>
   );
