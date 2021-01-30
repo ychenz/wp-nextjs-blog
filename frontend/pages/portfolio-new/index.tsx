@@ -108,10 +108,10 @@ function PortfolioNew(): ReactElement {
           <S.ContactSectionSocialIconsButton href="https://www.linkedin.com/in/yuchen-zhao-69a3a3ab">
             <LinkedinIcon />
           </S.ContactSectionSocialIconsButton>
-          <S.ContactSectionSocialIconsButton href="https://www.facebook.com">
+          <S.ContactSectionSocialIconsButton href="https://www.facebook.com/profile.php?id=100008167328586">
             <FacebookIcon />
           </S.ContactSectionSocialIconsButton>
-          <S.ContactSectionSocialIconsButton href="https://www.linkedin.com/in/yuchen-zhao-69a3a3ab">
+          <S.ContactSectionSocialIconsButton href="https://github.com/ychenz">
             <GithubIcon />
           </S.ContactSectionSocialIconsButton>
           <S.ContactSectionSocialIconsButton href="#">
