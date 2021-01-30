@@ -105,10 +105,18 @@ function PortfolioNew(): ReactElement {
           I can’t wait to help you make your dream website into reality. Let’s chat!
         </S.SectionContent>
         <S.ContactSectionSocialIconsContainer>
-          <LinkedinIcon />
-          <FacebookIcon />
-          <GithubIcon />
-          <EmailIcon />
+          <S.ContactSectionSocialIconsButton href="https://www.linkedin.com/in/yuchen-zhao-69a3a3ab">
+            <LinkedinIcon />
+          </S.ContactSectionSocialIconsButton>
+          <S.ContactSectionSocialIconsButton href="https://www.facebook.com">
+            <FacebookIcon />
+          </S.ContactSectionSocialIconsButton>
+          <S.ContactSectionSocialIconsButton href="https://www.linkedin.com/in/yuchen-zhao-69a3a3ab">
+            <GithubIcon />
+          </S.ContactSectionSocialIconsButton>
+          <S.ContactSectionSocialIconsButton href="#">
+            <EmailIcon />
+          </S.ContactSectionSocialIconsButton>
         </S.ContactSectionSocialIconsContainer>
         <S.ContactSectionDownloadResumeButton type="button">
           Download Resume

@@ -147,10 +147,13 @@ export const ContactSectionSocialIconsContainer = styled.div`
   display: flex;
   margin-top: 24px;
   align-items: center;
-  
-  & > svg {
-    margin-right: ${cssVariables.uiUnitDouble};
-  }
+`;
+
+export const ContactSectionSocialIconsButton = styled.a`
+  cursor: pointer;
+  margin-right: ${cssVariables.uiUnitDouble};
+
+  ${cssVariables.boxShadowHoverStyle};
 `;
 
 export const ContactSectionDownloadResumeButton = styled.button`
@@ -172,5 +175,4 @@ export const ContactSectionCopyRight = styled.div`
   font-family: ${cssVariables.contentFontFamily};
   font-size: ${cssVariables.largeFontSize};
   line-height: 22px;
- 
 `;
