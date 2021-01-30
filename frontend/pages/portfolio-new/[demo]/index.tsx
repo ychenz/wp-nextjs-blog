@@ -13,12 +13,12 @@ export default function DemoSubpage(): ReactElement {
   const router = useRouter();
   const { demo } = router.query;
 
-  const demoTitle = demosList.find(
+  const selectedDemoOption = demosList.find(
     demoOption => demoOption.value === demo
   );
 
   // This can be none on 1st render after refresh before value is injected from router
-  if (!demoTitle) {
+  if (!selectedDemoOption) {
     return null;
   }
 
@@ -33,8 +33,16 @@ export default function DemoSubpage(): ReactElement {
         </PortfolioPageStyle.IconContainer>
       </PortfolioPageStyle.TopBar>
       <S.Title>
-        {demoTitle.name}
+        {selectedDemoOption.name}
       </S.Title>
+      <S.Description>
+        {selectedDemoOption.description}
+      </S.Description>
+      {process.env.NODE_ENV === "development" && (
+        <S.DemoIFrameContainer>
+          <S.DemoIFrame src="http://localhost:3001" title={`${selectedDemoOption.name} Demo`} />
+        </S.DemoIFrameContainer>
+      )}
     </PortfolioPageStyle.Root>
   );
 }

@@ -22,30 +22,38 @@ import {
 export interface DemoOption{
   name: string;
   value: string;
+  description: string;
 }
 
 export const demosList: DemoOption[] = [
-  { name: "Analytics", value: "analytics" },
-  { name: "Web Game", value: "web-game" },
-  { name: "Integrations", value: "integrations" },
-  { name: "Personal Website", value: "personal-website" },
+  {
+    name: "Analytics",
+    value: "analytics",
+    description: "This demos a flexible stock market chart"
+  },
+  {
+    name: "Web Game",
+    value: "web-game",
+    description: "Play Gomuku game with a smart AI opponent"
+  },
+  {
+    name: "Integrations",
+    value: "integrations",
+    description: "Talking to my virtual assistant on Messenger integration, wikipedia integration"
+  },
+  {
+    name: "Personal Website",
+    value: "personal-website",
+    description: "Headless wordpress with custom Nextjs frontend using server side rendering and SEO"
+  },
 ];
 
 export default function DemosSection(): ReactElement {
-
   const iconsList = [
     <BarChartIcon />,
     <GamePadIcon />,
     <CloudApiIcon />,
     <DocumentIcon />
-  ];
-
-
-  const contentList = [
-    "This demos a flexible stock market chart",
-    "Play Gomuku game with a smart AI opponent",
-    "Talking to my assistant on Messenger integration, wikipedia integration",
-    "Headless wordpress with custom Nextjs frontend using server side rendering and SEO"
   ];
 
   const colors = [
@@ -57,19 +65,19 @@ export default function DemosSection(): ReactElement {
 
   return (
     <Root>
-      {contentList.map((content, i) => (
-        <Link href="/portfolio-new/[demo]" as={`/portfolio-new/${demosList[i].value}`}>
+      {demosList.map((demoOption, i) => (
+        <Link href="/portfolio-new/[demo]" as={`/portfolio-new/${demoOption.value}`}>
           <DemoCard
-            aria-label={`Demo button for ${demosList[i].name}`}
+            aria-label={`Demo button for ${demoOption.name}`}
             type="button"
-            key={demosList[i].value}
+            key={demoOption.value}
           >
             <DemoCardIconContainer>
               {iconsList[i]}
             </DemoCardIconContainer>
             <div>
-              <SectionSubTitle>{demosList[i].name}</SectionSubTitle>
-              <DemoCardContent>{content}</DemoCardContent>
+              <SectionSubTitle>{demoOption.name}</SectionSubTitle>
+              <DemoCardContent>{demoOption.description}</DemoCardContent>
               <DemoCardActionsContainer>
                 <DemoCardActionsViewCode color="black"><GithubOutlineIcon /></DemoCardActionsViewCode>
                 <DemoCardActionsPlay color={colors[i]}><PlayOutlineIcon /></DemoCardActionsPlay>
