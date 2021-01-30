@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+import Link from "next/link";
 
 import BarChartIcon from "static/images/BarChart.svg";
 import GamePadIcon from "static/images/GamePad.svg";
@@ -18,6 +19,18 @@ import {
   DemoCardActionsPlay
 } from "./styles";
 
+export interface DemoOption{
+  name: string;
+  value: string;
+}
+
+export const demosList: DemoOption[] = [
+  { name: "Analytics", value: "analytics" },
+  { name: "Web Game", value: "web-game" },
+  { name: "Integrations", value: "integrations" },
+  { name: "Personal Website", value: "personal-website" },
+];
+
 export default function DemosSection(): ReactElement {
 
   const iconsList = [
@@ -27,12 +40,6 @@ export default function DemosSection(): ReactElement {
     <DocumentIcon />
   ];
 
-  const titleList = [
-    "Analytics",
-    "Web Game",
-    "Integrations",
-    "Personal Website"
-  ];
 
   const contentList = [
     "This demos a flexible stock market chart",
@@ -51,23 +58,25 @@ export default function DemosSection(): ReactElement {
   return (
     <Root>
       {contentList.map((content, i) => (
-        <DemoCard
-          aria-label={`Demo button for ${titleList[i]}`}
-          type="button"
-          key={titleList[i]}
-        >
-          <DemoCardIconContainer>
-            {iconsList[i]}
-          </DemoCardIconContainer>
-          <div>
-            <SectionSubTitle>{titleList[i]}</SectionSubTitle>
-            <DemoCardContent>{content}</DemoCardContent>
-            <DemoCardActionsContainer>
-              <DemoCardActionsViewCode color="black"><GithubOutlineIcon /></DemoCardActionsViewCode>
-              <DemoCardActionsPlay color={colors[i]}><PlayOutlineIcon /></DemoCardActionsPlay>
-            </DemoCardActionsContainer>
-          </div>
-        </DemoCard>
+        <Link href="/portfolio-new/[demo]" as={`/portfolio-new/${demosList[i].value}`}>
+          <DemoCard
+            aria-label={`Demo button for ${demosList[i].name}`}
+            type="button"
+            key={demosList[i].value}
+          >
+            <DemoCardIconContainer>
+              {iconsList[i]}
+            </DemoCardIconContainer>
+            <div>
+              <SectionSubTitle>{demosList[i].name}</SectionSubTitle>
+              <DemoCardContent>{content}</DemoCardContent>
+              <DemoCardActionsContainer>
+                <DemoCardActionsViewCode color="black"><GithubOutlineIcon /></DemoCardActionsViewCode>
+                <DemoCardActionsPlay color={colors[i]}><PlayOutlineIcon /></DemoCardActionsPlay>
+              </DemoCardActionsContainer>
+            </div>
+          </DemoCard>
+        </Link>
       ))}
     </Root>
   );
