@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/headless-wp-starter.iml" filepath="$PROJECT_DIR$/.idea/headless-wp-starter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/yuchen-dev-blog.iml" filepath="$PROJECT_DIR$/.idea/yuchen-dev-blog.iml" />
     </modules>
   </component>
 </project>
