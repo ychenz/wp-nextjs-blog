@@ -52,6 +52,19 @@
   "rules": {
     // note you must disable the base rule as it can report incorrect errors
     "no-use-before-define": "off",
+
+    // Solves: Missing file extension "ts" for "./styles"
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/prop-types": 0,
 

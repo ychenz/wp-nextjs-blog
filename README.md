@@ -2,6 +2,13 @@
 
 ## Yuchen's Development Blog
 
+#### Debug notes
+
+To fix failed docker image by removing them after project name change.
+
+    docker ps -a
+    docker rm -f wp-headless
+    rm -f db-headless
 
 #### Setup Docs
 
