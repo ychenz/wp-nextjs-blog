@@ -1,5 +1,3 @@
-import {black} from "color-name";
-
 export const cssColors = {
   colorUiPrimary: "#A161BF",
   colorModernBlue: "#1DA7DA",

@@ -23,28 +23,33 @@ export interface DemoOption{
   name: string;
   value: string;
   description: string;
+  url: string;
 }
 
 export const demosList: DemoOption[] = [
   {
     name: "Analytics",
     value: "analytics",
-    description: "This demos a flexible stock market chart"
+    description: "This demos a flexible stock market chart",
+    url: "#"
   },
   {
     name: "Web Game",
     value: "web-game",
-    description: "Play Gomuku game with a smart AI opponent"
+    description: "Play Gomuku game with a smart AI opponent",
+    url: "https://gomoku-demo.yuchenz.net/"
   },
   {
     name: "Integrations",
     value: "integrations",
-    description: "Talking to my virtual assistant on Messenger integration, wikipedia integration"
+    description: "Talking to my virtual assistant on Messenger integration, wikipedia integration",
+    url: "#"
   },
   {
     name: "Personal Website",
     value: "personal-website",
-    description: "Headless wordpress with custom Nextjs frontend using server side rendering and SEO"
+    description: "Headless wordpress with custom Nextjs frontend using server side rendering and SEO",
+    url: "#"
   },
 ];
 
