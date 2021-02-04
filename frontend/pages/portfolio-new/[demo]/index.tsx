@@ -38,11 +38,9 @@ export default function DemoSubpage(): ReactElement {
       <S.Description>
         {selectedDemoOption.description}
       </S.Description>
-      {process.env.NODE_ENV === "development" && (
-        <S.DemoIFrameContainer>
-          <S.DemoIFrame src={selectedDemoOption.url} title={`${selectedDemoOption.name} Demo`} />
-        </S.DemoIFrameContainer>
-      )}
+      <S.DemoIFrameContainer>
+        <S.DemoIFrame src={selectedDemoOption.url} title={`${selectedDemoOption.name} Demo`} />
+      </S.DemoIFrameContainer>
     </PortfolioPageStyle.Root>
   );
 }
