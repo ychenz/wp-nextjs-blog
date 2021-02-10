@@ -31,7 +31,7 @@ export const demosList: DemoOption[] = [
     name: "Analytics",
     value: "analytics",
     description: "This demos a flexible stock market chart",
-    url: "#"
+    url: "https://stock-chart-demo.yuchenz.net/"
   },
   {
     name: "Web Game",
