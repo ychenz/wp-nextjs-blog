@@ -39,7 +39,7 @@ export default function DemoSubpage(): ReactElement {
         {selectedDemoOption.description}
       </S.Description>
       <S.DemoIFrameContainer>
-        <S.DemoIFrame src={selectedDemoOption.url} title={`${selectedDemoOption.name} Demo`} />
+        <S.DemoIFrame src={selectedDemoOption.url} title={`${selectedDemoOption.name} Demo`} frameBorder="0" />
       </S.DemoIFrameContainer>
     </PortfolioPageStyle.Root>
   );

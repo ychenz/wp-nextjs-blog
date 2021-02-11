@@ -23,6 +23,7 @@ export const DemoIFrameContainer = styled.div`
   margin-top: 64px;
   width: 100%;
   padding-top: 56.25%; // 16:9 Aspect Ratio (divide 9 by 16 = 0.5625)
+  border: 1px solid black;
 `;
 
 export const DemoIFrame = styled.iframe`
