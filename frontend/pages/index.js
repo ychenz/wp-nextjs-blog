@@ -52,5 +52,6 @@ class Index extends Component {
   }
 }
 
-export default PageWrapper(Index);
-
+// PageWrapper Need to fetch menu from wordpress, disable for now
+// export default PageWrapper(Index);
+export default Index;
