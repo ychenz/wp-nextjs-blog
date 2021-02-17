@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Router from "next/router";
 import StackGrid, { transitions, easings } from "react-stack-grid";
 import wp from "../services/WPAPIConfig";
 import Layout from "../components/Layout";
@@ -9,9 +10,16 @@ const transition = transitions.scaleDown;
 
 class Index extends Component {
   static async getInitialProps() {
-    const posts = await wp.posts().embed();
+    // TODO Can't fetch blogs for now as blog is not ready
+    // const posts = await wp.posts().embed();
+    const posts = [];
 
     return { posts };
+  }
+
+  componentDidMount() {
+    // Pointing home page to portfolio page temporarily, while blog is not ready to launch
+    Router.push("/portfolio-new");
   }
 
   render() {

@@ -49,7 +49,7 @@ function PortfolioNew(): ReactElement {
   const renderDemosSection = (): ReactElement => (
     <S.SectionContainer>
       <S.SectionTitle>DEMOS</S.SectionTitle>
-      <DemosSection/>
+      <DemosSection />
     </S.SectionContainer>
   );
 
@@ -131,8 +131,8 @@ function PortfolioNew(): ReactElement {
   return (
     <S.Root>
       <S.TopBar>
-        <S.BackButton type="button">&#8592;{" "}BACK</S.BackButton>
-        <S.IconContainer href="/">
+          {/* <S.BackButton type="button">&#8592;{" "}TO BLOG</S.BackButton> */}
+        <S.IconContainer href="/portfolio-new">
           <LogoIcon />
         </S.IconContainer>
       </S.TopBar>
