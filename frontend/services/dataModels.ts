@@ -13,17 +13,17 @@ export interface WPPost {
   type: string;  // Whether this is a post or something else (everything is a post in wp x.x)
   title: {
     rendered: string;
-  },
+  };
   modified_gmt: string; // e.g: "2019-11-20T18:24:13"
   date_gmt: string; // date created
   slug: string; // post name in link
   _embedded: {
     "wp:featuredmedia": WPMedia[];
     "wp:term": WPCategory[][];
-  },
+  };
   content: {
     rendered: string; // embedded thml string
-  }
+  };
 }
 
 export function getFeaturedImageUrl(post: Partial<WPPost>): string | null {

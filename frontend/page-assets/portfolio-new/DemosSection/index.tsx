@@ -24,6 +24,7 @@ export interface DemoOption{
   value: string;
   description: string;
   url: string;
+  sourceUrl: string;
 }
 
 export const demosList: DemoOption[] = [
@@ -31,25 +32,29 @@ export const demosList: DemoOption[] = [
     name: "Analytics",
     value: "analytics",
     description: "This demos a flexible stock market chart",
-    url: "https://stock-chart-demo.yuchenz.net/"
+    url: "https://stock-chart-demo.yuchenz.net/",
+    sourceUrl: "https://github.com/ychenz/stock-chart-demo"
   },
   {
     name: "Web Game",
     value: "web-game",
     description: "Play Gomuku game with a smart AI opponent",
-    url: "https://gomoku-demo.yuchenz.net/"
+    url: "https://gomoku-demo.yuchenz.net/",
+    sourceUrl: "https://github.com/ychenz/gomoku-web-game-demo"
   },
   {
     name: "Integrations",
     value: "integrations",
     description: "Talking to my virtual assistant on Messenger integration, wikipedia integration",
-    url: "#"
+    url: "#",
+    sourceUrl: "#"
   },
   {
     name: "Personal Website",
     value: "personal-website",
     description: "Headless wordpress with custom Nextjs frontend using server side rendering and SEO",
-    url: "#"
+    url: "#",
+    sourceUrl: "#"
   },
 ];
 
@@ -71,25 +76,23 @@ export default function DemosSection(): ReactElement {
   return (
     <Root>
       {demosList.map((demoOption, i) => (
-        <Link href="/portfolio-new/[demo]" as={`/portfolio-new/${demoOption.value}`}>
-          <DemoCard
-            aria-label={`Demo button for ${demoOption.name}`}
-            type="button"
-            key={demoOption.value}
-          >
-            <DemoCardIconContainer>
-              {iconsList[i]}
-            </DemoCardIconContainer>
-            <div>
-              <SectionSubTitle>{demoOption.name}</SectionSubTitle>
-              <DemoCardContent>{demoOption.description}</DemoCardContent>
-              <DemoCardActionsContainer>
-                <DemoCardActionsViewCode color="black"><GithubOutlineIcon /></DemoCardActionsViewCode>
+        <DemoCard key={demoOption.value}>
+          <DemoCardIconContainer>
+            {iconsList[i]}
+          </DemoCardIconContainer>
+          <div>
+            <SectionSubTitle>{demoOption.name}</SectionSubTitle>
+            <DemoCardContent>{demoOption.description}</DemoCardContent>
+            <DemoCardActionsContainer>
+              <DemoCardActionsViewCode color="black" href={demoOption.sourceUrl}>
+                <GithubOutlineIcon />
+              </DemoCardActionsViewCode>
+              <Link href="/portfolio-new/[demo]" as={`/portfolio-new/${demoOption.value}`}>
                 <DemoCardActionsPlay color={colors[i]}><PlayOutlineIcon /></DemoCardActionsPlay>
-              </DemoCardActionsContainer>
-            </div>
-          </DemoCard>
-        </Link>
+              </Link>
+            </DemoCardActionsContainer>
+          </div>
+        </DemoCard>
       ))}
     </Root>
   );

@@ -22,7 +22,7 @@ export const DemoIFrameContainer = styled.div`
   overflow: hidden;
   margin-top: 64px;
   width: 100%;
-  padding-top: 56.25%; // 16:9 Aspect Ratio (divide 9 by 16 = 0.5625)
+  padding-top: 560px;
   border: 1px solid black;
 `;
 
@@ -34,4 +34,23 @@ export const DemoIFrame = styled.iframe`
   right: 0;
   width: 100%;
   height: 100%;
+`;
+
+export const ViewCodeButton = styled.a`
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  color: black;
+  font-family: ${cssVariables.titleFontFamily};
+  font-size: ${cssVariables.largeFontSize};
+  font-weight: ${cssVariables.mediumFontWeight};
+  text-decoration-line: underline;
+  line-height: 24px;
+  cursor: pointer;
+  
+  & > svg {
+    margin-left: ${cssVariables.uiUnit};
+    height: ${cssVariables.uiUnitDouble};
+    width: ${cssVariables.uiUnitDouble};
+  }
 `;

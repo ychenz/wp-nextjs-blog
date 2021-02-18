@@ -6,6 +6,7 @@ import { demosList } from "page-assets/portfolio-new/DemosSection";
 
 import * as PortfolioPageStyle from "page-assets/portfolio-new/styles";
 import LogoIcon from "static/images/LogoV1.svg";
+import OpenInNewIcon from "static/images/OpenInNew.svg";
 
 import * as S from "page-assets/portfolio-new/[demo]/styles";
 
@@ -41,6 +42,10 @@ export default function DemoSubpage(): ReactElement {
       <S.DemoIFrameContainer>
         <S.DemoIFrame src={selectedDemoOption.url} title={`${selectedDemoOption.name} Demo`} frameBorder="0" />
       </S.DemoIFrameContainer>
+      <S.ViewCodeButton href={selectedDemoOption.sourceUrl}>
+        <div>View Code</div>
+        <OpenInNewIcon />
+      </S.ViewCodeButton>
     </PortfolioPageStyle.Root>
   );
 }

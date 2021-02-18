@@ -8,13 +8,12 @@ const DemosSection = styled.div`
   flex-wrap: wrap;
 `;
 
-export const DemoCard = styled.button`
+export const DemoCard = styled.div`
   background: none;
   border: none;
   text-align: left;
   display: flex;
   width: 412px;
-  cursor: pointer;
   padding: 4px;
   margin: ${marginContentToTopic} ${gridColumnDistance} 0 0;
   
@@ -42,15 +41,16 @@ export const DemoCardActionsContainer = styled.div`
   margin-top: ${cssVariables.uiUnitDouble};
 `;
 
-export const DemoCardActionsViewCode = styled.div<{ color?: string }>`
+export const DemoCardActionsViewCode = styled.a<{ color?: string }>`
   display: flex;
   align-items: center;
   stroke: ${p => p.color};
   cursor: pointer;
   padding: 0;
+  z-index: 1;
 `;
 
-export const DemoCardActionsPlay = styled.div<{ color?: string }>`
+export const DemoCardActionsPlay = styled.a<{ color?: string }>`
   display: flex;
   align-items: center;
   stroke: ${p => p.color};
