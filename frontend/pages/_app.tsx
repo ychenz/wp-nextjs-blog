@@ -13,6 +13,8 @@ class MyApp extends App<AppProps> {
     const { Component, pageProps } = this.props;
 
     // Using ada-dev bot
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // @ts-ignore
     window.adaSettings = {
       handle: "polina1",
       domain: "ada-dev"
