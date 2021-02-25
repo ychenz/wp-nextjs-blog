@@ -12,18 +12,19 @@ class MyApp extends App<AppProps> {
   render(): ReactElement {
     const { Component, pageProps } = this.props;
 
-    // Using ada-dev bot
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    window.adaSettings = {
-      handle: "polina1",
-      domain: "ada-dev"
-    };
-
     return (
       <>
         <Head>
           <title>Yuchen Blog</title>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                      window.adaSettings = {
+                        domain: "ada-dev"
+                      }
+                  `,
+            }}
+          />
           <script
             id="__ada"
             data-handle="polina1"
