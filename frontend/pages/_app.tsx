@@ -12,13 +12,20 @@ class MyApp extends App<AppProps> {
   render(): ReactElement {
     const { Component, pageProps } = this.props;
 
+    // Using ada-dev bot
+    window.adaSettings = {
+      handle: "polina1",
+      domain: "ada-dev"
+    };
+
     return (
       <>
         <Head>
           <title>Yuchen Blog</title>
           <script
             id="__ada"
-            data-handle="yuchenbot"
+            data-handle="polina1"
+            // data-handle="yuchenbot"
             src="https://static.ada.support/embed2.js"
           />
         </Head>
