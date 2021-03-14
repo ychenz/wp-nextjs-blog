@@ -55,9 +55,9 @@ function Profile(): ReactElement {
   );
 
   const pastWorkData = [
-    { thumbNail: "https://i.pinimg.com/originals/61/38/5d/61385d2070289b91e3f48de78a388ace.png", title: "Analytic Line Charts" },
-    { thumbNail: "https://i.pinimg.com/originals/7c/af/52/7caf52b79a22b58e8a45bcc61e24b1ed.png", title: "Analytic Table" },
-    { thumbNail: "https://i.pinimg.com/originals/c1/76/eb/c176ebd4c94025a3249cbb93718ae720.png", title: "Analytic Dashboard" },
+    { thumbNail: "https://i.pinimg.com/originals/61/38/5d/61385d2070289b91e3f48de78a388ace.png", title: "Analytics Line Charts" },
+    { thumbNail: "https://i.pinimg.com/originals/7c/af/52/7caf52b79a22b58e8a45bcc61e24b1ed.png", title: "Analytics Table" },
+    { thumbNail: "https://i.pinimg.com/originals/c1/76/eb/c176ebd4c94025a3249cbb93718ae720.png", title: "Analytics Dashboard" },
   ];
   const renderPastWorkSection = (): ReactElement => (
     <S.SectionContainer>
@@ -115,7 +115,7 @@ function Profile(): ReactElement {
           <S.ContactSectionSocialIconsButton href="https://github.com/ychenz">
             <GithubIcon />
           </S.ContactSectionSocialIconsButton>
-          <S.ContactSectionSocialIconsButton href="#">
+          <S.ContactSectionSocialIconsButton href="mailto:yuchen@yuchenz.net">
             <EmailIcon />
           </S.ContactSectionSocialIconsButton>
         </S.ContactSectionSocialIconsContainer>
