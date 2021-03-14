@@ -9,6 +9,7 @@ import GithubOutlineIcon from "static/images/GithubOutline.svg";
 import PlayOutlineIcon from "static/images/PlayOutline.svg";
 
 import { SectionSubTitle } from "page-assets/portfolio-new/styles";
+import { profilePageName } from "services/constants";
 import {
   Root,
   DemoCard,
@@ -42,20 +43,20 @@ export const demosList: DemoOption[] = [
     url: "https://gomoku-demo.yuchenz.net/",
     sourceUrl: "https://github.com/ychenz/gomoku-web-game-demo"
   },
-  {
-    name: "Integrations",
-    value: "integrations",
-    description: "Talking to my virtual assistant on Messenger integration, wikipedia integration",
-    url: "#",
-    sourceUrl: "#"
-  },
-  {
-    name: "Personal Website",
-    value: "personal-website",
-    description: "Headless wordpress with custom Nextjs frontend using server side rendering and SEO",
-    url: "#",
-    sourceUrl: "#"
-  },
+  // {
+  //   name: "Integrations",
+  //   value: "integrations",
+  //   description: "Talking to my virtual assistant on Messenger integration, wikipedia integration",
+  //   url: "#",
+  //   sourceUrl: "#"
+  // },
+  // {
+  //   name: "Personal Website",
+  //   value: "personal-website",
+  //   description: "Headless wordpress with custom Nextjs frontend using server side rendering and SEO",
+  //   url: "#",
+  //   sourceUrl: "#"
+  // },
 ];
 
 export default function DemosSection(): ReactElement {
@@ -87,7 +88,7 @@ export default function DemosSection(): ReactElement {
               <DemoCardActionsViewCode color="black" href={demoOption.sourceUrl}>
                 <GithubOutlineIcon />
               </DemoCardActionsViewCode>
-              <Link href="/portfolio-new/[demo]" as={`/portfolio-new/${demoOption.value}`}>
+              <Link href={`/${profilePageName}/[demo]`} as={`/${profilePageName}/${demoOption.value}`}>
                 <DemoCardActionsPlay color={colors[i]}><PlayOutlineIcon /></DemoCardActionsPlay>
               </Link>
             </DemoCardActionsContainer>

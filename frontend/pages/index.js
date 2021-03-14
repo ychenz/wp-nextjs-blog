@@ -19,7 +19,7 @@ class Index extends Component {
 
   componentDidMount() {
     // Pointing home page to portfolio page temporarily, while blog is not ready to launch
-    Router.push("/portfolio-new");
+    Router.push("/profile");
   }
 
   render() {

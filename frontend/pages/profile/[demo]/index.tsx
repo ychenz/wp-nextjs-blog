@@ -9,6 +9,7 @@ import LogoIcon from "static/images/LogoV1.svg";
 import OpenInNewIcon from "static/images/OpenInNew.svg";
 
 import * as S from "page-assets/portfolio-new/[demo]/styles";
+import { profilePageName } from "services/constants";
 
 export default function DemoSubpage(): ReactElement {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function DemoSubpage(): ReactElement {
   return (
     <PortfolioPageStyle.Root>
       <PortfolioPageStyle.TopBar>
-        <Link href="/portfolio-new">
+        <Link href={`/${profilePageName}`}>
           <PortfolioPageStyle.BackButton type="button">&#8592;{" "}BACK</PortfolioPageStyle.BackButton>
         </Link>
         <PortfolioPageStyle.IconContainer href="/">

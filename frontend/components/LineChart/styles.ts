@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { cssColors, cssVariables } from "src/styles/css";
-import { CHART_HEIGHT, Y_LABEL_COUNT, X_LABEL_COUNT, MIN_CHART_WIDTH } from "./constants";
+import { CHART_HEIGHT, Y_LABEL_COUNT, X_LABEL_COUNT, MIN_CHART_WIDTH } from "./services";
 
 const Y_LABEL_WIDTH = 40;
 export const Root = styled.div`

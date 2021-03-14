@@ -11,6 +11,7 @@ import * as S from "page-assets/portfolio-new/styles";
 import DemosSection from "page-assets/portfolio-new/DemosSection";
 import EmploymentHistorySection from "page-assets/portfolio-new/EmploymentHistorySection";
 import TestimonialsSection from "page-assets/portfolio-new/TestimonialsSection";
+import { profilePageName } from "services/constants";
 
 const container = ".tagcloud";
 const texts = [
@@ -20,7 +21,7 @@ const texts = [
     "MongoDB", "WebSocket",
 ];
 
-function PortfolioNew(): ReactElement {
+function Profile(): ReactElement {
   /**
    * Rendering tag cloud sphere
    * Docs: https://www.npmjs.com/package/TagCloud?activeTab=readme
@@ -132,7 +133,7 @@ function PortfolioNew(): ReactElement {
     <S.Root>
       <S.TopBar>
           {/* <S.BackButton type="button">&#8592;{" "}TO BLOG</S.BackButton> */}
-        <S.IconContainer href="/portfolio-new">
+        <S.IconContainer href={`/${profilePageName}`}>
           <LogoIcon />
         </S.IconContainer>
       </S.TopBar>
@@ -150,4 +151,4 @@ function PortfolioNew(): ReactElement {
   );
 }
 
-export default PortfolioNew;
+export default Profile;

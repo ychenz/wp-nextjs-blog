@@ -3,7 +3,7 @@ import moment from "moment";
 import { round } from "services/mathUtils";
 import ArrowUp from "static/images/ArrowUp.svg";
 import ArrowDown from "static/images/ArrowDown.svg";
-import { X_LABEL_COUNT, Y_LABEL_COUNT, CHART_HEIGHT, diagramColors } from "./constants";
+import { X_LABEL_COUNT, Y_LABEL_COUNT, CHART_HEIGHT, diagramColors } from "./services";
 import LineChartGraph from "./LineChartGraph";
 
 import {
