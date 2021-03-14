@@ -12,23 +12,26 @@ class MyApp extends App<AppProps> {
   render(): ReactElement {
     const { Component, pageProps } = this.props;
 
+    /**
+     *     <script
+     *       dangerouslySetInnerHTML={{
+     *         __html: `
+     *           window.adaSettings = {
+     *             domain: "ada-dev"
+     *           }
+     *         `,
+     *       }}
+     *     />
+     */
+
     return (
       <>
         <Head>
           <title>Yuchen Blog</title>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                      window.adaSettings = {
-                        domain: "ada-dev"
-                      }
-                  `,
-            }}
-          />
+
           <script
             id="__ada"
-            data-handle="polina1"
-            // data-handle="yuchenbot"
+            data-handle="yuchenbot"
             src="https://static.ada.support/embed2.js"
           />
         </Head>
