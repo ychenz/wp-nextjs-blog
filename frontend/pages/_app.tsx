@@ -17,8 +17,18 @@ class MyApp extends App<AppProps> {
         <Head>
           <title>Yuchen Blog</title>
           <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                      window.adaSettings = {
+                        domain: "ada-dev"
+                      }
+                  `,
+            }}
+          />
+          <script
             id="__ada"
-            data-handle="yuchenbot"
+            data-handle="polina1"
+            // data-handle="yuchenbot"
             src="https://static.ada.support/embed2.js"
           />
         </Head>
