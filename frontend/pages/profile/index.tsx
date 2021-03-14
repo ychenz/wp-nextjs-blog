@@ -36,7 +36,7 @@ function Profile(): ReactElement {
       <S.SelfIntroSectionTitle>YUCHEN</S.SelfIntroSectionTitle>
       <S.SelfIntroSectionContainer>
         <S.SectionContent>
-          I’m a professional full-stack web developer based in Toronto.
+          I’m a professional full-stack web engineer based in Toronto.
           <br />
           Since 2018, I have been working for Ada as a web developer and the projects I built have assisted the
           company to grow its revenue by 100% from 2018 to year end 2020. I am specialized in building front-end

@@ -5,18 +5,12 @@ import * as S from "./styles";
 export default function TestimonialsSection(): React.ReactElement {
   const data = [
     {
-      providerAvatar: "https://i.pinimg.com/originals/12/81/01/128101caae845d451425fd1ac767d3a0.jpg",
-      providerName: "Yuchen Zhao",
-      providerPosition: "Full-stack Developer",
-      testimonialLink: "https://www.linkedin.com/",
-      testimonial: "Test text: Since 2018, I have been working for Ada as a web developer and the projects I built have assisted the company to grow its revenue by 100% from 2018 to year end 2020. I am specialized in building front-end applications using React & Redux to implement design solutions that satisfy complex user requirements. I strive to write high performance code that is highly modular and maintainable.",
-    },
-    {
-      providerAvatar: "https://i.pinimg.com/originals/12/81/01/128101caae845d451425fd1ac767d3a0.jpg",
-      providerName: "Yuchen Zhao",
-      providerPosition: "Full-stack Developer",
-      testimonialLink: "https://www.linkedin.com/",
-      testimonial: "Test text: Since 2018, I have been working for Ada as a web developer and the projects I built have assisted the company to grow its revenue by 100% from 2018 to year end 2020. I am specialized in building front-end applications using React & Redux to implement design solutions that satisfy complex user requirements. I strive to write high performance code that is highly modular and maintainable.",
+      providerAvatar: "https://media-exp1.licdn.com/dms/image/C5603AQG6zRolUy0Heg/profile-displayphoto-shrink_200_200/0/1533091124401?e=1621468800&v=beta&t=xOJI4r3PrHJisLOK1ZtBhWX2M_Q4969czMo8BcfOpwQ",
+      providerName: "Anson MacKeracher",
+      providerPosition: "Software creator and entrepreneur",
+      testimonialLink: "https://www.linkedin.com/in/amackera/",
+      testimonial: "While working together at Ada, Yuchen greatly impressed me with his quick study, industriousness, and his continuing efforts to grow his skills. He rapidly became productive in our front end code, so much so that we were pleased to hire him full-time after his initial co-op term.\n" +
+        "\nYuchen is a fast learner and a courteous professional. He's an asset to any team he's a part of.",
     },
   ];
 
