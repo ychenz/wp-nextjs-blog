@@ -32,14 +32,14 @@ export const demosList: DemoOption[] = [
   {
     name: "Analytics",
     value: "analytics",
-    description: "This demos a flexible stock market chart",
+    description: "This demos a line chart for Apple stock using real market data fetched from FMP APIs",
     url: "https://stock-chart-demo.yuchenz.net/",
     sourceUrl: "https://github.com/ychenz/stock-chart-demo"
   },
   {
     name: "Web Game",
     value: "web-game",
-    description: "Play Gomuku game with a smart AI opponent",
+    description: "Play Gomuku game with a smart bot player",
     url: "https://gomoku-demo.yuchenz.net/",
     sourceUrl: "https://github.com/ychenz/gomoku-web-game-demo"
   },

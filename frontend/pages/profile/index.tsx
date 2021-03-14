@@ -18,7 +18,7 @@ const texts = [
     "JavaScript", "HTML5", "CSS3",
     "SCSS", "React", "Redux",
     "API Integration","Python", "MySQL",
-    "MongoDB", "WebSocket",
+    "MongoDB", "WebSocket", "TypeScript"
 ];
 
 function Profile(): ReactElement {
