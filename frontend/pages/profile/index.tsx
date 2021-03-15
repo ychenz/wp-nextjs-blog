@@ -1,4 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
+import Link from "next/link";
 import TagCloud from "TagCloud";
 
 import LogoIcon from "static/images/LogoV1.svg";
@@ -119,9 +120,11 @@ function Profile(): ReactElement {
             <EmailIcon />
           </S.ContactSectionSocialIconsButton>
         </S.ContactSectionSocialIconsContainer>
-        <S.ContactSectionDownloadResumeButton type="button">
-          Download Resume
-        </S.ContactSectionDownloadResumeButton>
+        <Link href="/resources/yuchen-resume.pdf">
+          <S.ContactSectionDownloadResumeButton type="button">
+            Download Resume
+          </S.ContactSectionDownloadResumeButton>
+        </Link>
         <S.ContactSectionCopyRight>
           © Yuchen Zhao 2021
         </S.ContactSectionCopyRight>
